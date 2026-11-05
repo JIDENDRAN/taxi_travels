@@ -1,0 +1,1 @@
+import { db, initDatabase } from './db.js'; import { useSQLiteAuthState } from './whatsapp.js'; initDatabase().then(async (d) => { const auth = await useSQLiteAuthState(d); console.log('Creds from DB:', auth.state.creds ? 'EXISTS' : 'NULL'); process.exit(0); });
