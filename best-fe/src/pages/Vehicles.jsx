@@ -3,15 +3,13 @@ import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Users, ArrowRight, ShieldCheck, ThumbsUp, Heart, PhoneCall,
-  Wind, Car as CarIcon
+  Wind, Sparkles, Car as CarIcon
 } from 'lucide-react';
 import BookingModal from '../components/BookingModal';
 import API_BASE_URL from '../apiConfig';
 import { getVehicleImage } from '../utils/imageImports';
-
 import ThirumalaiDesktop from '../assets/thirumalai_desktop.png';
 
-// Helper to parse description string into structured plans
 const parseDesc = (descString) => {
   if (!descString) return null;
   const plans = {};
@@ -28,8 +26,7 @@ const parseDesc = (descString) => {
       if (parts.length >= 2) {
         const label = parts[0].trim();
         let value = parts.slice(1).join(':').trim();
-        
-        // Auto-format if they only typed numbers
+
         if (/^\d+$/.test(value)) {
           const lowerLabel = label.toLowerCase();
           if (lowerLabel.includes('rate') || lowerLabel.includes('per km')) {
@@ -42,7 +39,6 @@ const parseDesc = (descString) => {
             value = `₹${value}`;
           }
         }
-
         items.push({ label, value });
       }
     }
@@ -52,34 +48,11 @@ const parseDesc = (descString) => {
 };
 
 const filterTabs = [
-  { id: 'all', label: 'All Vehicles', icon: '🚗' },
-  { id: 'sedan', label: 'Sedan', icon: '🚙' },
-  { id: 'suv', label: 'SUV', icon: '🚐' },
-  { id: 'tempo', label: 'Tempo Traveller', icon: '🚌' },
-  { id: 'luxury', label: 'Luxury', icon: '👑' },
-];
-
-const whyItems = [
-  {
-    icon: <ShieldCheck className="w-6 h-6 text-blue-600" />,
-    title: 'Safety First',
-    desc: 'GPS tracking, verified drivers, and well-maintained vehicles for complete safety.',
-  },
-  {
-    icon: <ThumbsUp className="w-6 h-6 text-blue-600" />,
-    title: 'Pristine Fleet',
-    desc: 'Regularly serviced, air-conditioned cars for the highest travel comfort.',
-  },
-  {
-    icon: <Heart className="w-6 h-6 text-blue-600" />,
-    title: 'Customer Satisfaction',
-    desc: 'Transparent pricing with zero hidden surcharges or surprise tolls.',
-  },
-  {
-    icon: <PhoneCall className="w-6 h-6 text-blue-600" />,
-    title: '24/7 Support',
-    desc: 'Our dispatch team is always ready to assist you before, during, and after your trip.',
-  },
+  { id: 'all', label: 'All Fleet', icon: '🚗' },
+  { id: 'sedan', label: 'Sedans (Etios/Dzire)', icon: '🚙' },
+  { id: 'suv', label: 'SUVs (Innova Crysta)', icon: '🚐' },
+  { id: 'tempo', label: 'Tempo Travellers', icon: '🚌' },
+  { id: 'luxury', label: 'Luxury Urbania', icon: '👑' },
 ];
 
 const Vehicles = () => {
@@ -95,9 +68,7 @@ const Vehicles = () => {
         const response = await fetch(`${API_BASE_URL}/api/cars`);
         if (response.ok) {
           const data = await response.json();
-          if (data && data.length > 0) {
-            setCars(data);
-          }
+          if (data && data.length > 0) setCars(data);
         }
       } catch (error) {
         console.error('Failed to fetch cars', error);
@@ -119,14 +90,14 @@ const Vehicles = () => {
   );
 
   return (
-    <div className="bg-[#F8FAFC] min-h-screen font-['Inter',sans-serif]">
+    <div className="bg-[#030712] text-white min-h-screen font-['Plus_Jakarta_Sans',sans-serif] text-left">
 
-      {/* ── PAGE HERO ─────────────────────────────────────── */}
-      <section className="relative h-80 pt-20 flex items-center justify-center overflow-hidden bg-[#0F172A]">
+      {/* ── LUXURY PAGE HERO ──────────────────────────────── */}
+      <section className="relative h-80 pt-24 flex items-center justify-center overflow-hidden bg-[#030712]">
         <div className="absolute inset-0">
-          <img src={ThirumalaiDesktop} alt="Fleet Hero" className="w-full h-full object-cover opacity-25" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0F172A]/70 via-[#0F172A]/85 to-[#0F172A]" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
+          <img src={ThirumalaiDesktop} alt="Fleet Hero" className="w-full h-full object-cover opacity-20" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#030712]/80 via-[#030712]/90 to-[#030712]" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#D4AF37]/10 rounded-full blur-3xl pointer-events-none" />
         </div>
 
         <motion.div
@@ -135,25 +106,25 @@ const Vehicles = () => {
           transition={{ duration: 0.7 }}
           className="relative z-10 text-center px-6"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-wider mb-3">
-            Madurai Best Taxi Travels Fleet
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-[#D4AF37]/30 text-[#F5D061] text-xs font-bold uppercase tracking-[0.25em] mb-3">
+            Madurai Best Taxi Travels • Executive Fleet
           </div>
-          <h1 className="text-4xl lg:text-6xl font-['DM_Sans',sans-serif] font-black text-white leading-tight">
-            Our Premium <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">Fleet</span>
+          <h1 className="text-4xl lg:text-6xl font-cinzel font-black text-white leading-tight">
+            THE <span className="text-gold-gradient">FLEET</span>
           </h1>
-          <p className="text-slate-300 text-sm max-w-lg mx-auto mt-2 leading-relaxed">
-            Clean, sanitized, and air-conditioned sedans, SUVs, and luxury Tempo Travellers for every journey.
+          <p className="text-gray-400 text-xs sm:text-sm max-w-lg mx-auto mt-2 leading-relaxed">
+            Spotless, climate-controlled sedans, Toyota Innova Crystas, and coaches for outstation & airport transfers.
           </p>
         </motion.div>
       </section>
 
-      {/* ── BREADCRUMB & FILTERS ───────────────────────────── */}
-      <div className="bg-white border-b border-slate-200 sticky top-16 z-30 shadow-xs">
-        <div className="max-w-7xl mx-auto px-6 py-3 flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-xs text-slate-500">
-            <a href="/" className="hover:text-blue-600 transition-colors">Home</a>
-            <span>&gt;</span>
-            <span className="text-slate-900 font-bold">Vehicles</span>
+      {/* ── FILTER BAR ────────────────────────────────────── */}
+      <div className="bg-[#0B0F19] border-y border-white/10 sticky top-20 z-30 shadow-2xl backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-6 py-3.5 flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-2 text-xs text-gray-400">
+            <a href="/" className="hover:text-[#D4AF37] transition-colors">Home</a>
+            <span>/</span>
+            <span className="text-white font-bold">Vehicles</span>
           </div>
 
           <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
@@ -161,30 +132,29 @@ const Vehicles = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveFilter(tab.id)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
+                className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                   activeFilter === tab.id
-                    ? 'bg-blue-600 text-white shadow-sm'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    ? 'bg-gold-gradient text-black font-black shadow-lg shadow-[#D4AF37]/25'
+                    : 'bg-white/[0.03] text-gray-400 border border-white/10 hover:border-[#D4AF37]/30 hover:text-white'
                 }`}
               >
-                <span className="mr-1">{tab.icon}</span> {tab.label}
+                <span className="mr-1.5">{tab.icon}</span> {tab.label}
               </button>
             ))}
           </div>
         </div>
       </div>
 
-      {/* ── MAIN FLEET SECTION ────────────────────────────── */}
-      <section className="py-10 lg:py-16">
+      {/* ── VEHICLES GRID ─────────────────────────────────── */}
+      <section className="py-16 lg:py-24">
         <div className="max-w-7xl mx-auto px-6">
-
           {loading ? (
-            <div className="text-center py-20">
-              <div className="w-12 h-12 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-4" />
-              <p className="text-slate-600 font-semibold text-sm">Loading vehicles...</p>
+            <div className="text-center py-24">
+              <div className="w-12 h-12 border-4 border-white/10 border-t-[#D4AF37] rounded-full animate-spin mx-auto mb-4" />
+              <p className="text-gray-400 text-sm">Loading executive fleet...</p>
             </div>
           ) : (
-            <div className="flex flex-col gap-6 w-full pb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               <AnimatePresence mode="popLayout">
                 {filtered.map((v, i) => (
                   <motion.div
@@ -194,122 +164,68 @@ const Vehicles = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.3, delay: i * 0.05 }}
-                    className="bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-sm w-full flex flex-col md:flex-row h-auto hover:shadow-xl hover:border-blue-500/30 transition-all duration-300"
+                    className="glass-obsidian rounded-3xl overflow-hidden border border-white/10 hover:border-[#D4AF37]/50 transition-all duration-500 hover:shadow-[0_10px_40px_rgba(212,175,55,0.15)] flex flex-col group"
                   >
-                    {/* Left: Vehicle Image */}
-                    <div className="bg-slate-50 flex flex-col items-center justify-center p-6 md:p-8 md:w-2/5 min-h-[300px] border-b md:border-b-0 md:border-r border-slate-100 relative">
+                    <div className="relative h-60 bg-gradient-to-b from-[#1F2937]/50 to-[#0B0F19] p-6 flex flex-col items-center justify-center">
+                      <div className="absolute top-4 right-4 bg-black/60 border border-[#D4AF37]/40 px-3 py-1 rounded-full text-[10px] font-bold text-[#F5D061] uppercase tracking-wider">
+                        {v.seats}
+                      </div>
                       <img
                         src={getVehicleImage(v.image)}
                         alt={v.name}
                         loading="lazy"
-                        className="w-full max-h-64 object-contain drop-shadow-xl hover:scale-105 transition-transform duration-500"
-                        onError={e => { e.target.src = getVehicleImage('sedan_cab-removebg-preview.png'); }}
+                        className="w-full h-44 object-contain transition-transform duration-700 group-hover:scale-110 drop-shadow-[0_15px_30px_rgba(0,0,0,0.8)]"
                       />
-                      <div className="flex items-center justify-center gap-4 mt-5 flex-wrap">
-                        <div className="flex items-center gap-1.5 text-xs text-slate-600 font-semibold bg-white px-3 py-1.5 rounded-full border border-slate-200">
-                          <Users className="w-3.5 h-3.5 text-blue-600" />
-                          {v.seats}
-                        </div>
-                        <div className="flex items-center gap-1.5 text-xs text-slate-600 font-semibold bg-white px-3 py-1.5 rounded-full border border-slate-200">
-                          <Wind className="w-3.5 h-3.5 text-blue-600" />
-                          {v.ac || 'AC Available'}
-                        </div>
-                        <div className="flex items-center gap-1.5 text-xs text-slate-600 font-semibold bg-white px-3 py-1.5 rounded-full border border-slate-200">
-                          <CarIcon className="w-3.5 h-3.5 text-blue-600" />
-                          GPS Enabled
-                        </div>
+                      <div className="flex items-center gap-3 mt-2">
+                        <span className="flex items-center gap-1 text-[11px] text-gray-300">
+                          <Wind className="w-3.5 h-3.5 text-[#D4AF37]" /> {v.ac || 'AC'}
+                        </span>
+                        <span className="text-gray-600">•</span>
+                        <span className="flex items-center gap-1 text-[11px] text-gray-300">
+                          <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" /> Sanitized
+                        </span>
                       </div>
                     </div>
 
-                    {/* Right: Details */}
-                    <div className="p-6 md:p-8 flex flex-col justify-between text-left md:w-3/5">
-                      <div>
-                        {/* Type tag & Name */}
-                        <div className="flex justify-between items-center mb-1">
-                          <span className="text-blue-600 font-bold text-xs uppercase tracking-wider">{v.seats}</span>
-                          <span className="text-[10px] font-bold uppercase tracking-wider bg-blue-50 text-blue-700 px-3 py-1 rounded-full border border-blue-200">
-                            {v.type ? v.type.charAt(0).toUpperCase() + v.type.slice(1) : 'Vehicle'}
-                          </span>
-                        </div>
-                        <h3 className="text-2xl font-['DM_Sans'] font-black text-slate-900 mb-4">{t(v.name)}</h3>
+                    <div className="p-6 flex flex-col flex-grow text-left">
+                      <h3 className="font-cinzel text-xl font-bold text-white mb-2">{t(v.name)}</h3>
 
-                        {/* Plans Section */}
-                        <div className="flex flex-col gap-3.5 mb-6">
-                          {(() => {
-                            const plans = parseDesc(v.desc);
-                            if (plans && Object.keys(plans).length > 0) {
-                              return Object.values(plans).map((plan, pIdx) => (
-                                <div key={pIdx} className="bg-slate-50 border border-slate-200 rounded-2xl p-4 shadow-2xs">
-                                  <div className="flex items-center gap-2 mb-3">
-                                    <div className={`w-2 h-2 rounded-full ${pIdx % 2 === 0 ? 'bg-blue-600' : 'bg-emerald-500'}`}></div>
-                                    <span className="text-[11px] font-black text-slate-500 uppercase tracking-widest">{plan.title}</span>
+                      <div className="space-y-2 mb-6 flex-grow">
+                        {(() => {
+                          const plans = parseDesc(v.desc);
+                          if (plans && Object.keys(plans).length > 0) {
+                            return Object.values(plans).map((plan, pIdx) => (
+                              <div key={pIdx} className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/5 space-y-1.5">
+                                <div className="text-[10px] text-[#D4AF37] font-bold uppercase tracking-wider">{plan.title}</div>
+                                {plan.items.map((item, iIdx) => (
+                                  <div key={iIdx} className="flex justify-between items-center text-xs">
+                                    <span className="text-gray-400">{item.label}</span>
+                                    <span className="font-bold text-white">{item.value}</span>
                                   </div>
-                                  {plan.items.map((item, iIdx) => (
-                                    <div key={iIdx} className={`flex justify-between items-center ${iIdx !== plan.items.length - 1 ? 'mb-2' : ''}`}>
-                                      <span className="text-xs font-semibold text-slate-500">{item.label}</span>
-                                      <span className="text-xs font-bold text-slate-800 bg-white border border-slate-200 px-2.5 py-1 rounded-md shadow-2xs">{item.value}</span>
-                                    </div>
-                                  ))}
-                                </div>
-                              ));
-                            }
-                            
-                            // Legacy Fallback
-                            return (
-                              <>
-                                <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 shadow-2xs">
-                                  <div className="flex items-center gap-2 mb-3">
-                                    <div className="w-2 h-2 rounded-full bg-blue-600"></div>
-                                    <span className="text-[11px] font-black text-slate-500 uppercase tracking-widest">Outstation Plan</span>
-                                  </div>
-                                  <div className="flex justify-between items-center mb-2">
-                                    <span className="text-xs font-semibold text-slate-500">Rate</span>
-                                    <span className="text-xs font-bold text-slate-800 bg-white border border-slate-200 px-2.5 py-1 rounded-md">{v.price || v.perKm}</span>
-                                  </div>
-                                  <div className="flex justify-between items-center">
-                                    <span className="text-xs font-semibold text-slate-500">Min Distance</span>
-                                    <span className="text-xs font-bold text-slate-800 bg-white border border-slate-200 px-2.5 py-1 rounded-md">{v.minKm?.toLowerCase().includes('above') ? v.minKm : `Above ${v.minKm || '300 kms'}`}</span>
-                                  </div>
-                                </div>
-
-                                <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 shadow-2xs">
-                                  <div className="flex items-center gap-2 mb-3">
-                                    <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-                                    <span className="text-[11px] font-black text-slate-500 uppercase tracking-widest">Day Rental Plan</span>
-                                  </div>
-                                  <div className="flex justify-between items-center mb-2">
-                                    <span className="text-xs font-semibold text-slate-500">Base Rent</span>
-                                    <span className="text-xs font-bold text-slate-800 bg-white border border-slate-200 px-2.5 py-1 rounded-md">{v.dayRent || '—'}</span>
-                                  </div>
-                                  <div className="flex justify-between items-center mb-2">
-                                    <span className="text-xs font-semibold text-slate-500">Per km Charge</span>
-                                    <span className="text-xs font-bold text-slate-800 bg-white border border-slate-200 px-2.5 py-1 rounded-md">{v.perKm ? (v.perKm.includes('/km') ? v.perKm : `${v.perKm}/km`) : '—'}</span>
-                                  </div>
-                                  <div className="flex justify-between items-center">
-                                    <span className="text-xs font-semibold text-slate-500">Driver Charge</span>
-                                    <span className="text-xs font-bold text-slate-800 bg-white border border-slate-200 px-2.5 py-1 rounded-md">{v.driverCharge || '—'}</span>
-                                  </div>
-                                </div>
-                              </>
-                            );
-                          })()}
-                        </div>
+                                ))}
+                              </div>
+                            ));
+                          }
+                          return (
+                            <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/5 text-xs flex justify-between">
+                              <span className="text-gray-400">Outstation Rate</span>
+                              <span className="font-bold text-[#F5D061]">{v.price || 'Competitive Rate'}</span>
+                            </div>
+                          );
+                        })()}
                       </div>
 
-                      {/* Footer */}
-                      <div className="pt-4 border-t border-slate-200 flex items-center justify-between mt-auto">
+                      <div className="flex items-center justify-between pt-4 border-t border-white/10 mt-auto">
                         <div>
-                          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Starting From</div>
-                          <div className="text-2xl font-['DM_Sans'] font-black text-slate-900">{v.price}</div>
+                          <div className="text-[10px] uppercase font-bold text-gray-400">Base Price</div>
+                          <div className="text-lg font-cinzel font-black text-gold-gradient">{v.price}</div>
                         </div>
-                        <div className="flex items-center gap-3">
-                          <button
-                            onClick={() => openBookingModal(v.name)}
-                            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-7 rounded-xl transition-all text-sm tracking-wide cursor-pointer shadow-lg shadow-blue-600/20 active:scale-95"
-                          >
-                            {t('Book Now')}
-                          </button>
-                        </div>
+                        <button
+                          onClick={() => openBookingModal(v.name)}
+                          className="px-5 py-2.5 rounded-xl bg-gold-gradient text-black font-extrabold text-xs uppercase tracking-wider hover:scale-105 active:scale-95 transition-all cursor-pointer shadow-md"
+                        >
+                          Book Now
+                        </button>
                       </div>
                     </div>
                   </motion.div>
@@ -317,38 +233,6 @@ const Vehicles = () => {
               </AnimatePresence>
             </div>
           )}
-        </div>
-      </section>
-
-      {/* ── WHY CHOOSE US ─────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white border-t border-slate-200">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <span className="text-blue-600 text-xs font-extrabold uppercase tracking-widest block mb-2">OUR GUARANTEE</span>
-            <h2 className="text-3xl lg:text-4xl font-['DM_Sans',sans-serif] font-black text-slate-900">
-              Why Ride with Madurai Best Taxi Travels?
-            </h2>
-            <div className="w-16 h-1 bg-blue-600 mx-auto rounded-full mt-3" />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {whyItems.map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-slate-50 rounded-2xl p-6 text-center border border-slate-200 hover:shadow-md transition-all duration-300"
-              >
-                <div className="w-14 h-14 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-center mx-auto mb-4">
-                  {item.icon}
-                </div>
-                <h3 className="font-['DM_Sans'] font-bold text-slate-900 text-sm mb-2">{item.title}</h3>
-                <p className="text-slate-500 text-xs leading-relaxed">{item.desc}</p>
-              </motion.div>
-            ))}
-          </div>
         </div>
       </section>
 

@@ -6,12 +6,11 @@ import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'fra
 const GoogleReviews = lazy(() => import('../components/GoogleReviews'));
 import {
   PhoneCall, Calendar, MapPin, Clock, Users, ShieldCheck, Car as CarIcon,
-  CheckCircle2, MessageCircle, Star, Wallet, Navigation, ArrowRight,
-  Wind, Sparkles, Award, ChevronDown
+  CheckCircle2, MessageCircle, Star, Navigation, ArrowRight,
+  Wind, Sparkles, Award, ChevronDown, Check
 } from 'lucide-react';
 import { getVehicleImage, getPackageImage } from '../utils/imageImports';
 import BookingModal from '../components/BookingModal';
-import Logo from '../assets/new_logo.jpg';
 import HeroImage from '../assets/hero.png';
 import API_BASE_URL from '../apiConfig';
 
@@ -35,7 +34,7 @@ import AlleppeyBg from '../assets/alleppey_bg.png';
 import TrivandrumBg from '../assets/trivandrum_bg.png';
 import AthirapillyBg from '../assets/athirapilly_bg.png';
 
-// ─── Default Data ────────────────────────────────────────────
+// ─── Default Data Parser ──────────────────────────────────────
 const parseDesc = (descString) => {
   if (!descString) return null;
   const plans = {};
@@ -65,7 +64,6 @@ const parseDesc = (descString) => {
             value = `₹${value}`;
           }
         }
-
         items.push({ label, value });
       }
     }
@@ -76,20 +74,20 @@ const parseDesc = (descString) => {
 
 const destinations = [
   { name: 'Madurai', subtext: 'Meenakshi Amman Temple', img: MeenakshiBg, category: 'temple' },
-  { name: 'Rameswaram', subtext: 'Dhanushkodi & Pilgrimage', img: RameswaramBg, category: 'temple' },
+  { name: 'Rameswaram', subtext: 'Dhanushkodi & APJ Memorial', img: RameswaramBg, category: 'temple' },
   { name: 'Kodaikanal', subtext: 'Princess of Hill Stations', img: KodaikanalBg, category: 'hills' },
-  { name: 'Ooty', subtext: 'Nilgiri Tea Estates', img: OotyBg, category: 'hills' },
-  { name: 'Kanyakumari', subtext: 'Sunrise & Sunset Triveni', img: KanyakumariBg, category: 'beaches' },
-  { name: 'Thanjavur', subtext: 'Brihadeeswarar Temple', img: ThanjavurBg, category: 'heritage' },
+  { name: 'Ooty', subtext: 'Nilgiri Tea Paradise', img: OotyBg, category: 'hills' },
+  { name: 'Kanyakumari', subtext: 'Triveni Sangam & Sunrise', img: KanyakumariBg, category: 'beaches' },
+  { name: 'Thanjavur', subtext: 'Great Living Chola Temples', img: ThanjavurBg, category: 'heritage' },
   { name: 'Kerala', subtext: "God's Own Country", img: KeralaBg, category: 'nature' },
-  { name: 'Cochin', subtext: 'Queen of the Arabian Sea', img: CochinBg, category: 'heritage' },
-  { name: 'Alleppey', subtext: 'Houseboats & Backwaters', img: AlleppeyBg, category: 'nature' },
-  { name: 'Thiruvananthapuram', subtext: 'Padmanabhaswamy Temple', img: TrivandrumBg, category: 'temple' },
   { name: 'Munnar', subtext: 'Tea Valley & Waterfalls', img: MunnarBg, category: 'hills' },
-  { name: 'Athirapilly', subtext: 'Majestic Waterfalls', img: AthirapillyBg, category: 'nature' },
+  { name: 'Alleppey', subtext: 'Venice of the East', img: AlleppeyBg, category: 'nature' },
+  { name: 'Cochin', subtext: 'Queen of the Arabian Sea', img: CochinBg, category: 'heritage' },
+  { name: 'Trivandrum', subtext: 'Padmanabhaswamy Temple', img: TrivandrumBg, category: 'temple' },
+  { name: 'Athirapilly', subtext: 'Niagara of India', img: AthirapillyBg, category: 'nature' },
 ];
 
-// ─── Animated Counter ────────────────────────────────────────
+// ─── Animated Metric Counter ──────────────────────────────────
 const AnimatedCounter = ({ end, duration = 2, suffix = '+', label }) => {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
@@ -108,41 +106,45 @@ const AnimatedCounter = ({ end, duration = 2, suffix = '+', label }) => {
   }, [inView, end, duration]);
 
   return (
-    <div ref={ref} className="text-center font-['Inter',sans-serif]">
-      <div className="text-4xl lg:text-5xl font-['DM_Sans'] font-black text-blue-400">{count.toLocaleString()}{suffix}</div>
-      <div className="text-xs text-slate-300 uppercase tracking-widest mt-2 font-semibold">{label}</div>
+    <div ref={ref} className="text-center font-['Plus_Jakarta_Sans',sans-serif]">
+      <div className="text-4xl lg:text-5xl font-cinzel font-black text-gold-gradient tracking-tight">
+        {count.toLocaleString()}{suffix}
+      </div>
+      <div className="text-[11px] text-gray-400 uppercase tracking-[0.2em] mt-2 font-semibold">
+        {label}
+      </div>
     </div>
   );
 };
 
-// ─── Section Header ──────────────────────────────────────────
+// ─── Luxury Section Header ────────────────────────────────────
 const SectionHeader = ({ tag, title, subtitle, center = true }) => (
-  <div className={`mb-12 ${center ? 'text-center' : 'text-left'}`}>
+  <div className={`mb-14 ${center ? 'text-center' : 'text-left'}`}>
     <motion.div
       initial={{ opacity: 0, y: 15 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className={`inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-blue-600 mb-2.5 ${center ? 'justify-center' : ''}`}
+      className={`inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.25em] text-[#D4AF37] mb-3 ${center ? 'justify-center' : ''}`}
     >
-      <span className="w-5 h-0.5 bg-blue-600" />
-      {tag}
-      {center && <span className="w-5 h-0.5 bg-blue-600" />}
+      <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
+      <span>{tag}</span>
+      <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
     </motion.div>
     <motion.h2
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: 0.1 }}
-      className="text-3xl lg:text-5xl font-['DM_Sans',sans-serif] font-black text-slate-900 leading-tight"
+      className="text-3xl lg:text-5xl font-cinzel font-black text-white leading-tight tracking-wide"
     >
       {title}
     </motion.h2>
     <motion.div
       initial={{ width: 0 }}
-      whileInView={{ width: '50px' }}
+      whileInView={{ width: '60px' }}
       viewport={{ once: true }}
       transition={{ delay: 0.2, duration: 0.5 }}
-      className={`h-1 bg-blue-600 rounded-full mt-4 ${center ? 'mx-auto' : ''}`}
+      className={`h-0.5 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent mt-4 ${center ? 'mx-auto' : ''}`}
     />
     {subtitle && (
       <motion.p
@@ -150,7 +152,7 @@ const SectionHeader = ({ tag, title, subtitle, center = true }) => (
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ delay: 0.3 }}
-        className="text-sm lg:text-base text-slate-500 mt-4 max-w-2xl leading-relaxed"
+        className="text-sm lg:text-base text-gray-400 mt-4 max-w-2xl leading-relaxed"
       >
         {subtitle}
       </motion.p>
@@ -158,11 +160,11 @@ const SectionHeader = ({ tag, title, subtitle, center = true }) => (
   </div>
 );
 
-// ─── Home Page ───────────────────────────────────────────────
+// ─── Main Home Component ──────────────────────────────────────
 const Home = () => {
   const { t } = useTranslation();
   const { scrollY } = useScroll();
-  const yBg = useTransform(scrollY, [0, 800], ['0%', '10%']);
+  const yBg = useTransform(scrollY, [0, 800], ['0%', '12%']);
 
   const [bgIndex, setBgIndex] = useState(0);
   const [destCategory, setDestCategory] = useState('all');
@@ -262,7 +264,7 @@ const Home = () => {
       });
       if (!res.ok) throw new Error();
       setIsSuccess(true);
-      const text = `*New Booking Request*\n\nFrom: ${formData.fromLocation}\nTo: ${formData.toLocation}\nDate: ${formData.date}\nTime: ${formData.time}\nVehicle: ${formData.vehicle}\nPackage: ${formData.packageType}\n\n*Customer Details:*\nName: ${formData.name}\nPhone: ${formData.phone}\nBooked via: Madurai Best Taxi Travels`;
+      const text = `*New Booking Request*\n\nFrom: ${formData.fromLocation}\nTo: ${formData.toLocation}\nDate: ${formData.date}\nTime: ${formData.time}\nVehicle: ${formData.vehicle}\nPackage: ${formData.packageType}\n\n*Customer Details:*\nName: ${formData.name}\nPhone: ${formData.phone}\nBooked via: Madurai Best Taxi Travels (Palanganatham)`;
       setTimeout(() => {
         window.open(`https://wa.me/916382513075?text=${encodeURIComponent(text)}`, '_blank');
         setIsSuccess(false);
@@ -277,212 +279,197 @@ const Home = () => {
     else setModalData({ isOpen: true, vehicle: '', packageType: value });
   };
 
-  const inputCls = 'w-full pl-10 sm:pl-11 pr-10 sm:pr-11 py-3 sm:py-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-800 text-sm placeholder:text-slate-400 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 outline-none transition-all';
-  const selectCls = 'w-full pl-4 pr-10 py-3 sm:py-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-800 text-sm font-semibold appearance-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 outline-none transition-all cursor-pointer';
+  const inputCls = 'w-full pl-11 pr-11 py-3.5 rounded-2xl bg-[#030712]/70 border border-white/10 text-white text-xs sm:text-sm placeholder:text-gray-500 focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-[#D4AF37] outline-none transition-all';
+  const selectCls = 'w-full pl-4 pr-10 py-3.5 rounded-2xl bg-[#030712]/70 border border-white/10 text-white text-xs sm:text-sm font-semibold appearance-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-[#D4AF37] outline-none transition-all cursor-pointer';
 
   return (
-    <div className="bg-[#F8FAFC] min-h-screen font-['Inter',sans-serif] text-left">
+    <div className="bg-[#030712] text-white min-h-screen font-['Plus_Jakarta_Sans',sans-serif] text-left">
 
-      {/* ── HERO SECTION ─────────────────────────────────── */}
-      <section className="relative min-h-[92vh] flex flex-col justify-center overflow-hidden bg-[#0F172A] pt-24 pb-12 lg:py-24">
-        {/* Background Slideshow */}
+      {/* ── LUXURY HERO SECTION ───────────────────────────── */}
+      <section className="relative min-h-[96vh] flex flex-col justify-center overflow-hidden bg-[#030712] pt-28 pb-16 lg:py-28">
+        
+        {/* Dynamic Background Slideshow with Cinematic Shadow Gradient */}
         <div className="absolute inset-0 z-0">
           <AnimatePresence initial={false}>
             <motion.img
               key={bgIndex}
               src={heroImages[bgIndex]}
-              initial={{ opacity: 0, scale: 1.05 }}
+              initial={{ opacity: 0, scale: 1.08 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 1.4, ease: 'easeInOut' }}
+              transition={{ duration: 1.6, ease: 'easeInOut' }}
               style={{ y: yBg }}
               className="absolute inset-0 w-full h-full object-cover"
-              alt="South India Taxi Destination"
+              alt="South India Luxury Taxi Tours"
             />
           </AnimatePresence>
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A] via-[#0F172A]/85 to-[#0F172A]/40" />
-          <div className="absolute top-1/4 left-1/3 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
+          {/* Obsidian Vignette Layer */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#030712] via-[#030712]/85 to-[#030712]/50" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(212,175,55,0.12)_0%,transparent_60%)] pointer-events-none" />
         </div>
 
-        {/* Hero Content */}
+        {/* Hero Interactive Core */}
         <div className="relative z-10 w-full animate-fade-in">
-          <div className="max-w-7xl mx-auto px-4 lg:px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          <div className="max-w-7xl mx-auto px-4 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
 
-            {/* Left Column Top: Brand Header */}
+            {/* Left Column: Prestigious Typography */}
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
+              initial={{ opacity: 0, x: -35 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              className="lg:col-span-7 lg:row-start-1 lg:col-start-1 lg:self-end text-center lg:text-left flex flex-col items-center lg:items-start w-full order-1"
+              className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left"
             >
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/25 text-blue-400 text-xs font-bold uppercase tracking-wider mb-4">
-                <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
-                24/7 Outstation Cabs & Airport Transfers
+              {/* Luxury Pill Tag */}
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-[#D4AF37]/30 text-[#F5D061] text-xs font-bold uppercase tracking-[0.25em] mb-5 shadow-lg">
+                <span className="w-2 h-2 rounded-full bg-[#D4AF37] animate-ping" />
+                <span>The Gold Standard in Cab Services</span>
               </div>
 
-              <h1 className="font-['DM_Sans',sans-serif] font-black text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-tight mb-3">
-                Madurai <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">Best</span> Taxi Travels
+              <h1 className="font-cinzel font-black text-4xl sm:text-6xl lg:text-7xl text-white tracking-wider leading-[1.08] mb-4">
+                MADURAI <span className="text-gold-gradient">BEST</span> <br />
+                <span className="text-2xl sm:text-4xl lg:text-5xl font-['Plus_Jakarta_Sans'] font-extrabold text-silver-gradient tracking-tight">
+                  TAXI TRAVELS
+                </span>
               </h1>
-              <p className="text-blue-300 text-xs sm:text-sm font-semibold tracking-wide mb-6">
+
+              <p className="text-[#D4AF37] text-xs sm:text-sm font-semibold tracking-widest uppercase mb-4 flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-[#D4AF37]" />
                 No. 18, Kovalan Nagar Last, Muniyandi St, Palanganatham, Madurai - 625003
               </p>
 
-              {/* Fleet Hero Graphic */}
-              <div className="mb-6 lg:mb-4 w-full flex items-center justify-center lg:justify-start">
+              {/* Fleet Display */}
+              <div className="my-4 w-full flex items-center justify-center lg:justify-start">
                 <img
                   src={HeroImage}
-                  alt="Madurai Best Taxi Travels Fleet"
-                  className="w-11/12 md:w-5/6 lg:w-4/5 max-w-lg lg:max-w-xl object-contain drop-shadow-2xl rounded-3xl"
+                  alt="Madurai Best Taxi Fleet"
+                  className="w-11/12 md:w-5/6 lg:w-4/5 max-w-lg lg:max-w-xl object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.9)]"
                 />
               </div>
-            </motion.div>
 
-            {/* Left Column Bottom: Description & CTAs */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-              className="lg:col-span-7 lg:row-start-2 lg:col-start-1 lg:self-start text-center lg:text-left flex flex-col items-center lg:items-start w-full order-3"
-            >
-              <p className="text-slate-300 text-sm max-w-xl mb-6 leading-relaxed">
-                {t('Premier taxi service in Madurai. Specializing in Rameswaram, Kodaikanal, Ooty, Kerala holiday tours, and luxury Tempo Traveller rentals with verified drivers.')}
+              <p className="text-gray-300 text-sm max-w-xl mb-8 leading-relaxed font-normal">
+                {t('Experience seamless airport transfers, divine temple pilgrimages, and scenic hill station tours across South India in premium Innova Crystas, sedans, and luxury Tempo Travellers.')}
               </p>
 
-              <div className="w-20 h-1 bg-blue-600 mb-8 rounded-full" />
-
-              <div className="flex flex-wrap justify-center lg:justify-start gap-3">
-                <a href="tel:6382513075" className="flex items-center gap-2.5 px-7 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all text-xs uppercase tracking-wider shadow-lg shadow-blue-600/30">
-                  <PhoneCall className="w-4 h-4" /> {t('Call +91 63825 13075')}
+              {/* Action Buttons */}
+              <div className="flex flex-wrap justify-center lg:justify-start gap-4">
+                <a
+                  href="tel:6382513075"
+                  className="flex items-center gap-2.5 px-8 py-4 bg-gold-gradient text-black font-extrabold rounded-full transition-all text-xs uppercase tracking-wider gold-glow hover:scale-105 active:scale-95 cursor-pointer shadow-xl"
+                >
+                  <PhoneCall className="w-4 h-4 fill-black" /> {t('Call +91 63825 13075')}
                 </a>
-                <a href="https://wa.me/916382513075" target="_blank" rel="noreferrer" className="flex items-center gap-2.5 px-7 py-3.5 border border-emerald-500/40 bg-emerald-600/90 hover:bg-emerald-600 text-white font-bold rounded-xl transition-all text-xs uppercase tracking-wider shadow-lg shadow-emerald-600/20">
-                  <MessageCircle className="w-4 h-4" /> {t('WhatsApp Us')}
-                </a>
-                <a href="/vehicles" className="flex items-center gap-2.5 px-6 py-3.5 border border-slate-700 bg-slate-800/80 hover:bg-slate-700 text-white font-bold rounded-xl transition-all text-xs uppercase tracking-wider">
-                  <CarIcon className="w-4 h-4 text-blue-400" /> View Fleet
+                <a
+                  href="https://wa.me/916382513075"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-2.5 px-8 py-4 border border-emerald-500/40 bg-emerald-600/20 hover:bg-emerald-600 text-white font-extrabold rounded-full transition-all text-xs uppercase tracking-wider shadow-lg hover:scale-105 backdrop-blur-md"
+                >
+                  <MessageCircle className="w-4 h-4 text-emerald-400" /> {t('WhatsApp Us')}
                 </a>
               </div>
 
-              {/* Trust checklist */}
-              <div className="hidden md:grid grid-cols-2 gap-x-6 gap-y-4 mt-8 w-full max-w-xl border-t border-slate-800 pt-6">
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center shrink-0">
-                    <ShieldCheck className="w-4 h-4 text-blue-400" />
+              {/* Verified Trust Points */}
+              <div className="hidden sm:grid grid-cols-3 gap-6 mt-10 pt-8 border-t border-white/10 w-full max-w-xl text-left">
+                <div>
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-white uppercase tracking-wider">
+                    <ShieldCheck className="w-4 h-4 text-[#D4AF37]" /> GPS Monitored
                   </div>
-                  <div>
-                    <h4 className="text-white text-xs font-bold uppercase tracking-wider">{t('Safe & Reliable')}</h4>
-                    <p className="text-slate-400 text-[11px] mt-0.5 leading-tight">{t('GPS tracking & sanitized vehicles')}</p>
-                  </div>
+                  <p className="text-gray-400 text-[11px] mt-0.5">Real-time safety on highway & ghats</p>
                 </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center shrink-0">
-                    <Award className="w-4 h-4 text-blue-400" />
+                <div>
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-white uppercase tracking-wider">
+                    <Award className="w-4 h-4 text-[#D4AF37]" /> Expert Drivers
                   </div>
-                  <div>
-                    <h4 className="text-white text-xs font-bold uppercase tracking-wider">{t('Expert Drivers')}</h4>
-                    <p className="text-slate-400 text-[11px] mt-0.5 leading-tight">{t('Ghat-road specialists & polite staff')}</p>
-                  </div>
+                  <p className="text-gray-400 text-[11px] mt-0.5">Verified & courteous chauffeurs</p>
                 </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center shrink-0">
-                    <Wallet className="w-4 h-4 text-blue-400" />
+                <div>
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-white uppercase tracking-wider">
+                    <Clock className="w-4 h-4 text-[#D4AF37]" /> Punctual 24/7
                   </div>
-                  <div>
-                    <h4 className="text-white text-xs font-bold uppercase tracking-wider">{t('Best Price Guarantee')}</h4>
-                    <p className="text-slate-400 text-[11px] mt-0.5 leading-tight">{t('Fixed KM rates, no hidden charges')}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center shrink-0">
-                    <PhoneCall className="w-4 h-4 text-blue-400" />
-                  </div>
-                  <div>
-                    <h4 className="text-white text-xs font-bold uppercase tracking-wider">{t('24/7 Support')}</h4>
-                    <p className="text-slate-400 text-[11px] mt-0.5 leading-tight">{t('Instant dispatch from Palanganatham')}</p>
-                  </div>
+                  <p className="text-gray-400 text-[11px] mt-0.5">Zero wait time airport pickup</p>
                 </div>
               </div>
             </motion.div>
 
-            {/* Right Column: Sleek Modern Booking Form Card */}
+            {/* Right Column: Premium Booking Card */}
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
+              initial={{ opacity: 0, x: 35 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="lg:col-span-5 lg:row-span-2 lg:col-start-8 lg:row-start-1 flex justify-center lg:justify-end w-full order-2 mb-8 lg:mb-0"
+              className="lg:col-span-5 flex justify-center lg:justify-end w-full"
             >
-              <div className="w-full max-w-[440px] bg-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-slate-200 text-left">
-                <div className="text-center mb-5 pb-4 border-b border-slate-100">
-                  <div className="inline-flex items-center gap-1.5 mb-1 text-blue-600 text-xs font-black uppercase tracking-wider">
+              <div className="w-full max-w-[450px] glass-obsidian-elevated rounded-3xl p-6 sm:p-8 gold-border-glow shadow-2xl relative overflow-hidden text-left">
+                {/* Golden ambient corner light */}
+                <div className="absolute top-0 right-0 w-36 h-36 bg-[#D4AF37]/15 rounded-full blur-2xl pointer-events-none" />
+
+                <div className="mb-6 pb-4 border-b border-white/10 text-left">
+                  <div className="flex items-center gap-2 text-[#D4AF37] text-xs font-bold uppercase tracking-widest mb-1">
                     <CarIcon className="w-4 h-4" />
-                    <span>Quick Ride Booking</span>
+                    <span>Instant Taxi Booking</span>
                   </div>
-                  <h3 className="font-['DM_Sans'] font-bold text-lg text-slate-900">Book Your Private Taxi</h3>
-                  <p className="text-slate-400 text-xs">Punctual • Air-Conditioned • Experienced Drivers</p>
+                  <h3 className="font-cinzel text-xl sm:text-2xl font-bold text-white">Reserve Your Cab</h3>
+                  <p className="text-gray-400 text-xs mt-1">Direct confirmation • No hidden toll charges</p>
                 </div>
 
                 {isSuccess ? (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="flex flex-col items-center justify-center py-8 text-center"
+                    className="flex flex-col items-center justify-center py-10 text-center"
                   >
-                    <div className="w-14 h-14 bg-emerald-50 rounded-full flex items-center justify-center mb-3 border border-emerald-200">
-                      <CheckCircle2 className="w-8 h-8 text-emerald-600" />
+                    <div className="w-16 h-16 rounded-full bg-[#D4AF37]/20 border border-[#D4AF37] flex items-center justify-center text-[#D4AF37] mb-4">
+                      <CheckCircle2 className="w-9 h-9" />
                     </div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-1">{t('Booking Confirmed!')}</h3>
-                    <p className="text-slate-500 text-xs mb-4">{t('Redirecting to WhatsApp...')}</p>
-                    <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                      <motion.div initial={{ width: '0%' }} animate={{ width: '100%' }} transition={{ duration: 2.5 }} className="h-full bg-emerald-500" />
+                    <h3 className="text-xl font-bold text-white mb-1">{t('Reservation Dispatched!')}</h3>
+                    <p className="text-gray-400 text-xs mb-5">{t('Connecting to WhatsApp booking desk...')}</p>
+                    <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                      <motion.div initial={{ width: '0%' }} animate={{ width: '100%' }} transition={{ duration: 2.5 }} className="h-full bg-gold-gradient" />
                     </div>
                   </motion.div>
                 ) : (
-                  <form className="space-y-3" onSubmit={handleSubmit}>
+                  <form className="space-y-3.5" onSubmit={handleSubmit}>
                     {/* Pickup */}
                     <div className="relative">
-                      <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-600 w-4 h-4" />
+                      <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#D4AF37] w-4 h-4" />
                       <input ref={pickupRef} type="text" name="fromLocation" value={formData.fromLocation}
                         onChange={handleChange} placeholder={t('Pickup Location (e.g. Madurai Airport)')} className={inputCls} required />
                       <button type="button" onClick={() => detectLocation('pickup')}
-                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-blue-600 hover:text-blue-700 transition-colors flex items-center justify-center" title="Detect live location">
-                        {loadingPickup ? <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#D4AF37] hover:text-[#F5D061] transition-colors flex items-center justify-center cursor-pointer" title="Detect live location">
+                        {loadingPickup ? <div className="w-4 h-4 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin" />
                           : <Navigation className="w-4 h-4" />}
                       </button>
                     </div>
 
                     {/* Drop */}
                     <div className="relative">
-                      <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-600 w-4 h-4" />
+                      <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#D4AF37] w-4 h-4" />
                       <input ref={dropRef} type="text" name="toLocation" value={formData.toLocation}
-                        onChange={handleChange} placeholder={t('Drop Location (e.g. Rameswaram)')} className={inputCls} required />
+                        onChange={handleChange} placeholder={t('Drop Location (e.g. Rameswaram / Kodaikanal)')} className={inputCls} required />
                       <button type="button" onClick={() => detectLocation('drop')}
-                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-blue-600 hover:text-blue-700 transition-colors flex items-center justify-center" title="Detect live location">
-                        {loadingDrop ? <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#D4AF37] hover:text-[#F5D061] transition-colors flex items-center justify-center cursor-pointer" title="Detect live location">
+                        {loadingDrop ? <div className="w-4 h-4 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin" />
                           : <Navigation className="w-4 h-4" />}
                       </button>
                     </div>
 
-                    {/* Name */}
+                    {/* Customer Name */}
                     <div className="relative">
-                      <Users className="absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-600 w-4 h-4" />
+                      <Users className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#D4AF37] w-4 h-4" />
                       <input type="text" name="name" value={formData.name} onChange={handleChange}
-                        placeholder={t('Your Name')} className={`${inputCls} pr-2`} required />
+                        placeholder={t('Your Full Name')} className={`${inputCls} pr-2`} required />
                     </div>
 
-                    {/* Phone */}
+                    {/* Phone Number */}
                     <div className="relative">
-                      <PhoneCall className="absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-600 w-4 h-4" />
+                      <PhoneCall className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#D4AF37] w-4 h-4" />
                       <input type="tel" name="phone" value={formData.phone} onChange={handleChange}
-                        placeholder={t('Phone Number')} className={`${inputCls} pr-2`} required />
+                        placeholder={t('Phone Number (e.g. +91 ...)')} className={`${inputCls} pr-2`} required />
                     </div>
 
                     {/* Date & Time */}
-                    <div className="grid grid-cols-2 gap-2.5">
+                    <div className="grid grid-cols-2 gap-3">
                       <div className="relative">
-                        <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-600 w-4 h-4" />
+                        <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#D4AF37] w-4 h-4" />
                         <input
                           type="date"
                           name="date"
@@ -490,12 +477,12 @@ const Home = () => {
                           onChange={handleChange}
                           onKeyDown={(e) => e.preventDefault()}
                           onClick={(e) => { try { e.target.showPicker(); } catch (err) { } }}
-                          className={`${inputCls} pr-2 ${!formData.date ? 'text-slate-400' : 'text-slate-800'}`}
+                          className={`${inputCls} pr-2`}
                           required
                         />
                       </div>
                       <div className="relative">
-                        <Clock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-600 w-4 h-4" />
+                        <Clock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#D4AF37] w-4 h-4" />
                         <input
                           type="time"
                           name="time"
@@ -503,42 +490,44 @@ const Home = () => {
                           onChange={handleChange}
                           onKeyDown={(e) => e.preventDefault()}
                           onClick={(e) => { try { e.target.showPicker(); } catch (err) { } }}
-                          className={`${inputCls} pr-2 ${!formData.time ? 'text-slate-400' : 'text-slate-800'}`}
+                          className={`${inputCls} pr-2`}
                           required
                         />
                       </div>
                     </div>
 
-                    {/* Vehicle & Package */}
-                    <div className="grid grid-cols-2 gap-2.5">
+                    {/* Vehicle & Package Selectors */}
+                    <div className="grid grid-cols-2 gap-3">
                       <div className="relative">
                         <select name="vehicle" value={formData.vehicle} onChange={handleChange} className={selectCls}>
                           <option>{t('Select Vehicle')}</option>
                           {vehicles.map(v => <option key={v.id || v.name} value={v.name}>{t(v.name)}</option>)}
                         </select>
-                        <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[4px] border-t-blue-600" />
+                        <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[4px] border-t-[#D4AF37]" />
                       </div>
                       <div className="relative">
                         <select name="packageType" value={formData.packageType} onChange={handleChange} className={selectCls}>
                           <option>{t('Custom Trip')}</option>
                           {packages.map(p => <option key={p.id || p.name} value={p.name}>{t(p.name)}</option>)}
                         </select>
-                        <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[4px] border-t-blue-600" />
+                        <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[4px] border-t-[#D4AF37]" />
                       </div>
                     </div>
 
-                    {/* Submit */}
-                    <button type="submit" disabled={isSubmitting}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-extrabold py-3.5 rounded-2xl shadow-lg shadow-blue-600/25 active:scale-[0.98] transition-all flex justify-center items-center gap-2 disabled:opacity-70 text-sm uppercase tracking-wider cursor-pointer mt-2"
+                    {/* Submit CTA */}
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full bg-gold-gradient text-black font-extrabold py-4 rounded-2xl shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-xs uppercase tracking-widest cursor-pointer mt-3 flex items-center justify-center gap-2 gold-glow"
                     >
-                      {isSubmitting ? t('Processing...') : (
-                        <>{t('Confirm & Book on WhatsApp')} <ArrowRight className="w-4 h-4" /></>
+                      {isSubmitting ? t('Confirming...') : (
+                        <>{t('Confirm Reservation')} <ArrowRight className="w-4 h-4 stroke-[3]" /></>
                       )}
                     </button>
 
-                    <div className="flex items-center justify-center gap-1.5 pt-2 text-xs text-slate-500 font-medium">
-                      <ShieldCheck className="w-4 h-4 text-blue-600" />
-                      <span>Zero Advance Needed • 100% Transparent Billing</span>
+                    <div className="flex items-center justify-center gap-2 pt-2 text-[11px] text-gray-400 font-medium">
+                      <Check className="w-3.5 h-3.5 text-[#D4AF37]" />
+                      <span>Zero Advance Required • 100% Guaranteed Pickup</span>
                     </div>
                   </form>
                 )}
@@ -548,203 +537,207 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ── OFFICIAL BUSINESS INFO STRIP ─────────────────── */}
-      <section className="py-6 bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 lg:px-6">
-          <div className="flex flex-wrap items-center justify-between gap-4 text-xs">
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-slate-900">Madurai Best Taxi Travels</span>
-              <span className="text-slate-300">•</span>
-              <span className="text-slate-500">Palanganatham, Madurai - 625003</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <a href="tel:6382513075" className="font-bold text-blue-600 hover:underline">
-                📞 +91 63825 13075
-              </a>
-              <span className="text-slate-300">•</span>
-              <a href="https://wa.me/916382513075" target="_blank" rel="noreferrer" className="font-bold text-emerald-600 hover:underline">
-                💬 WhatsApp 24/7
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── SEO INTRODUCTION SECTION ────────────────────── */}
-      <section className="py-12 bg-[#F8FAFC]">
-        <div className="max-w-7xl mx-auto px-4 lg:px-6">
-          <div className="bg-white border border-slate-200 rounded-3xl p-8 lg:p-12 shadow-sm text-center">
-            <h2 className="text-3xl lg:text-4xl font-['DM_Sans',sans-serif] font-black text-slate-900 mb-4">
-              Best Taxi Service & Tour Packages in Madurai
-            </h2>
-            <div className="h-1 bg-blue-600 w-20 mx-auto rounded-full mb-6" />
-            <p className="text-slate-600 max-w-3xl mx-auto leading-relaxed text-sm md:text-base">
-              <strong>Madurai Best Taxi Travels</strong> is your reliable cab company located at <strong>No. 18, Kovalan Nagar Last, Muniyandi Street, Palanganatham, Madurai - 625003</strong>. We specialize in 24/7 local taxi bookings, <Link to="/madurai-airport-taxi" className="text-blue-600 hover:underline font-semibold">Madurai airport pickup and drops</Link>, <Link to="/tempo-traveller-rental-madurai" className="text-blue-600 hover:underline font-semibold">Tempo Traveller rentals</Link>, <Link to="/madurai-to-rameswaram-taxi" className="text-blue-600 hover:underline font-semibold">Madurai to Rameswaram taxi service</Link>, <Link to="/madurai-to-kodaikanal-taxi" className="text-blue-600 hover:underline font-semibold">Kodaikanal hill station cabs</Link>, and customized <Link to="/packages" className="text-blue-600 hover:underline font-semibold">South India tour packages</Link>.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── OUR VEHICLES SECTION ──────────────────────────── */}
-      <section className="py-14 lg:py-20 bg-white border-y border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 lg:px-6">
-          <div className="flex items-end justify-between mb-10">
+      {/* ── PRESTIGE FLEET SHOWCASE ───────────────────────── */}
+      <section className="py-20 lg:py-28 bg-[#0B0F19] relative border-y border-white/[0.06]">
+        <div className="max-w-7xl mx-auto px-4 lg:px-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16">
             <SectionHeader
-              tag="Fleet & Rentals"
-              title={<>Premium <span className="text-blue-600">Vehicles</span></>}
-              subtitle="Choose from well-maintained sedans, spacious SUVs, and luxury Tempo Travellers."
+              tag="First-Class Travel"
+              title={<>The <span className="text-gold-gradient">Executive Fleet</span></>}
+              subtitle="Pristine sedans, luxury SUVs, and executive Tempo Travellers meticulously inspected before every dispatch."
               center={false}
             />
             <Link
               to="/vehicles"
-              className="hidden sm:flex items-center gap-1.5 text-blue-600 font-bold text-sm hover:gap-2.5 transition-all mb-12"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/[0.04] border border-[#D4AF37]/30 text-[#D4AF37] hover:bg-gold-gradient hover:text-black font-bold text-xs uppercase tracking-wider transition-all mb-14"
             >
-              View All Vehicles <ArrowRight className="w-4 h-4" />
+              View Full Fleet ({vehicles.length}) <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
-          <div className="flex flex-col gap-6 w-full pb-4">
-            {vehicles.slice(0, 4).map((v, i) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {vehicles.slice(0, 6).map((v, i) => (
               <motion.div
                 key={v.name + i}
-                initial={{ opacity: 0, y: 25 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
-                className="bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-sm w-full flex flex-col md:flex-row h-auto hover:shadow-xl hover:border-blue-500/30 transition-all duration-300"
+                className="glass-obsidian rounded-3xl overflow-hidden border border-white/10 hover:border-[#D4AF37]/50 transition-all duration-500 hover:shadow-[0_10px_40px_rgba(212,175,55,0.15)] flex flex-col group"
               >
-                {/* Left: Vehicle Image */}
-                <div className="bg-slate-50 flex flex-col items-center justify-center p-6 md:p-8 md:w-2/5 min-h-[280px] border-b md:border-b-0 md:border-r border-slate-100">
+                {/* Vehicle Image Container */}
+                <div className="relative h-60 bg-gradient-to-b from-[#1F2937]/50 to-[#0B0F19] p-6 flex flex-col items-center justify-center overflow-hidden">
+                  <div className="absolute top-4 right-4 bg-black/60 border border-[#D4AF37]/40 px-3 py-1 rounded-full text-[10px] font-bold text-[#F5D061] uppercase tracking-wider">
+                    {v.seats}
+                  </div>
                   <img
                     src={getVehicleImage(v.image)}
-                    alt={`${v.name} taxi rental Madurai`}
+                    alt={v.name}
                     loading="lazy"
-                    className="w-full max-h-56 object-contain drop-shadow-xl hover:scale-105 transition-transform duration-500"
+                    className="w-full h-44 object-contain transition-transform duration-700 group-hover:scale-110 drop-shadow-[0_15px_30px_rgba(0,0,0,0.8)]"
                   />
-                  <div className="flex items-center gap-3 mt-4 flex-wrap justify-center">
-                    <span className="flex items-center gap-1 text-xs text-slate-600 font-semibold bg-white px-2.5 py-1 rounded-full border border-slate-200">
-                      <Users className="w-3.5 h-3.5 text-blue-600" />
-                      {v.seats}
+                  <div className="flex items-center gap-3 mt-2">
+                    <span className="flex items-center gap-1 text-[11px] text-gray-300">
+                      <Wind className="w-3.5 h-3.5 text-[#D4AF37]" /> {v.ac || 'AC'}
                     </span>
-                    <span className="flex items-center gap-1 text-xs text-slate-600 font-semibold bg-white px-2.5 py-1 rounded-full border border-slate-200">
-                      <Wind className="w-3.5 h-3.5 text-blue-600" />
-                      {v.ac || 'AC'}
-                    </span>
-                    <span className="flex items-center gap-1 text-xs text-slate-600 font-semibold bg-white px-2.5 py-1 rounded-full border border-slate-200">
-                      <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-                      Sanitized
+                    <span className="text-gray-600">•</span>
+                    <span className="flex items-center gap-1 text-[11px] text-gray-300">
+                      <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" /> Sanitized
                     </span>
                   </div>
                 </div>
 
-                {/* Right: Details */}
-                <div className="p-6 md:p-8 flex flex-col justify-between text-left md:w-3/5">
-                  <div>
-                    <div className="text-blue-600 font-bold text-xs uppercase tracking-wider mb-1">{v.seats}</div>
-                    <h3 className="text-xl md:text-2xl font-['DM_Sans'] font-black text-slate-900 mb-4">{t(v.name)}</h3>
-
-                    <div className="flex flex-col gap-3 mb-6">
-                      {(() => {
-                        const plans = parseDesc(v.desc);
-                        if (plans && Object.keys(plans).length > 0) {
-                          return Object.values(plans).map((plan, pIdx) => (
-                            <div key={pIdx} className="bg-slate-50 border border-slate-200 rounded-2xl p-4 shadow-2xs">
-                              <div className="flex items-center gap-2 mb-2">
-                                <div className={`w-2 h-2 rounded-full ${pIdx % 2 === 0 ? 'bg-blue-600' : 'bg-emerald-500'}`} />
-                                <span className="text-[11px] font-black text-slate-500 uppercase tracking-widest">{plan.title}</span>
-                              </div>
-                              {plan.items.map((item, iIdx) => (
-                                <div key={iIdx} className={`flex justify-between items-center ${iIdx !== plan.items.length - 1 ? 'mb-1.5' : ''}`}>
-                                  <span className="text-xs font-semibold text-slate-500">{item.label}</span>
-                                  <span className="text-xs font-bold text-slate-800 bg-white border border-slate-200 px-2 py-0.5 rounded shadow-2xs">{item.value}</span>
-                                </div>
-                              ))}
-                            </div>
-                          ));
-                        }
+                {/* Details */}
+                <div className="p-6 flex flex-col flex-grow text-left">
+                  <h3 className="font-cinzel text-xl font-bold text-white mb-2">{t(v.name)}</h3>
+                  
+                  {/* Pricing Plans Summary */}
+                  <div className="space-y-2 mb-6 flex-grow">
+                    {(() => {
+                      const plans = parseDesc(v.desc);
+                      if (plans && Object.keys(plans).length > 0) {
+                        const firstPlan = Object.values(plans)[0];
                         return (
-                          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4">
-                            <div className="flex justify-between items-center mb-2">
-                              <span className="text-xs font-semibold text-slate-500">Rate</span>
-                              <span className="text-xs font-bold text-slate-800 bg-white border border-slate-200 px-2 py-0.5 rounded">{v.price || v.perKm}</span>
-                            </div>
-                            <div className="flex justify-between items-center">
-                              <span className="text-xs font-semibold text-slate-500">Min Distance</span>
-                              <span className="text-xs font-bold text-slate-800 bg-white border border-slate-200 px-2 py-0.5 rounded">{v.minKm || 'Above 300 kms'}</span>
-                            </div>
+                          <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/5 space-y-1.5">
+                            <div className="text-[10px] text-[#D4AF37] font-bold uppercase tracking-wider">{firstPlan.title}</div>
+                            {firstPlan.items.slice(0, 2).map((item, idx) => (
+                              <div key={idx} className="flex justify-between items-center text-xs">
+                                <span className="text-gray-400">{item.label}</span>
+                                <span className="font-bold text-white">{item.value}</span>
+                              </div>
+                            ))}
                           </div>
                         );
-                      })()}
-                    </div>
+                      }
+                      return (
+                        <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/5 text-xs flex justify-between">
+                          <span className="text-gray-400">Outstation Rate</span>
+                          <span className="font-bold text-[#F5D061]">{v.price || 'Competitive Rate'}</span>
+                        </div>
+                      );
+                    })()}
                   </div>
 
-                  <div className="pt-4 border-t border-slate-100 flex items-center justify-between mt-auto">
+                  {/* Card Bottom CTA */}
+                  <div className="flex items-center justify-between pt-4 border-t border-white/10 mt-auto">
                     <div>
-                      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Starting Rate</div>
-                      <div className="text-xl font-['DM_Sans'] font-black text-slate-900">{v.price}</div>
+                      <div className="text-[10px] uppercase font-bold text-gray-400">Base Price</div>
+                      <div className="text-lg font-cinzel font-black text-gold-gradient">{v.price}</div>
                     </div>
                     <button
                       onClick={() => openBookingModal('vehicle', v.name)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-6 rounded-xl transition-all text-sm tracking-wide shadow-md shadow-blue-600/20 active:scale-95 cursor-pointer"
+                      className="px-5 py-2.5 rounded-xl bg-gold-gradient text-black font-extrabold text-xs uppercase tracking-wider hover:scale-105 active:scale-95 transition-all cursor-pointer shadow-md"
                     >
-                      {t('Book Now')}
+                      Book Now
                     </button>
                   </div>
                 </div>
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
 
-          <div className="text-center mt-6">
-            <Link to="/vehicles" className="inline-flex items-center gap-2 px-8 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-2xl transition-all text-sm">
-              Explore Complete Fleet ({vehicles.length} Vehicles) <ArrowRight className="w-4 h-4" />
-            </Link>
+      {/* ── CURATED TOUR PACKAGES ──────────────────────────── */}
+      <section className="py-20 lg:py-28 bg-[#030712] relative">
+        <div className="max-w-7xl mx-auto px-4 lg:px-8">
+          <SectionHeader
+            tag="Signature Itineraries"
+            title={<>Curated South India <span className="text-gold-gradient">Experiences</span></>}
+            subtitle="Explore spiritual temples, misty tea valleys, and tropical backwaters with our private tour coordinators."
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {packages.slice(0, 6).map((pkg, i) => (
+              <motion.div
+                key={pkg.id || pkg.name}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                className="glass-obsidian rounded-3xl overflow-hidden border border-white/10 hover:border-[#D4AF37]/40 transition-all duration-500 hover:shadow-[0_10px_35px_rgba(212,175,55,0.15)] flex flex-col group"
+              >
+                <div className="h-60 relative overflow-hidden bg-gray-900">
+                  <img
+                    src={getPackageImage(pkg.image)}
+                    alt={pkg.name}
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B0F19] via-transparent to-transparent opacity-90" />
+                  <div className="absolute top-4 right-4 bg-black/70 border border-[#D4AF37]/50 text-[#F5D061] text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                    {pkg.duration}
+                  </div>
+                </div>
+
+                <div className="p-6 flex flex-col flex-grow text-left">
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <h3 className="font-cinzel text-lg font-bold text-white line-clamp-1">{t(pkg.name)}</h3>
+                    {pkg.rating && (
+                      <div className="flex items-center gap-1 text-xs font-bold text-[#F5D061] shrink-0">
+                        <Star className="w-3.5 h-3.5 fill-current" />
+                        <span>{pkg.rating}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <p className="text-gray-400 text-xs line-clamp-2 mb-6 leading-relaxed flex-grow">
+                    {t(pkg.places)}
+                  </p>
+
+                  <div className="flex items-center justify-between pt-4 border-t border-white/10 mt-auto">
+                    <div>
+                      <span className="text-[10px] text-gray-500 uppercase font-bold block">Package Starting</span>
+                      <span className="font-cinzel font-black text-lg text-gold-gradient">{pkg.price}</span>
+                    </div>
+                    <button
+                      onClick={() => openBookingModal('package', pkg.name)}
+                      className="px-5 py-2.5 rounded-xl bg-white/[0.04] border border-[#D4AF37]/40 text-[#D4AF37] hover:bg-gold-gradient hover:text-black font-extrabold text-xs uppercase tracking-wider transition-all cursor-pointer"
+                    >
+                      Book Tour
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ── POPULAR DESTINATIONS ──────────────────────────── */}
-      <section className="py-14 lg:py-24 bg-[#F8FAFC]">
-        <div className="max-w-7xl mx-auto px-4 lg:px-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
-            <SectionHeader
-              tag="Destinations"
-              title="Explore South India with Us"
-              subtitle="Temples, hill stations, beaches and cultural heritage destinations from Madurai."
-              center={false}
-            />
-            <Link
-              to="/packages"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 text-blue-600 hover:bg-blue-50 font-bold text-sm rounded-full transition-all shadow-xs mb-10"
-            >
-              {t('Explore All Packages')} <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
+      {/* ── ICONIC DESTINATIONS ───────────────────────────── */}
+      <section className="py-20 lg:py-28 bg-[#0B0F19] border-t border-white/[0.06]">
+        <div className="max-w-7xl mx-auto px-4 lg:px-8">
+          <SectionHeader
+            tag="Explore South India"
+            title={<>Iconic Travel <span className="text-gold-gradient">Destinations</span></>}
+            subtitle="Round-trip and one-way drops originating from Palanganatham and Madurai Airport."
+          />
 
-          {/* Category Filter Tabs */}
-          <div className="flex flex-wrap items-center gap-2 mb-8 overflow-x-auto pb-2 scrollbar-none">
+          {/* Filter Pills */}
+          <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
             {[
-              { id: 'all', label: 'All Destinations' },
-              { id: 'temple', label: 'Temples' },
-              { id: 'hills', label: 'Hills' },
-              { id: 'beaches', label: 'Beaches' },
-              { id: 'heritage', label: 'Heritage' },
-              { id: 'nature', label: 'Nature' }
+              { id: 'all', label: 'All Circuits' },
+              { id: 'temple', label: 'Pilgrimage & Temples' },
+              { id: 'hills', label: 'Hill Stations' },
+              { id: 'beaches', label: 'Coastal Escapes' },
+              { id: 'nature', label: 'Nature & Backwaters' },
+              { id: 'heritage', label: 'Royal Heritage' }
             ].map(tab => (
               <button
                 key={tab.id}
                 onClick={() => setDestCategory(tab.id)}
-                className={`px-4 py-2 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer ${destCategory === tab.id
-                  ? 'bg-blue-600 text-white shadow-sm'
-                  : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
-                  }`}
+                className={`px-5 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                  destCategory === tab.id
+                    ? 'bg-gold-gradient text-black shadow-lg shadow-[#D4AF37]/20 font-black'
+                    : 'bg-white/[0.03] text-gray-400 border border-white/10 hover:border-[#D4AF37]/30 hover:text-white'
+                }`}
               >
                 {tab.label}
               </button>
             ))}
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-5">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             <AnimatePresence mode="popLayout">
               {destinations
                 .filter(dest => destCategory === 'all' || dest.category === destCategory)
@@ -757,16 +750,19 @@ const Home = () => {
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.3 }}
                     whileHover={{ y: -6 }}
-                    className="group cursor-pointer"
+                    className="group cursor-pointer rounded-3xl overflow-hidden border border-white/10 shadow-lg relative aspect-[3/4] bg-gray-950"
                     onClick={() => window.location.href = '/packages'}
                   >
-                    <div className="aspect-[3/4] relative rounded-3xl overflow-hidden border border-slate-200 shadow-sm bg-slate-900">
-                      <img src={dest.img} alt={`${dest.name} Tour`} loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
-                      <div className="absolute bottom-0 left-0 p-4 text-left z-10">
-                        <h3 className="text-white font-['DM_Sans'] font-black text-base sm:text-lg leading-tight">{dest.name}</h3>
-                        <span className="text-[10px] text-blue-300 font-semibold block mt-1">{dest.subtext}</span>
-                      </div>
+                    <img
+                      src={dest.img}
+                      alt={dest.name}
+                      loading="lazy"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
+                    <div className="absolute bottom-0 left-0 p-4 text-left z-10">
+                      <h4 className="font-cinzel font-bold text-white text-base leading-tight">{dest.name}</h4>
+                      <p className="text-[10px] text-[#F5D061] mt-0.5 font-medium">{dest.subtext}</p>
                     </div>
                   </motion.div>
                 ))}
@@ -775,160 +771,26 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ── FEATURED PACKAGES ─────────────────────────────── */}
-      <section className="py-14 lg:py-24 bg-white border-t border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 lg:px-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-            <SectionHeader
-              tag="Tour Packages"
-              title={<>Handcrafted <span className="text-blue-600">Travel Itineraries</span></>}
-              subtitle="Tailored for families, pilgrims, couples and group travelers starting from Madurai."
-              center={false}
-            />
-            <Link
-              to="/packages"
-              className="inline-flex items-center gap-1.5 text-blue-600 font-bold text-sm hover:gap-2.5 transition-all mb-12"
-            >
-              {t('View All Packages')} <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-            {packages.slice(0, 6).map((pkg, i) => (
-              <motion.div
-                key={pkg.id || pkg.name}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-                className="group border border-slate-200 rounded-3xl bg-white shadow-sm overflow-hidden hover:shadow-xl hover:border-blue-500/30 transition-all duration-300 flex flex-col w-full h-full"
-              >
-                <div className="h-56 relative overflow-hidden bg-slate-900 w-full shrink-0">
-                  <img
-                    src={getPackageImage(pkg.image)}
-                    alt={`${pkg.name} Tour Package`}
-                    loading="lazy"
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute top-3 right-3 bg-blue-600 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-md z-20">
-                    {t(pkg.duration)}
-                  </div>
-                </div>
-                <div className="p-5 text-left flex flex-col flex-grow w-full">
-                  <div className="flex items-start justify-between gap-2 mb-2">
-                    <h3 className="font-['DM_Sans'] font-black text-slate-900 text-lg line-clamp-1 flex-grow">{t(pkg.name)}</h3>
-                    {pkg.rating && (
-                      <div className="flex items-center gap-0.5 text-xs font-bold text-amber-500 shrink-0">
-                        <Star className="w-3.5 h-3.5 fill-current" />
-                        <span>{pkg.rating}</span>
-                      </div>
-                    )}
-                  </div>
-                  <p className="text-slate-500 text-xs line-clamp-2 mb-5 leading-relaxed min-h-[32px]">{t(pkg.places)}</p>
-
-                  <div className="flex items-center justify-between pt-4 border-t border-slate-100 mt-auto">
-                    <div>
-                      <span className="text-[10px] text-slate-400 uppercase font-bold block">Fare From</span>
-                      <span className="text-slate-900 font-['DM_Sans'] font-black text-lg">{pkg.price}</span>
-                    </div>
-                    <button
-                      onClick={() => openBookingModal('package', pkg.name)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all shadow-md shadow-blue-600/20 cursor-pointer active:scale-95"
-                    >
-                      {t('Book Now')}
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+      {/* ── PRESTIGE METRICS BAR ──────────────────────────── */}
+      <section className="py-16 bg-[#030712] border-y border-[#D4AF37]/20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.06)_0%,transparent_70%)] pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-4 lg:px-8 relative z-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <AnimatedCounter end={5000} suffix="+" label="Satisfied Travelers" />
+            <AnimatedCounter end={100} suffix="+" label="Tailored Tours" />
+            <AnimatedCounter end={50} suffix="+" label="South India Destinations" />
+            <AnimatedCounter end={80} suffix="+" label="Premium Cabs & Coaches" />
           </div>
         </div>
       </section>
 
-      {/* ── STATS SECTION ─────────────────────────────────── */}
-      <section className="py-12 lg:py-20 bg-[#0F172A] relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute -top-10 -left-10 w-80 h-80 rounded-full bg-blue-500 blur-3xl" />
-          <div className="absolute -bottom-10 -right-10 w-80 h-80 rounded-full bg-indigo-500 blur-3xl" />
-        </div>
-        <div className="max-w-7xl mx-auto px-4 lg:px-6 relative z-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
-            <AnimatedCounter end={5000} suffix="+" label="Happy Travelers" />
-            <AnimatedCounter end={100} suffix="+" label="South India Tours" />
-            <AnimatedCounter end={50} suffix="+" label="Destinations Covered" />
-            <AnimatedCounter end={80} suffix="+" label="Fleet Vehicles" />
-          </div>
-        </div>
-      </section>
-
-      {/* ── RATINGS BANNER ──────────────────────────────────── */}
-      <section className="py-8 bg-blue-600 text-white">
-        <div className="max-w-7xl mx-auto px-4 lg:px-6 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-14">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center font-black text-white text-base">
-              5.0
-            </div>
-            <div className="text-left">
-              <div className="flex gap-1 mb-1">
-                {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 text-amber-300 fill-current" />)}
-              </div>
-              <div className="text-xs text-white/90 font-bold uppercase tracking-wider">Top Rated Taxi in Madurai</div>
-            </div>
-          </div>
-
-          <div className="h-8 w-px bg-white/20 hidden md:block" />
-
-          <div className="text-center md:text-left text-xs sm:text-sm font-medium text-white/90">
-            Over <strong>1,000+ verified customer reviews</strong> across Google & travel portals.
-          </div>
-        </div>
-      </section>
-
-      {/* ── TESTIMONIALS (GOOGLE REVIEWS) ────────────────── */}
-      <Suspense fallback={<div className="py-12 bg-white text-center text-slate-400">Loading reviews...</div>}>
+      {/* ── GOOGLE REVIEWS SECTION ────────────────────────── */}
+      <Suspense fallback={<div className="py-12 text-center text-gray-500">Loading verified reviews...</div>}>
         <GoogleReviews />
       </Suspense>
 
-      {/* ── CTA BANNER ────────────────────────────────────── */}
-      <section className="py-14 lg:py-20 bg-[#0F172A] relative overflow-hidden border-t border-slate-800">
-        <div className="absolute inset-0 opacity-15">
-          <img src={CinematicSouthIndiaBg} alt="South India Travel Banner" className="w-full h-full object-cover" />
-        </div>
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="relative z-10 max-w-4xl mx-auto px-6 text-center"
-        >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/25 text-blue-400 text-xs font-bold uppercase tracking-wider mb-4">
-            Direct Booking Hotline
-          </div>
-          <h2 className="text-3xl lg:text-5xl font-['DM_Sans',sans-serif] font-black text-white mb-4">
-            Ready to Start Your Journey with <span className="text-blue-400">Madurai Best?</span>
-          </h2>
-          <p className="text-slate-300 text-sm md:text-base mb-8 max-w-xl mx-auto">
-            Book now for transparent rates, punctual pickups from Palanganatham or Madurai Airport, and 24/7 support.
-          </p>
-          <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center">
-            <a
-              href="tel:6382513075"
-              className="flex items-center justify-center w-full sm:w-auto gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl transition-all shadow-lg shadow-blue-600/30 text-xs uppercase tracking-wider"
-            >
-              <PhoneCall className="w-4 h-4" /> Call +91 63825 13075
-            </a>
-            <a
-              href="https://wa.me/916382513075"
-              target="_blank" rel="noreferrer"
-              className="flex items-center justify-center w-full sm:w-auto gap-2 px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl transition-all text-xs uppercase tracking-wider shadow-lg shadow-emerald-600/20"
-            >
-              <MessageCircle className="w-4 h-4" /> WhatsApp Us
-            </a>
-          </div>
-        </motion.div>
-      </section>
-
-      {/* ── SEO FAQ SECTION ───────────────────────────────── */}
-      <section className="py-14 lg:py-20 bg-white border-t border-slate-200">
+      {/* ── FAQ ACCORDION ─────────────────────────────────── */}
+      <section className="py-20 lg:py-28 bg-[#0B0F19] border-t border-white/[0.06]">
         <div className="max-w-4xl mx-auto px-6 text-left">
           <FAQAccordion />
         </div>
@@ -944,57 +806,57 @@ const Home = () => {
   );
 };
 
-// FAQ Accordion Component
+// ─── FAQ Component ────────────────────────────────────────────
 const FAQAccordion = () => {
   const [openIndex, setOpenIndex] = useState(null);
 
   const faqs = [
     {
-      q: 'Where is Madurai Best Taxi Travels located?',
-      a: 'Our registered office is located at No. 18, Kovalan Nagar Last, Muniyandi Street, Palanganatham, Madurai, Tamil Nadu, Pin Code: 625003. We provide 24/7 pickups across all areas of Madurai.'
+      q: 'Where is Madurai Best Taxi Travels situated?',
+      a: 'Our registered headquarters is located at No. 18, Kovalan Nagar Last, Muniyandi Street, Palanganatham, Madurai, Tamil Nadu, Pin Code: 625003. We provide instant pickups across all locations in Madurai, railway stations, and airport terminals.'
     },
     {
-      q: 'How much is a taxi from Madurai Airport to city or outstation?',
-      a: 'Taxi fares from Madurai Airport start from ₹700 for local city drops, while outstation travel starts from ₹13–₹14/km depending on vehicle type (Sedan, Innova, or Tempo Traveller).'
+      q: 'How are the outstation cab fares calculated?',
+      a: 'We offer fully transparent, fixed per-kilometer pricing starting from ₹13/km for sedans and ₹18/km for Innova Crysta, with driver allowances and tolls clearly stated upfront with zero hidden charges.'
     },
     {
-      q: 'Do you offer Tempo Traveller and Innova Crysta rentals?',
-      a: 'Yes! We provide 12, 14, and 18-seater air-conditioned Tempo Travellers and premium 7-seater Toyota Innova Crystas with experienced drivers for group travel.'
+      q: 'Do you offer pickup service from Madurai Airport (IXM)?',
+      a: 'Yes, our airport transfer service includes complimentary flight tracking. Even if your flight is delayed, our chauffeur will be waiting for you at the arrival terminal.'
     },
     {
-      q: 'Can I book a one-way cab from Madurai to Rameswaram or Kodaikanal?',
-      a: 'Yes, we offer both one-way drops and round-trip customized tour packages from Madurai to Rameswaram, Kodaikanal, Ooty, Munnar, Kanyakumari, and beyond.'
+      q: 'What types of Tempo Travellers and group vehicles are available?',
+      a: 'We provide luxury 12, 14, and 18-seater air-conditioned Force Tempo Travellers, alongside Force Urbania coaches equipped with individual pushback seats, charging ports, and luggage bays.'
     },
     {
-      q: 'How can I confirm my cab booking?',
-      a: 'You can instantly book by filling out the online booking form on our website, calling us directly at +91 63825 13075, or messaging us on WhatsApp.'
+      q: 'How do I secure an advance booking?',
+      a: 'You can submit your trip details via our online reservation form, contact our 24/7 hotline at +91 63825 13075, or message us on WhatsApp for instant booking confirmation.'
     }
   ];
 
   return (
     <div>
-      <div className="text-center mb-10">
-        <span className="text-blue-600 text-xs font-bold uppercase tracking-widest block mb-2">HAVE QUESTIONS?</span>
-        <h2 className="text-3xl font-['DM_Sans'] font-black text-slate-900">
-          Frequently Asked Questions
+      <div className="text-center mb-12">
+        <span className="text-[#D4AF37] text-xs font-bold uppercase tracking-[0.25em] block mb-2">HAVE QUESTIONS?</span>
+        <h2 className="font-cinzel text-3xl lg:text-4xl font-bold text-white">
+          Frequently Answered Inquiries
         </h2>
-        <div className="w-12 h-1 bg-blue-600 mx-auto rounded-full mt-3" />
+        <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent mx-auto mt-4" />
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-4">
         {faqs.map((faq, idx) => (
-          <div key={idx} className="bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden">
+          <div key={idx} className="glass-obsidian rounded-2xl border border-white/10 overflow-hidden">
             <button
               onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
-              className="w-full flex items-center justify-between p-5 text-left font-['DM_Sans'] font-bold text-slate-800 text-sm md:text-base hover:bg-slate-100/60 transition-colors cursor-pointer"
+              className="w-full flex items-center justify-between p-5 text-left font-semibold text-white text-sm sm:text-base hover:bg-white/[0.02] transition-colors cursor-pointer"
             >
               <span>{faq.q}</span>
-              <ChevronDown className={`w-4 h-4 text-blue-600 shrink-0 ml-4 transition-transform duration-300 ${openIndex === idx ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`w-4 h-4 text-[#D4AF37] shrink-0 ml-4 transition-transform duration-300 ${openIndex === idx ? 'rotate-180' : ''}`} />
             </button>
             <div
-              className={`transition-all duration-300 ease-in-out overflow-hidden ${openIndex === idx ? 'max-h-40 border-t border-slate-200' : 'max-h-0'}`}
+              className={`transition-all duration-300 ease-in-out overflow-hidden ${openIndex === idx ? 'max-h-48 border-t border-white/10' : 'max-h-0'}`}
             >
-              <div className="p-5 text-slate-600 text-xs sm:text-sm leading-relaxed bg-white">
+              <div className="p-5 text-gray-300 text-xs sm:text-sm leading-relaxed bg-black/40">
                 {faq.a}
               </div>
             </div>
