@@ -1,8 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Phone, Mail, MapPin, MessageSquare, Sparkles } from 'lucide-react';
+import { Phone, Mail, MapPin, MessageSquare, ShieldCheck, ArrowRight, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import logo from '../../assets/logo.png';
 import Logo from '../../assets/new_logo.jpg';
 
 const Footer = () => {
@@ -31,103 +30,89 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-[#030712] text-white relative overflow-hidden border-t border-[#D4AF37]/20 pt-16 lg:pt-20 pb-8 text-left font-['Plus_Jakarta_Sans',sans-serif]">
-      {/* Subtle top golden light line */}
-      <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent opacity-80" />
+    <footer className="bg-slate-900 text-slate-300 relative overflow-hidden pt-16 lg:pt-20 pb-10 text-left font-['Plus_Jakarta_Sans',sans-serif] border-t border-slate-800">
       
-      {/* Radial background glows */}
-      <div className="absolute -top-32 left-1/4 w-96 h-96 bg-[#D4AF37]/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 right-10 w-80 h-80 bg-blue-900/10 rounded-full blur-3xl pointer-events-none" />
+      {/* Top Accent Ribbon */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-amber-500 to-blue-600" />
 
       <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 mb-16">
 
           {/* Brand & Address Column */}
           <div className="lg:col-span-4">
-            <div className="flex items-center gap-3.5 mb-6">
-              <div className="w-14 h-14 rounded-2xl overflow-hidden border-2 border-[#D4AF37]/40 p-0.5 bg-gradient-to-br from-[#1F2937] to-[#0B0F19] shadow-[0_0_25px_rgba(212,175,55,0.2)]">
-                <img src={Logo} alt="Madurai Best Taxi Travels" className="w-full h-full object-contain rounded-xl" />
+            <div className="flex items-center gap-3.5 mb-5">
+              <div className="w-13 h-13 rounded-xl overflow-hidden border border-slate-700 p-1 bg-white shadow-md">
+                <img src={Logo} alt="Madurai Best Taxi Travels" className="w-full h-full object-contain rounded-lg" />
               </div>
               <div>
-                <div className="font-cinzel font-black text-white text-xl tracking-wider leading-none">
-                  MADURAI <span className="text-gold-gradient">BEST</span>
+                <div className="font-['Outfit'] font-black text-white text-xl tracking-tight leading-none">
+                  MADURAI <span className="text-amber-400">BEST</span>
                 </div>
-                <div className="text-[#D4AF37] text-[10px] font-bold tracking-[0.25em] uppercase mt-1">
+                <div className="text-blue-400 text-[10px] font-extrabold tracking-[0.24em] uppercase mt-1">
                   TAXI TRAVELS
                 </div>
               </div>
             </div>
 
-            <p className="text-gray-400 text-xs leading-relaxed mb-6 max-w-sm">
-              South India’s premier luxury and family taxi service provider. Safe, punctual, and transparent travel since 2015.
+            <p className="text-slate-400 text-xs leading-relaxed mb-6 max-w-sm">
+              Madurai’s trusted 24/7 taxi & tour travel operator. Experience transparent fares, sanitized vehicles, and respectful ghat-road certified drivers across South India.
             </p>
 
             {/* Official Business Details */}
-            <div className="space-y-3.5 text-xs text-gray-300">
+            <div className="space-y-3.5 text-xs text-slate-300">
               <div className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 text-[#D4AF37] mt-0.5 shrink-0" />
+                <MapPin className="w-4 h-4 text-amber-400 mt-0.5 shrink-0" />
                 <span className="leading-relaxed">
                   No. 18, Kovalan Nagar Last, Muniyandi Street, Palanganatham, Madurai, Tamil Nadu, India — <strong className="text-white">625003</strong>
                 </span>
               </div>
               <div className="flex items-center gap-3">
-                <Phone className="w-4 h-4 text-[#D4AF37] shrink-0" />
-                <a href="tel:+916382513075" className="hover:text-[#F5D061] transition-colors font-semibold">
-                  +91 63825 13075 (24/7 Hotline)
+                <Phone className="w-4 h-4 text-amber-400 shrink-0" />
+                <a href="tel:+916382513075" className="hover:text-amber-400 transition-colors font-bold text-white">
+                  +91 63825 13075 (24/7 Booking Desk)
                 </a>
               </div>
               <div className="flex items-center gap-3">
-                <Mail className="w-4 h-4 text-[#D4AF37] shrink-0" />
-                <a href="mailto:maduraibesttoursandtravels01@gmail.com" className="hover:text-[#F5D061] transition-colors">
+                <Mail className="w-4 h-4 text-amber-400 shrink-0" />
+                <a href="mailto:maduraibesttoursandtravels01@gmail.com" className="hover:text-amber-400 transition-colors">
                   maduraibesttoursandtravels01@gmail.com
                 </a>
               </div>
             </div>
 
             {/* Direct Connect Buttons */}
-            <div className="flex items-center gap-2.5 mt-6">
+            <div className="flex items-center gap-3 mt-6">
               <a
                 href="tel:6382513075"
-                className="w-10 h-10 rounded-xl bg-white/[0.04] border border-[#D4AF37]/30 flex items-center justify-center text-[#D4AF37] hover:bg-gold-gradient hover:text-black transition-all"
-                title="Call Directly"
+                className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition-all"
               >
-                <Phone className="w-4 h-4" />
+                <Phone className="w-3.5 h-3.5 fill-slate-950" /> Call Now
               </a>
               <a
                 href="https://wa.me/916382513075"
                 target="_blank"
                 rel="noreferrer"
-                className="w-10 h-10 rounded-xl bg-white/[0.04] border border-emerald-500/30 flex items-center justify-center text-emerald-400 hover:bg-emerald-600 hover:text-white transition-all"
-                title="WhatsApp Us"
+                className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition-all"
               >
-                <MessageSquare className="w-4 h-4" />
-              </a>
-              <a
-                href="https://share.google/Fm3EQJUUHcn7X1uRe"
-                target="_blank"
-                rel="noreferrer"
-                className="w-10 h-10 rounded-xl bg-white/[0.04] border border-red-500/30 flex items-center justify-center text-red-400 hover:bg-red-600 hover:text-white transition-all"
-                title="Google Maps Location"
-              >
-                <MapPin className="w-4 h-4" />
+                <MessageSquare className="w-3.5 h-3.5" /> WhatsApp
               </a>
             </div>
           </div>
 
           {/* Quick Links */}
           <div className="lg:col-span-2">
-            <h3 className="font-cinzel text-white text-xs font-bold uppercase tracking-widest mb-6 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
-              Navigation
-            </h3>
-            <ul className="space-y-3">
-              {quickLinks.map(link => (
+            <h4 className="font-['Outfit'] font-bold text-white text-sm uppercase tracking-wider mb-5">
+              Explore
+            </h4>
+            <ul className="space-y-2.5 text-xs">
+              {quickLinks.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.path}
-                    className="text-gray-400 hover:text-[#F5D061] text-xs transition-colors block hover:translate-x-1 duration-200"
+                    className="text-slate-400 hover:text-white transition-colors flex items-center gap-1.5 py-0.5"
                   >
-                    {t(link.name)}
+                    <ArrowRight className="w-3 h-3 text-amber-400" />
+                    <span>{t(link.name)}</span>
                   </Link>
                 </li>
               ))}
@@ -136,65 +121,63 @@ const Footer = () => {
 
           {/* Services */}
           <div className="lg:col-span-3">
-            <h3 className="font-cinzel text-white text-xs font-bold uppercase tracking-widest mb-6 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
-              Our Services
-            </h3>
-            <ul className="space-y-3">
-              {services.map(s => (
-                <li key={s.name}>
+            <h4 className="font-['Outfit'] font-bold text-white text-sm uppercase tracking-wider mb-5">
+              Popular Routes & Cabs
+            </h4>
+            <ul className="space-y-2.5 text-xs">
+              {services.map((svc) => (
+                <li key={svc.name}>
                   <Link
-                    to={s.path}
-                    className="text-gray-400 hover:text-[#F5D061] text-xs transition-colors block hover:translate-x-1 duration-200"
+                    to={svc.path}
+                    className="text-slate-400 hover:text-white transition-colors flex items-center gap-1.5 py-0.5"
                   >
-                    {s.name}
+                    <ArrowRight className="w-3 h-3 text-blue-400" />
+                    <span>{svc.name}</span>
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Top Circuits & Dispatch */}
+          {/* South India Destinations & Google Rating */}
           <div className="lg:col-span-3">
-            <h3 className="font-cinzel text-white text-xs font-bold uppercase tracking-widest mb-6 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
-              Popular Routes
-            </h3>
-            <ul className="space-y-3">
-              {destinations.map(d => (
-                <li key={d} className="text-gray-400 text-xs flex items-center gap-2">
-                  <span className="text-[#D4AF37]">✦</span> {d}
-                </li>
+            <h4 className="font-['Outfit'] font-bold text-white text-sm uppercase tracking-wider mb-5">
+              Tour Destinations
+            </h4>
+            <div className="flex flex-wrap gap-1.5 mb-6">
+              {destinations.map((dest, i) => (
+                <span
+                  key={i}
+                  className="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 text-[11px] font-medium border border-slate-700/60"
+                >
+                  {dest}
+                </span>
               ))}
-            </ul>
+            </div>
 
-            <div className="mt-6 p-4 rounded-2xl bg-white/[0.02] border border-[#D4AF37]/20">
-              <div className="text-[11px] font-bold text-[#F5D061] mb-1">24/7 Airport Cab Dispatch</div>
-              <p className="text-[10px] text-gray-400 leading-relaxed">
-                Flight tracking included. Zero wait time for arrivals at Madurai Airport.
+            {/* Google Verified Review Badge */}
+            <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-amber-400 text-sm">★★★★★</span>
+                <span className="text-white font-bold text-xs">4.9 / 5.0</span>
+              </div>
+              <p className="text-[11px] text-slate-400 leading-tight">
+                Over 50,000+ satisfied passengers, tourists & temple pilgrims served since 2015.
               </p>
             </div>
           </div>
+
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-white/10 pt-8 mt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
-          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-center sm:text-left">
-            <p>© 2026 Madurai Best Taxi Travels. All rights reserved.</p>
-            <div className="flex items-center gap-2">
-              <span className="hidden sm:inline text-white/20">|</span>
-              <Link to="/privacy-policy" className="hover:text-[#D4AF37] transition-colors">{t('Privacy Policy')}</Link>
-              <span className="text-white/20">|</span>
-              <Link to="/terms-and-conditions" className="hover:text-[#D4AF37] transition-colors">{t('Terms & Conditions')}</Link>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <span className="text-gray-500">Engineered by</span>
-            <div className="flex items-center gap-2">
-              <img src={logo} alt="CodeThrive Logo" className="h-5 w-auto object-contain opacity-80" />
-              <span className="font-semibold text-gray-300">Code Thrive Infotech</span>
-            </div>
+        <div className="pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+          <p>© {new Date().getFullYear()} Madurai Best Taxi Travels. All rights reserved. Palanganatham, Madurai.</p>
+          <div className="flex items-center gap-6">
+            <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link to="/terms-and-conditions" className="hover:text-white transition-colors">Terms of Service</Link>
+            <Link to="/admin/login" className="hover:text-white transition-colors flex items-center gap-1">
+              <ShieldCheck className="w-3.5 h-3.5" /> Admin
+            </Link>
           </div>
         </div>
       </div>

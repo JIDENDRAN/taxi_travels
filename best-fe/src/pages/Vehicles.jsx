@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Users, ArrowRight, ShieldCheck, ThumbsUp, Heart, PhoneCall,
-  Wind, Sparkles, Car as CarIcon
+  Wind, Sparkles, Car as CarIcon, Luggage, Fuel
 } from 'lucide-react';
 import BookingModal from '../components/BookingModal';
 import API_BASE_URL from '../apiConfig';
@@ -52,7 +52,6 @@ const filterTabs = [
   { id: 'sedan', label: 'Sedans (Etios/Dzire)', icon: '🚙' },
   { id: 'suv', label: 'SUVs (Innova Crysta)', icon: '🚐' },
   { id: 'tempo', label: 'Tempo Travellers', icon: '🚌' },
-  { id: 'luxury', label: 'Luxury Urbania', icon: '👑' },
 ];
 
 const Vehicles = () => {
@@ -90,41 +89,36 @@ const Vehicles = () => {
   );
 
   return (
-    <div className="bg-[#030712] text-white min-h-screen font-['Plus_Jakarta_Sans',sans-serif] text-left">
+    <div className="bg-white text-slate-900 min-h-screen font-['Plus_Jakarta_Sans',sans-serif] text-left">
 
-      {/* ── LUXURY PAGE HERO ──────────────────────────────── */}
-      <section className="relative h-80 pt-24 flex items-center justify-center overflow-hidden bg-[#030712]">
-        <div className="absolute inset-0">
-          <img src={ThirumalaiDesktop} alt="Fleet Hero" className="w-full h-full object-cover opacity-20" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#030712]/80 via-[#030712]/90 to-[#030712]" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#D4AF37]/10 rounded-full blur-3xl pointer-events-none" />
+      {/* ── HERO ──────────────────────────────── */}
+      <section className="relative pt-32 pb-16 lg:pt-36 lg:pb-20 bg-gradient-to-b from-blue-50/70 via-slate-50 to-white border-b border-slate-200/70 overflow-hidden">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-100/70 border border-blue-200 text-blue-800 text-xs font-bold uppercase tracking-wider mb-4">
+              Madurai Best Taxi Travels • Verified Cabs
+            </div>
+            <h1 className="text-3xl sm:text-5xl lg:text-5xl font-['Outfit'] font-black text-slate-900 mb-4 tracking-tight leading-tight">
+              OUR CERTIFIED <span className="text-blue-700">FLEET</span>
+            </h1>
+            <p className="text-sm sm:text-base text-slate-600 max-w-xl mx-auto leading-relaxed">
+              Spotless, climate-controlled sedans, Toyota Innova Crystas, and tempo travellers for outstation & airport transfers.
+            </p>
+          </motion.div>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          className="relative z-10 text-center px-6"
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-[#D4AF37]/30 text-[#F5D061] text-xs font-bold uppercase tracking-[0.25em] mb-3">
-            Madurai Best Taxi Travels • Executive Fleet
-          </div>
-          <h1 className="text-4xl lg:text-6xl font-cinzel font-black text-white leading-tight">
-            THE <span className="text-gold-gradient">FLEET</span>
-          </h1>
-          <p className="text-gray-400 text-xs sm:text-sm max-w-lg mx-auto mt-2 leading-relaxed">
-            Spotless, climate-controlled sedans, Toyota Innova Crystas, and coaches for outstation & airport transfers.
-          </p>
-        </motion.div>
       </section>
 
       {/* ── FILTER BAR ────────────────────────────────────── */}
-      <div className="bg-[#0B0F19] border-y border-white/10 sticky top-20 z-30 shadow-2xl backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-6 py-3.5 flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-xs text-gray-400">
-            <a href="/" className="hover:text-[#D4AF37] transition-colors">Home</a>
+      <div className="bg-white border-b border-slate-200 sticky top-20 z-30 shadow-xs backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-2 text-xs text-slate-500">
+            <a href="/" className="hover:text-blue-700 transition-colors">Home</a>
             <span>/</span>
-            <span className="text-white font-bold">Vehicles</span>
+            <span className="text-slate-900 font-bold">Vehicles</span>
           </div>
 
           <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
@@ -134,8 +128,8 @@ const Vehicles = () => {
                 onClick={() => setActiveFilter(tab.id)}
                 className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                   activeFilter === tab.id
-                    ? 'bg-gold-gradient text-black font-black shadow-lg shadow-[#D4AF37]/25'
-                    : 'bg-white/[0.03] text-gray-400 border border-white/10 hover:border-[#D4AF37]/30 hover:text-white'
+                    ? 'bg-blue-700 text-white shadow-xs'
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                 }`}
               >
                 <span className="mr-1.5">{tab.icon}</span> {tab.label}
@@ -146,12 +140,12 @@ const Vehicles = () => {
       </div>
 
       {/* ── VEHICLES GRID ─────────────────────────────────── */}
-      <section className="py-16 lg:py-24">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="py-16 lg:py-24 bg-slate-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {loading ? (
             <div className="text-center py-24">
-              <div className="w-12 h-12 border-4 border-white/10 border-t-[#D4AF37] rounded-full animate-spin mx-auto mb-4" />
-              <p className="text-gray-400 text-sm">Loading executive fleet...</p>
+              <div className="w-10 h-10 border-4 border-slate-200 border-t-blue-700 rounded-full animate-spin mx-auto mb-4" />
+              <p className="text-slate-500 text-sm">Loading available vehicles...</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -164,65 +158,65 @@ const Vehicles = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.3, delay: i * 0.05 }}
-                    className="glass-obsidian rounded-3xl overflow-hidden border border-white/10 hover:border-[#D4AF37]/50 transition-all duration-500 hover:shadow-[0_10px_40px_rgba(212,175,55,0.15)] flex flex-col group"
+                    className="bg-white rounded-2xl border border-slate-200/90 shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col group"
                   >
-                    <div className="relative h-60 bg-gradient-to-b from-[#1F2937]/50 to-[#0B0F19] p-6 flex flex-col items-center justify-center">
-                      <div className="absolute top-4 right-4 bg-black/60 border border-[#D4AF37]/40 px-3 py-1 rounded-full text-[10px] font-bold text-[#F5D061] uppercase tracking-wider">
+                    <div className="relative h-56 bg-gradient-to-b from-slate-100 to-white p-6 flex flex-col items-center justify-center border-b border-slate-100">
+                      <div className="absolute top-3 right-3 bg-blue-50 border border-blue-200 px-3 py-1 rounded-full text-xs font-bold text-blue-700 uppercase">
                         {v.seats}
                       </div>
                       <img
                         src={getVehicleImage(v.image)}
                         alt={v.name}
                         loading="lazy"
-                        className="w-full h-44 object-contain transition-transform duration-700 group-hover:scale-110 drop-shadow-[0_15px_30px_rgba(0,0,0,0.8)]"
+                        className="w-full h-40 object-contain transition-transform duration-300 group-hover:scale-105"
                       />
                       <div className="flex items-center gap-3 mt-2">
-                        <span className="flex items-center gap-1 text-[11px] text-gray-300">
-                          <Wind className="w-3.5 h-3.5 text-[#D4AF37]" /> {v.ac || 'AC'}
+                        <span className="flex items-center gap-1 text-[11px] text-slate-500">
+                          <Wind className="w-3.5 h-3.5 text-blue-600" /> {v.ac || 'AC'}
                         </span>
-                        <span className="text-gray-600">•</span>
-                        <span className="flex items-center gap-1 text-[11px] text-gray-300">
-                          <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" /> Sanitized
+                        <span className="text-slate-300">•</span>
+                        <span className="flex items-center gap-1 text-[11px] text-slate-500">
+                          <Sparkles className="w-3.5 h-3.5 text-amber-500" /> Sanitized
                         </span>
                       </div>
                     </div>
 
                     <div className="p-6 flex flex-col flex-grow text-left">
-                      <h3 className="font-cinzel text-xl font-bold text-white mb-2">{t(v.name)}</h3>
+                      <h3 className="font-['Outfit'] text-xl font-bold text-slate-900 mb-2">{t(v.name)}</h3>
 
                       <div className="space-y-2 mb-6 flex-grow">
                         {(() => {
                           const plans = parseDesc(v.desc);
                           if (plans && Object.keys(plans).length > 0) {
                             return Object.values(plans).map((plan, pIdx) => (
-                              <div key={pIdx} className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/5 space-y-1.5">
-                                <div className="text-[10px] text-[#D4AF37] font-bold uppercase tracking-wider">{plan.title}</div>
+                              <div key={pIdx} className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/70 space-y-1.5">
+                                <div className="text-[10px] text-blue-700 font-bold uppercase tracking-wider">{plan.title}</div>
                                 {plan.items.map((item, iIdx) => (
                                   <div key={iIdx} className="flex justify-between items-center text-xs">
-                                    <span className="text-gray-400">{item.label}</span>
-                                    <span className="font-bold text-white">{item.value}</span>
+                                    <span className="text-slate-500">{item.label}</span>
+                                    <span className="font-bold text-slate-900">{item.value}</span>
                                   </div>
                                 ))}
                               </div>
                             ));
                           }
                           return (
-                            <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/5 text-xs flex justify-between">
-                              <span className="text-gray-400">Outstation Rate</span>
-                              <span className="font-bold text-[#F5D061]">{v.price || 'Competitive Rate'}</span>
+                            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs flex justify-between">
+                              <span className="text-slate-500">Outstation Rate</span>
+                              <span className="font-bold text-blue-700">{v.price || 'Standard Rate'}</span>
                             </div>
                           );
                         })()}
                       </div>
 
-                      <div className="flex items-center justify-between pt-4 border-t border-white/10 mt-auto">
+                      <div className="flex items-center justify-between pt-4 border-t border-slate-100 mt-auto">
                         <div>
-                          <div className="text-[10px] uppercase font-bold text-gray-400">Base Price</div>
-                          <div className="text-lg font-cinzel font-black text-gold-gradient">{v.price}</div>
+                          <div className="text-[10px] uppercase font-bold text-slate-400">Starting From</div>
+                          <div className="text-lg font-['Outfit'] font-black text-blue-700">{v.price}</div>
                         </div>
                         <button
                           onClick={() => openBookingModal(v.name)}
-                          className="px-5 py-2.5 rounded-xl bg-gold-gradient text-black font-extrabold text-xs uppercase tracking-wider hover:scale-105 active:scale-95 transition-all cursor-pointer shadow-md"
+                          className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs uppercase tracking-wider transition-all cursor-pointer shadow-xs"
                         >
                           Book Now
                         </button>

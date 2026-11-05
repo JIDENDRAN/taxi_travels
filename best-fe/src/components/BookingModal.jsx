@@ -116,7 +116,7 @@ const BookingModal = ({ isOpen, onClose, defaultVehicle, defaultPackage }) => {
         window.open(`https://wa.me/916382513075?text=${encodeURIComponent(text)}`, '_blank');
         onClose();
         setIsSuccess(false);
-      }, 2500);
+      }, 2000);
 
     } catch (error) {
       console.error('Error submitting booking:', error);
@@ -126,7 +126,7 @@ const BookingModal = ({ isOpen, onClose, defaultVehicle, defaultPackage }) => {
     }
   };
 
-  const modalInputCls = "w-full pl-11 pr-11 py-3.5 rounded-2xl bg-[#030712]/90 border border-white/10 text-white text-sm placeholder:text-gray-500 focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-[#D4AF37] outline-none transition-all";
+  const modalInputCls = "w-full pl-11 pr-11 py-3.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-sm placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 outline-none transition-all";
 
   return (
     <AnimatePresence>
@@ -137,52 +137,52 @@ const BookingModal = ({ isOpen, onClose, defaultVehicle, defaultPackage }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-black/85 backdrop-blur-md"
+            className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs"
           />
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.92, y: 20 }}
+            initial={{ opacity: 0, scale: 0.95, y: 15 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.92, y: 20 }}
-            className="relative bg-[#0B0F19] rounded-3xl w-full max-w-xl shadow-[0_20px_60px_rgba(0,0,0,0.9)] z-10 overflow-hidden border border-[#D4AF37]/30 text-left"
+            exit={{ opacity: 0, scale: 0.95, y: 15 }}
+            className="relative bg-white rounded-3xl w-full max-w-xl shadow-2xl z-10 overflow-hidden border border-slate-100 text-left"
           >
             {/* Header */}
-            <div className="bg-[#030712] p-6 flex justify-between items-center text-white border-b border-white/10 relative">
+            <div className="bg-slate-900 p-6 flex justify-between items-center text-white relative">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#D4AF37]/15 border border-[#D4AF37]/30 flex items-center justify-center text-[#D4AF37]">
+                <div className="w-10 h-10 rounded-xl bg-blue-600/30 border border-blue-400/40 flex items-center justify-center text-amber-400">
                   <Car className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-cinzel font-bold text-white leading-tight">
-                    Madurai <span className="text-gold-gradient">Best</span> Taxi
+                  <h3 className="text-xl font-['Outfit'] font-black text-white leading-tight">
+                    Madurai <span className="text-amber-400">Best</span> Taxi
                   </h3>
-                  <p className="text-[11px] text-gray-400">Direct Reservation Desk</p>
+                  <p className="text-[11px] text-slate-300">Fast Cab Reservation • Palanganatham</p>
                 </div>
               </div>
-              <button onClick={onClose} className="text-gray-400 hover:text-white p-1 rounded-lg transition-colors cursor-pointer">
+              <button onClick={onClose} className="text-slate-400 hover:text-white p-1 rounded-lg transition-colors cursor-pointer">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Content */}
-            <div className="p-6 md:p-8 relative">
+            <div className="p-6 md:p-8 relative bg-white">
               {isSuccess ? (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   className="flex flex-col items-center justify-center py-10 text-center"
                 >
-                  <div className="w-16 h-16 bg-[#D4AF37]/20 border border-[#D4AF37] rounded-full flex items-center justify-center text-[#D4AF37] mb-4">
+                  <div className="w-16 h-16 bg-emerald-50 border border-emerald-500 rounded-full flex items-center justify-center text-emerald-600 mb-4">
                     <CheckCircle className="w-9 h-9" />
                   </div>
-                  <h3 className="text-2xl font-cinzel font-bold text-white mb-2">{t('Booking Confirmed!')}</h3>
-                  <p className="text-gray-400 text-sm mb-6">{t('Redirecting to WhatsApp...')}</p>
-                  <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                  <h3 className="text-2xl font-['Outfit'] font-bold text-slate-900 mb-2">{t('Booking Confirmed!')}</h3>
+                  <p className="text-slate-500 text-sm mb-6">{t('Redirecting to WhatsApp...')}</p>
+                  <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
                     <motion.div
                       initial={{ width: "0%" }}
                       animate={{ width: "100%" }}
-                      transition={{ duration: 2.5 }}
-                      className="h-full bg-gold-gradient"
+                      transition={{ duration: 2 }}
+                      className="h-full bg-emerald-500"
                     />
                   </div>
                 </motion.div>
@@ -190,7 +190,7 @@ const BookingModal = ({ isOpen, onClose, defaultVehicle, defaultPackage }) => {
                 <form className="space-y-4" onSubmit={handleBookingSubmit}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                     <div className="relative">
-                      <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#D4AF37] w-4 h-4" />
+                      <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-600 w-4 h-4" />
                       <input
                         ref={pickupInputRef}
                         type="text"
@@ -204,14 +204,15 @@ const BookingModal = ({ isOpen, onClose, defaultVehicle, defaultPackage }) => {
                       <button
                         type="button"
                         onClick={() => detectLocation('pickup')}
-                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#D4AF37] hover:text-[#F5D061] transition-colors cursor-pointer"
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-blue-600 hover:text-blue-800 transition-colors cursor-pointer"
+                        title="Detect GPS"
                       >
-                        {loadingPickup ? <div className="w-4 h-4 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin" />
+                        {loadingPickup ? <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
                           : <Navigation className="w-4 h-4" />}
                       </button>
                     </div>
                     <div className="relative">
-                      <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#D4AF37] w-4 h-4" />
+                      <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-500 w-4 h-4" />
                       <input
                         ref={dropInputRef}
                         type="text"
@@ -225,9 +226,10 @@ const BookingModal = ({ isOpen, onClose, defaultVehicle, defaultPackage }) => {
                       <button
                         type="button"
                         onClick={() => detectLocation('drop')}
-                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#D4AF37] hover:text-[#F5D061] transition-colors cursor-pointer"
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-amber-500 hover:text-amber-700 transition-colors cursor-pointer"
+                        title="Detect GPS"
                       >
-                        {loadingDrop ? <div className="w-4 h-4 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin" />
+                        {loadingDrop ? <div className="w-4 h-4 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
                           : <Navigation className="w-4 h-4" />}
                       </button>
                     </div>
@@ -235,38 +237,38 @@ const BookingModal = ({ isOpen, onClose, defaultVehicle, defaultPackage }) => {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                     <div className="relative">
-                      <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#D4AF37] w-4 h-4" />
+                      <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
                       <input type="date" name="date" value={formData.date} onChange={handleInputChange} onKeyDown={(e) => e.preventDefault()} onClick={(e) => { try { e.target.showPicker(); } catch(err) {} }} className={modalInputCls} required />
                     </div>
                     <div className="relative">
-                      <Clock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#D4AF37] w-4 h-4" />
+                      <Clock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
                       <input type="time" name="time" value={formData.time} onChange={handleInputChange} onKeyDown={(e) => e.preventDefault()} onClick={(e) => { try { e.target.showPicker(); } catch(err) {} }} className={modalInputCls} required />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                     <div className="relative">
-                      <Users className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#D4AF37] w-4 h-4" />
+                      <Users className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
                       <input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder={t('Your Name')} className={modalInputCls} required />
                     </div>
                     <div className="relative">
-                      <PhoneCall className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#D4AF37] w-4 h-4" />
+                      <PhoneCall className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
                       <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} placeholder={t('Phone Number')} className={modalInputCls} required />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
-                    <select name="vehicle" value={formData.vehicle} onChange={handleInputChange} className="w-full px-4 py-3.5 rounded-2xl bg-[#030712]/90 border border-white/10 text-white text-xs sm:text-sm font-medium focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-[#D4AF37] outline-none">
+                    <select name="vehicle" value={formData.vehicle} onChange={handleInputChange} className="w-full px-4 py-3.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs sm:text-sm font-semibold focus:bg-white focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 outline-none">
                       <option>{t('Select Vehicle')}</option>
                       {cars.map(c => (
-                        <option key={c.id} value={c.name} className="bg-[#0B0F19] text-white">{t(c.name)} ({t(c.seats)})</option>
+                        <option key={c.id} value={c.name}>{t(c.name)} ({t(c.seats)})</option>
                       ))}
                     </select>
 
-                    <select name="packageType" value={formData.packageType} onChange={handleInputChange} className="w-full px-4 py-3.5 rounded-2xl bg-[#030712]/90 border border-white/10 text-white text-xs sm:text-sm font-medium focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-[#D4AF37] outline-none">
+                    <select name="packageType" value={formData.packageType} onChange={handleInputChange} className="w-full px-4 py-3.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs sm:text-sm font-semibold focus:bg-white focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 outline-none">
                       <option>{t('Custom Trip')}</option>
                       {packages.map(p => (
-                        <option key={p.id} value={p.name} className="bg-[#0B0F19] text-white">{t(p.name)}</option>
+                        <option key={p.id} value={p.name}>{t(p.name)}</option>
                       ))}
                     </select>
                   </div>
@@ -274,11 +276,11 @@ const BookingModal = ({ isOpen, onClose, defaultVehicle, defaultPackage }) => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full mt-4 bg-gold-gradient text-black font-extrabold py-4 rounded-2xl transition-all shadow-xl hover:scale-[1.02] active:scale-[0.98] flex justify-center items-center gap-2 cursor-pointer text-xs uppercase tracking-widest gold-glow"
+                    className="w-full mt-4 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black py-4 rounded-xl transition-all shadow-md hover:shadow-lg flex justify-center items-center gap-2 cursor-pointer text-xs uppercase tracking-wider"
                   >
                     {isSubmitting ? t('Confirming...') : (
                       <>
-                        {t('Confirm Reservation')} <ArrowRight className="w-4 h-4 stroke-[3]" />
+                        {t('Confirm Cab Booking')} <ArrowRight className="w-4 h-4" />
                       </>
                     )}
                   </button>

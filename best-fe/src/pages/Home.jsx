@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'framer-motion';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
 
 const GoogleReviews = lazy(() => import('../components/GoogleReviews'));
 import {
   PhoneCall, Calendar, MapPin, Clock, Users, ShieldCheck, Car as CarIcon,
   CheckCircle2, MessageCircle, Star, Navigation, ArrowRight,
-  Wind, Sparkles, Award, ChevronDown, Check
+  Sparkles, Award, ChevronDown, Check, Compass, Fuel, Luggage
 } from 'lucide-react';
 import { getVehicleImage, getPackageImage } from '../utils/imageImports';
 import BookingModal from '../components/BookingModal';
@@ -15,9 +15,7 @@ import HeroImage from '../assets/hero.png';
 import API_BASE_URL from '../apiConfig';
 
 import MeenakshiDesktop from '../assets/meenakshi_desktop.png';
-import MeenakshiMobile from '../assets/meenakshi_mobile.png';
 import ThirumalaiDesktop from '../assets/thirumalai_desktop.png';
-import ThirumalaiMobile from '../assets/thirumalai_mobile.png';
 import RameswaramDesktop from '../assets/rameswaram_desktop.png';
 import CinematicSouthIndiaBg from '../assets/cinematic_south_india.png';
 import KodaikanalBg from '../assets/kodaikanal_bg.png';
@@ -107,55 +105,30 @@ const AnimatedCounter = ({ end, duration = 2, suffix = '+', label }) => {
 
   return (
     <div ref={ref} className="text-center font-['Plus_Jakarta_Sans',sans-serif]">
-      <div className="text-4xl lg:text-5xl font-cinzel font-black text-gold-gradient tracking-tight">
+      <div className="text-3xl lg:text-4xl font-['Outfit'] font-black text-slate-900 tracking-tight">
         {count.toLocaleString()}{suffix}
       </div>
-      <div className="text-[11px] text-gray-400 uppercase tracking-[0.2em] mt-2 font-semibold">
+      <div className="text-xs text-slate-500 uppercase tracking-wider mt-1.5 font-bold">
         {label}
       </div>
     </div>
   );
 };
 
-// ─── Luxury Section Header ────────────────────────────────────
+// ─── Section Header ───────────────────────────────────────────
 const SectionHeader = ({ tag, title, subtitle, center = true }) => (
-  <div className={`mb-14 ${center ? 'text-center' : 'text-left'}`}>
-    <motion.div
-      initial={{ opacity: 0, y: 15 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className={`inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.25em] text-[#D4AF37] mb-3 ${center ? 'justify-center' : ''}`}
-    >
-      <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
+  <div className={`mb-12 ${center ? 'text-center' : 'text-left'}`}>
+    <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold uppercase tracking-wider mb-3 ${center ? 'justify-center' : ''}`}>
+      <Sparkles className="w-3.5 h-3.5 text-amber-500" />
       <span>{tag}</span>
-      <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
-    </motion.div>
-    <motion.h2
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: 0.1 }}
-      className="text-3xl lg:text-5xl font-cinzel font-black text-white leading-tight tracking-wide"
-    >
+    </div>
+    <h2 className="text-2xl sm:text-4xl lg:text-4xl font-['Outfit'] font-black text-slate-900 tracking-tight leading-tight">
       {title}
-    </motion.h2>
-    <motion.div
-      initial={{ width: 0 }}
-      whileInView={{ width: '60px' }}
-      viewport={{ once: true }}
-      transition={{ delay: 0.2, duration: 0.5 }}
-      className={`h-0.5 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent mt-4 ${center ? 'mx-auto' : ''}`}
-    />
+    </h2>
     {subtitle && (
-      <motion.p
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.3 }}
-        className="text-sm lg:text-base text-gray-400 mt-4 max-w-2xl leading-relaxed"
-      >
+      <p className="text-sm sm:text-base text-slate-600 mt-3 max-w-2xl mx-auto leading-relaxed">
         {subtitle}
-      </motion.p>
+      </p>
     )}
   </div>
 );
@@ -163,12 +136,9 @@ const SectionHeader = ({ tag, title, subtitle, center = true }) => (
 // ─── Main Home Component ──────────────────────────────────────
 const Home = () => {
   const { t } = useTranslation();
-  const { scrollY } = useScroll();
-  const yBg = useTransform(scrollY, [0, 800], ['0%', '12%']);
-
-  const [bgIndex, setBgIndex] = useState(0);
   const [destCategory, setDestCategory] = useState('all');
-  const [isMobile, setIsMobile] = useState(false);
+  const [tripType, setTripType] = useState('outstation'); // 'outstation' | 'local' | 'airport' | 'package'
+
   const [formData, setFormData] = useState({
     fromLocation: '', toLocation: '', date: '', time: '',
     name: '', phone: '', vehicle: 'Select Vehicle', packageType: 'Custom Trip'
@@ -209,26 +179,8 @@ const Home = () => {
   }, []);
 
   const [modalData, setModalData] = useState({ isOpen: false, vehicle: '', packageType: '' });
-  const pickupRef = useRef(null);
-  const dropRef = useRef(null);
   const [loadingPickup, setLoadingPickup] = useState(false);
   const [loadingDrop, setLoadingDrop] = useState(false);
-
-  const desktopImages = [CinematicSouthIndiaBg, MeenakshiDesktop, ThirumalaiDesktop, RameswaramDesktop, MaduraiAerialBg];
-  const mobileImages = [CinematicSouthIndiaBg, MeenakshiMobile, ThirumalaiMobile, RameswaramBg, MaduraiAerialBg];
-  const heroImages = isMobile ? mobileImages : desktopImages;
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 1024);
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
-    const timer = setInterval(() => setBgIndex(p => (p + 1) % heroImages.length), 6500);
-    return () => clearInterval(timer);
-  }, [heroImages.length]);
 
   const detectLocation = (type) => {
     const isPickup = type === 'pickup';
@@ -264,12 +216,12 @@ const Home = () => {
       });
       if (!res.ok) throw new Error();
       setIsSuccess(true);
-      const text = `*New Booking Request*\n\nFrom: ${formData.fromLocation}\nTo: ${formData.toLocation}\nDate: ${formData.date}\nTime: ${formData.time}\nVehicle: ${formData.vehicle}\nPackage: ${formData.packageType}\n\n*Customer Details:*\nName: ${formData.name}\nPhone: ${formData.phone}\nBooked via: Madurai Best Taxi Travels (Palanganatham)`;
+      const text = `*New Booking Request*\n\nTrip Type: ${tripType.toUpperCase()}\nFrom: ${formData.fromLocation}\nTo: ${formData.toLocation}\nDate: ${formData.date}\nTime: ${formData.time}\nVehicle: ${formData.vehicle}\nPackage: ${formData.packageType}\n\n*Customer Details:*\nName: ${formData.name}\nPhone: ${formData.phone}\nBooked via: Madurai Best Taxi Travels (Palanganatham)`;
       setTimeout(() => {
         window.open(`https://wa.me/916382513075?text=${encodeURIComponent(text)}`, '_blank');
         setIsSuccess(false);
         setFormData({ fromLocation: '', toLocation: '', date: '', time: '', name: '', phone: '', vehicle: 'Select Vehicle', packageType: 'Custom Trip' });
-      }, 2500);
+      }, 2000);
     } catch { alert(t('Error. Please try WhatsApp directly.')); }
     finally { setIsSubmitting(false); }
   };
@@ -279,590 +231,671 @@ const Home = () => {
     else setModalData({ isOpen: true, vehicle: '', packageType: value });
   };
 
-  const inputCls = 'w-full pl-11 pr-11 py-3.5 rounded-2xl bg-[#030712]/70 border border-white/10 text-white text-xs sm:text-sm placeholder:text-gray-500 focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-[#D4AF37] outline-none transition-all';
-  const selectCls = 'w-full pl-4 pr-10 py-3.5 rounded-2xl bg-[#030712]/70 border border-white/10 text-white text-xs sm:text-sm font-semibold appearance-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-[#D4AF37] outline-none transition-all cursor-pointer';
+  const inputCls = 'w-full pl-10 pr-10 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs sm:text-sm placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 outline-none transition-all';
+  const selectCls = 'w-full px-3 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs sm:text-sm font-semibold appearance-none focus:bg-white focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 outline-none transition-all cursor-pointer';
 
   return (
-    <div className="bg-[#030712] text-white min-h-screen font-['Plus_Jakarta_Sans',sans-serif] text-left">
+    <div className="bg-white text-slate-900 min-h-screen font-['Plus_Jakarta_Sans',sans-serif] text-left">
 
-      {/* ── LUXURY HERO SECTION ───────────────────────────── */}
-      <section className="relative min-h-[96vh] flex flex-col justify-center overflow-hidden bg-[#030712] pt-28 pb-16 lg:py-28">
+      {/* ── BRIGHT & ELEGANT HERO SECTION ─────────────────── */}
+      <section className="relative pt-32 pb-16 lg:pt-36 lg:pb-24 bg-gradient-to-b from-blue-50/70 via-slate-50/50 to-white overflow-hidden border-b border-slate-200/60">
         
-        {/* Dynamic Background Slideshow with Cinematic Shadow Gradient */}
-        <div className="absolute inset-0 z-0">
-          <AnimatePresence initial={false}>
-            <motion.img
-              key={bgIndex}
-              src={heroImages[bgIndex]}
-              initial={{ opacity: 0, scale: 1.08 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.6, ease: 'easeInOut' }}
-              style={{ y: yBg }}
-              className="absolute inset-0 w-full h-full object-cover"
-              alt="South India Luxury Taxi Tours"
-            />
-          </AnimatePresence>
-          {/* Obsidian Vignette Layer */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#030712] via-[#030712]/85 to-[#030712]/50" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(212,175,55,0.12)_0%,transparent_60%)] pointer-events-none" />
-        </div>
+        {/* Soft Ambient Shapes */}
+        <div className="absolute top-10 left-1/4 w-96 h-96 bg-blue-200/30 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-10 right-10 w-96 h-96 bg-amber-100/40 rounded-full blur-3xl pointer-events-none" />
 
-        {/* Hero Interactive Core */}
-        <div className="relative z-10 w-full animate-fade-in">
-          <div className="max-w-7xl mx-auto px-4 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
 
-            {/* Left Column: Prestigious Typography */}
+            {/* Left Column: Clear Authority & Value Props */}
             <motion.div
-              initial={{ opacity: 0, x: -35 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
               className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left"
             >
-              {/* Luxury Pill Tag */}
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-[#D4AF37]/30 text-[#F5D061] text-xs font-bold uppercase tracking-[0.25em] mb-5 shadow-lg">
-                <span className="w-2 h-2 rounded-full bg-[#D4AF37] animate-ping" />
-                <span>The Gold Standard in Cab Services</span>
+              {/* Trust Badge */}
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-100/70 border border-blue-200 text-blue-800 text-xs font-bold uppercase tracking-wider mb-5">
+                <Award className="w-4 h-4 text-amber-500" />
+                <span>#1 Rated Taxi & Tour Travels in Madurai</span>
               </div>
 
-              <h1 className="font-cinzel font-black text-4xl sm:text-6xl lg:text-7xl text-white tracking-wider leading-[1.08] mb-4">
-                MADURAI <span className="text-gold-gradient">BEST</span> <br />
-                <span className="text-2xl sm:text-4xl lg:text-5xl font-['Plus_Jakarta_Sans'] font-extrabold text-silver-gradient tracking-tight">
-                  TAXI TRAVELS
-                </span>
+              {/* Main Headline */}
+              <h1 className="font-['Outfit'] font-black text-4xl sm:text-5xl lg:text-6xl text-slate-900 tracking-tight leading-[1.12] mb-4">
+                MADURAI <span className="text-blue-700">BEST</span> <br className="hidden sm:inline" />
+                <span className="text-slate-950">TAXI TRAVELS</span>
               </h1>
 
-              <p className="text-[#D4AF37] text-xs sm:text-sm font-semibold tracking-widest uppercase mb-4 flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-[#D4AF37]" />
-                No. 18, Kovalan Nagar Last, Muniyandi St, Palanganatham, Madurai - 625003
+              {/* Official Address */}
+              <div className="inline-flex items-center gap-2 text-xs sm:text-sm text-slate-600 font-medium mb-5 bg-white border border-slate-200 px-3.5 py-1.5 rounded-xl shadow-xs">
+                <MapPin className="w-4 h-4 text-amber-500 shrink-0" />
+                <span>No. 18, Kovalan Nagar Last, Muniyandi St, Palanganatham, Madurai - 625003</span>
+              </div>
+
+              <p className="text-slate-600 text-sm sm:text-base max-w-xl mb-6 leading-relaxed">
+                Enjoy comfortable outstation cabs, Madurai airport transfers (IXM), and South India temple & hill tours in clean AC Sedans, Innova Crystas, and Tempo Travellers. Fixed transparent rates with zero surge pricing.
               </p>
 
-              {/* Fleet Display */}
-              <div className="my-4 w-full flex items-center justify-center lg:justify-start">
+              {/* Fleet Hero Image */}
+              <div className="my-2 w-full max-w-lg">
                 <img
                   src={HeroImage}
                   alt="Madurai Best Taxi Fleet"
-                  className="w-11/12 md:w-5/6 lg:w-4/5 max-w-lg lg:max-w-xl object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.9)]"
+                  className="w-full object-contain filter drop-shadow-[0_15px_25px_rgba(15,23,42,0.1)]"
                 />
               </div>
 
-              <p className="text-gray-300 text-sm max-w-xl mb-8 leading-relaxed font-normal">
-                {t('Experience seamless airport transfers, divine temple pilgrimages, and scenic hill station tours across South India in premium Innova Crystas, sedans, and luxury Tempo Travellers.')}
-              </p>
+              {/* Key Highlights Pill Row */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 w-full max-w-xl mt-6">
+                {[
+                  { title: "24/7 Available", sub: "Instant Dispatch" },
+                  { title: "Zero Surge", sub: "Clear Rates" },
+                  { title: "Clean AC Cabs", sub: "Sanitized Daily" },
+                  { title: "Ghat Certified", sub: "Expert Drivers" }
+                ].map((item, idx) => (
+                  <div key={idx} className="bg-white border border-slate-200/90 rounded-xl p-2.5 text-center shadow-xs">
+                    <div className="text-xs font-extrabold text-slate-900 leading-tight">{item.title}</div>
+                    <div className="text-[10px] text-slate-500">{item.sub}</div>
+                  </div>
+                ))}
+              </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-wrap justify-center lg:justify-start gap-4">
+              {/* Quick Actions */}
+              <div className="flex flex-wrap items-center gap-3.5 mt-6">
                 <a
                   href="tel:6382513075"
-                  className="flex items-center gap-2.5 px-8 py-4 bg-gold-gradient text-black font-extrabold rounded-full transition-all text-xs uppercase tracking-wider gold-glow hover:scale-105 active:scale-95 cursor-pointer shadow-xl"
+                  className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black px-6 py-3.5 rounded-xl text-xs uppercase tracking-wider shadow-sm transition-all active:scale-95"
                 >
-                  <PhoneCall className="w-4 h-4 fill-black" /> {t('Call +91 63825 13075')}
+                  <PhoneCall className="w-4 h-4 fill-slate-950" /> Call +91 63825 13075
                 </a>
                 <a
                   href="https://wa.me/916382513075"
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-2.5 px-8 py-4 border border-emerald-500/40 bg-emerald-600/20 hover:bg-emerald-600 text-white font-extrabold rounded-full transition-all text-xs uppercase tracking-wider shadow-lg hover:scale-105 backdrop-blur-md"
+                  className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3.5 rounded-xl text-xs uppercase tracking-wider shadow-sm transition-all"
                 >
-                  <MessageCircle className="w-4 h-4 text-emerald-400" /> {t('WhatsApp Us')}
+                  <MessageCircle className="w-4 h-4 fill-white" /> WhatsApp Us
                 </a>
-              </div>
-
-              {/* Verified Trust Points */}
-              <div className="hidden sm:grid grid-cols-3 gap-6 mt-10 pt-8 border-t border-white/10 w-full max-w-xl text-left">
-                <div>
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-white uppercase tracking-wider">
-                    <ShieldCheck className="w-4 h-4 text-[#D4AF37]" /> GPS Monitored
-                  </div>
-                  <p className="text-gray-400 text-[11px] mt-0.5">Real-time safety on highway & ghats</p>
-                </div>
-                <div>
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-white uppercase tracking-wider">
-                    <Award className="w-4 h-4 text-[#D4AF37]" /> Expert Drivers
-                  </div>
-                  <p className="text-gray-400 text-[11px] mt-0.5">Verified & courteous chauffeurs</p>
-                </div>
-                <div>
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-white uppercase tracking-wider">
-                    <Clock className="w-4 h-4 text-[#D4AF37]" /> Punctual 24/7
-                  </div>
-                  <p className="text-gray-400 text-[11px] mt-0.5">Zero wait time airport pickup</p>
-                </div>
               </div>
             </motion.div>
 
-            {/* Right Column: Premium Booking Card */}
+            {/* Right Column: Modern White Booking Card */}
             <motion.div
-              initial={{ opacity: 0, x: 35 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="lg:col-span-5 flex justify-center lg:justify-end w-full"
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              className="lg:col-span-5"
             >
-              <div className="w-full max-w-[450px] glass-obsidian-elevated rounded-3xl p-6 sm:p-8 gold-border-glow shadow-2xl relative overflow-hidden text-left">
-                {/* Golden ambient corner light */}
-                <div className="absolute top-0 right-0 w-36 h-36 bg-[#D4AF37]/15 rounded-full blur-2xl pointer-events-none" />
+              <div className="bg-white rounded-3xl p-6 sm:p-7 shadow-[0_20px_50px_rgba(15,23,42,0.08)] border border-slate-200/80 relative">
+                
+                {/* Trip Type Selector Tabs */}
+                <div className="flex rounded-xl bg-slate-100 p-1 mb-5">
+                  {[
+                    { id: 'outstation', label: 'Outstation' },
+                    { id: 'local', label: 'Local City' },
+                    { id: 'airport', label: 'Airport' },
+                    { id: 'package', label: 'Tour Pkg' }
+                  ].map((tab) => (
+                    <button
+                      key={tab.id}
+                      type="button"
+                      onClick={() => setTripType(tab.id)}
+                      className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${
+                        tripType === tab.id
+                          ? 'bg-blue-700 text-white shadow-xs'
+                          : 'text-slate-600 hover:text-slate-900'
+                      }`}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
+                </div>
 
-                <div className="mb-6 pb-4 border-b border-white/10 text-left">
-                  <div className="flex items-center gap-2 text-[#D4AF37] text-xs font-bold uppercase tracking-widest mb-1">
-                    <CarIcon className="w-4 h-4" />
-                    <span>Instant Taxi Booking</span>
-                  </div>
-                  <h3 className="font-cinzel text-xl sm:text-2xl font-bold text-white">Reserve Your Cab</h3>
-                  <p className="text-gray-400 text-xs mt-1">Direct confirmation • No hidden toll charges</p>
+                <div className="text-left mb-4">
+                  <h3 className="font-['Outfit'] font-black text-xl text-slate-900">
+                    Book Your Cab
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Get instant confirmation & driver details on WhatsApp.
+                  </p>
                 </div>
 
                 {isSuccess ? (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="flex flex-col items-center justify-center py-10 text-center"
-                  >
-                    <div className="w-16 h-16 rounded-full bg-[#D4AF37]/20 border border-[#D4AF37] flex items-center justify-center text-[#D4AF37] mb-4">
-                      <CheckCircle2 className="w-9 h-9" />
+                  <div className="py-12 text-center">
+                    <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <CheckCircle2 className="w-8 h-8" />
                     </div>
-                    <h3 className="text-xl font-bold text-white mb-1">{t('Reservation Dispatched!')}</h3>
-                    <p className="text-gray-400 text-xs mb-5">{t('Connecting to WhatsApp booking desk...')}</p>
-                    <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
-                      <motion.div initial={{ width: '0%' }} animate={{ width: '100%' }} transition={{ duration: 2.5 }} className="h-full bg-gold-gradient" />
+                    <h4 className="font-bold text-lg text-slate-900 mb-1">Booking Received!</h4>
+                    <p className="text-xs text-slate-500 mb-4">Connecting to WhatsApp with details...</p>
+                    <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
+                      <div className="h-full bg-emerald-500 animate-pulse" />
                     </div>
-                  </motion.div>
+                  </div>
                 ) : (
-                  <form className="space-y-3.5" onSubmit={handleSubmit}>
-                    {/* Pickup */}
-                    <div className="relative">
-                      <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#D4AF37] w-4 h-4" />
-                      <input ref={pickupRef} type="text" name="fromLocation" value={formData.fromLocation}
-                        onChange={handleChange} placeholder={t('Pickup Location (e.g. Madurai Airport)')} className={inputCls} required />
-                      <button type="button" onClick={() => detectLocation('pickup')}
-                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#D4AF37] hover:text-[#F5D061] transition-colors flex items-center justify-center cursor-pointer" title="Detect live location">
-                        {loadingPickup ? <div className="w-4 h-4 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin" />
-                          : <Navigation className="w-4 h-4" />}
-                      </button>
-                    </div>
+                  <form onSubmit={handleSubmit} className="space-y-3.5">
+                    
+                    {/* Pickup & Drop Inputs */}
+                    <div className="space-y-3">
+                      <div className="relative">
+                        <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-600 w-4 h-4" />
+                        <input
+                          type="text"
+                          name="fromLocation"
+                          value={formData.fromLocation}
+                          onChange={handleChange}
+                          placeholder="Pickup Location (e.g. Madurai Airport / Hotel)"
+                          className={inputCls}
+                          required
+                        />
+                        <button
+                          type="button"
+                          onClick={() => detectLocation('pickup')}
+                          className="absolute right-3.5 top-1/2 -translate-y-1/2 text-blue-600 hover:text-blue-800"
+                          title="Detect GPS"
+                        >
+                          {loadingPickup ? <div className="w-3.5 h-3.5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" /> : <Navigation className="w-3.5 h-3.5" />}
+                        </button>
+                      </div>
 
-                    {/* Drop */}
-                    <div className="relative">
-                      <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#D4AF37] w-4 h-4" />
-                      <input ref={dropRef} type="text" name="toLocation" value={formData.toLocation}
-                        onChange={handleChange} placeholder={t('Drop Location (e.g. Rameswaram / Kodaikanal)')} className={inputCls} required />
-                      <button type="button" onClick={() => detectLocation('drop')}
-                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#D4AF37] hover:text-[#F5D061] transition-colors flex items-center justify-center cursor-pointer" title="Detect live location">
-                        {loadingDrop ? <div className="w-4 h-4 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin" />
-                          : <Navigation className="w-4 h-4" />}
-                      </button>
-                    </div>
-
-                    {/* Customer Name */}
-                    <div className="relative">
-                      <Users className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#D4AF37] w-4 h-4" />
-                      <input type="text" name="name" value={formData.name} onChange={handleChange}
-                        placeholder={t('Your Full Name')} className={`${inputCls} pr-2`} required />
-                    </div>
-
-                    {/* Phone Number */}
-                    <div className="relative">
-                      <PhoneCall className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#D4AF37] w-4 h-4" />
-                      <input type="tel" name="phone" value={formData.phone} onChange={handleChange}
-                        placeholder={t('Phone Number (e.g. +91 ...)')} className={`${inputCls} pr-2`} required />
+                      <div className="relative">
+                        <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-500 w-4 h-4" />
+                        <input
+                          type="text"
+                          name="toLocation"
+                          value={formData.toLocation}
+                          onChange={handleChange}
+                          placeholder="Drop Location (e.g. Rameswaram, Kodaikanal)"
+                          className={inputCls}
+                          required
+                        />
+                        <button
+                          type="button"
+                          onClick={() => detectLocation('drop')}
+                          className="absolute right-3.5 top-1/2 -translate-y-1/2 text-amber-500 hover:text-amber-700"
+                          title="Detect GPS"
+                        >
+                          {loadingDrop ? <div className="w-3.5 h-3.5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" /> : <Navigation className="w-3.5 h-3.5" />}
+                        </button>
+                      </div>
                     </div>
 
                     {/* Date & Time */}
                     <div className="grid grid-cols-2 gap-3">
                       <div className="relative">
-                        <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#D4AF37] w-4 h-4" />
+                        <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none" />
                         <input
                           type="date"
                           name="date"
                           value={formData.date}
                           onChange={handleChange}
-                          onKeyDown={(e) => e.preventDefault()}
-                          onClick={(e) => { try { e.target.showPicker(); } catch (err) { } }}
-                          className={`${inputCls} pr-2`}
+                          className={inputCls}
                           required
                         />
                       </div>
                       <div className="relative">
-                        <Clock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#D4AF37] w-4 h-4" />
+                        <Clock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none" />
                         <input
                           type="time"
                           name="time"
                           value={formData.time}
                           onChange={handleChange}
-                          onKeyDown={(e) => e.preventDefault()}
-                          onClick={(e) => { try { e.target.showPicker(); } catch (err) { } }}
-                          className={`${inputCls} pr-2`}
+                          className={inputCls}
                           required
                         />
                       </div>
                     </div>
 
-                    {/* Vehicle & Package Selectors */}
+                    {/* Vehicle & Package Selector */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <select name="vehicle" value={formData.vehicle} onChange={handleChange} className={selectCls}>
+                        <option>Select Vehicle</option>
+                        {vehicles.map(v => (
+                          <option key={v.id} value={v.name}>{v.name} ({v.seats})</option>
+                        ))}
+                      </select>
+                      <select name="packageType" value={formData.packageType} onChange={handleChange} className={selectCls}>
+                        <option>Custom Trip</option>
+                        {packages.map(p => (
+                          <option key={p.id} value={p.name}>{p.name}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Contact Details */}
                     <div className="grid grid-cols-2 gap-3">
                       <div className="relative">
-                        <select name="vehicle" value={formData.vehicle} onChange={handleChange} className={selectCls}>
-                          <option>{t('Select Vehicle')}</option>
-                          {vehicles.map(v => <option key={v.id || v.name} value={v.name}>{t(v.name)}</option>)}
-                        </select>
-                        <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[4px] border-t-[#D4AF37]" />
+                        <Users className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+                        <input
+                          type="text"
+                          name="name"
+                          value={formData.name}
+                          onChange={handleChange}
+                          placeholder="Your Name"
+                          className={inputCls}
+                          required
+                        />
                       </div>
                       <div className="relative">
-                        <select name="packageType" value={formData.packageType} onChange={handleChange} className={selectCls}>
-                          <option>{t('Custom Trip')}</option>
-                          {packages.map(p => <option key={p.id || p.name} value={p.name}>{t(p.name)}</option>)}
-                        </select>
-                        <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[4px] border-t-[#D4AF37]" />
+                        <PhoneCall className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+                        <input
+                          type="tel"
+                          name="phone"
+                          value={formData.phone}
+                          onChange={handleChange}
+                          placeholder="Phone / WhatsApp"
+                          className={inputCls}
+                          required
+                        />
                       </div>
                     </div>
 
-                    {/* Submit CTA */}
+                    {/* Book Now Submit Button */}
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full bg-gold-gradient text-black font-extrabold py-4 rounded-2xl shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-xs uppercase tracking-widest cursor-pointer mt-3 flex items-center justify-center gap-2 gold-glow"
+                      className="w-full bg-blue-700 hover:bg-blue-800 text-white font-extrabold py-3.5 rounded-xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 text-xs uppercase tracking-wider cursor-pointer active:scale-95"
                     >
-                      {isSubmitting ? t('Confirming...') : (
-                        <>{t('Confirm Reservation')} <ArrowRight className="w-4 h-4 stroke-[3]" /></>
+                      {isSubmitting ? 'Reserving...' : (
+                        <>
+                          <span>Check Fare & Confirm Cab</span>
+                          <ArrowRight className="w-4 h-4" />
+                        </>
                       )}
                     </button>
 
-                    <div className="flex items-center justify-center gap-2 pt-2 text-[11px] text-gray-400 font-medium">
-                      <Check className="w-3.5 h-3.5 text-[#D4AF37]" />
-                      <span>Zero Advance Required • 100% Guaranteed Pickup</span>
+                    <div className="flex items-center justify-center gap-4 text-[11px] text-slate-500 pt-1">
+                      <span className="flex items-center gap-1">
+                        <Check className="w-3.5 h-3.5 text-emerald-600" /> Free Cancellation
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Check className="w-3.5 h-3.5 text-emerald-600" /> Pay Directly to Driver
+                      </span>
                     </div>
+
                   </form>
                 )}
+
               </div>
             </motion.div>
+
           </div>
         </div>
       </section>
 
-      {/* ── PRESTIGE FLEET SHOWCASE ───────────────────────── */}
-      <section className="py-20 lg:py-28 bg-[#0B0F19] relative border-y border-white/[0.06]">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16">
-            <SectionHeader
-              tag="First-Class Travel"
-              title={<>The <span className="text-gold-gradient">Executive Fleet</span></>}
-              subtitle="Pristine sedans, luxury SUVs, and executive Tempo Travellers meticulously inspected before every dispatch."
-              center={false}
-            />
-            <Link
-              to="/vehicles"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/[0.04] border border-[#D4AF37]/30 text-[#D4AF37] hover:bg-gold-gradient hover:text-black font-bold text-xs uppercase tracking-wider transition-all mb-14"
-            >
-              View Full Fleet ({vehicles.length}) <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {vehicles.slice(0, 6).map((v, i) => (
-              <motion.div
-                key={v.name + i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-                className="glass-obsidian rounded-3xl overflow-hidden border border-white/10 hover:border-[#D4AF37]/50 transition-all duration-500 hover:shadow-[0_10px_40px_rgba(212,175,55,0.15)] flex flex-col group"
-              >
-                {/* Vehicle Image Container */}
-                <div className="relative h-60 bg-gradient-to-b from-[#1F2937]/50 to-[#0B0F19] p-6 flex flex-col items-center justify-center overflow-hidden">
-                  <div className="absolute top-4 right-4 bg-black/60 border border-[#D4AF37]/40 px-3 py-1 rounded-full text-[10px] font-bold text-[#F5D061] uppercase tracking-wider">
-                    {v.seats}
-                  </div>
-                  <img
-                    src={getVehicleImage(v.image)}
-                    alt={v.name}
-                    loading="lazy"
-                    className="w-full h-44 object-contain transition-transform duration-700 group-hover:scale-110 drop-shadow-[0_15px_30px_rgba(0,0,0,0.8)]"
-                  />
-                  <div className="flex items-center gap-3 mt-2">
-                    <span className="flex items-center gap-1 text-[11px] text-gray-300">
-                      <Wind className="w-3.5 h-3.5 text-[#D4AF37]" /> {v.ac || 'AC'}
-                    </span>
-                    <span className="text-gray-600">•</span>
-                    <span className="flex items-center gap-1 text-[11px] text-gray-300">
-                      <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" /> Sanitized
-                    </span>
-                  </div>
-                </div>
-
-                {/* Details */}
-                <div className="p-6 flex flex-col flex-grow text-left">
-                  <h3 className="font-cinzel text-xl font-bold text-white mb-2">{t(v.name)}</h3>
-                  
-                  {/* Pricing Plans Summary */}
-                  <div className="space-y-2 mb-6 flex-grow">
-                    {(() => {
-                      const plans = parseDesc(v.desc);
-                      if (plans && Object.keys(plans).length > 0) {
-                        const firstPlan = Object.values(plans)[0];
-                        return (
-                          <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/5 space-y-1.5">
-                            <div className="text-[10px] text-[#D4AF37] font-bold uppercase tracking-wider">{firstPlan.title}</div>
-                            {firstPlan.items.slice(0, 2).map((item, idx) => (
-                              <div key={idx} className="flex justify-between items-center text-xs">
-                                <span className="text-gray-400">{item.label}</span>
-                                <span className="font-bold text-white">{item.value}</span>
-                              </div>
-                            ))}
-                          </div>
-                        );
-                      }
-                      return (
-                        <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/5 text-xs flex justify-between">
-                          <span className="text-gray-400">Outstation Rate</span>
-                          <span className="font-bold text-[#F5D061]">{v.price || 'Competitive Rate'}</span>
-                        </div>
-                      );
-                    })()}
-                  </div>
-
-                  {/* Card Bottom CTA */}
-                  <div className="flex items-center justify-between pt-4 border-t border-white/10 mt-auto">
-                    <div>
-                      <div className="text-[10px] uppercase font-bold text-gray-400">Base Price</div>
-                      <div className="text-lg font-cinzel font-black text-gold-gradient">{v.price}</div>
-                    </div>
-                    <button
-                      onClick={() => openBookingModal('vehicle', v.name)}
-                      className="px-5 py-2.5 rounded-xl bg-gold-gradient text-black font-extrabold text-xs uppercase tracking-wider hover:scale-105 active:scale-95 transition-all cursor-pointer shadow-md"
-                    >
-                      Book Now
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+      {/* ── METRICS & TRUST BAR ───────────────────────────── */}
+      <section className="py-12 bg-white border-b border-slate-200/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <AnimatedCounter end={50000} suffix="+" label="Safe Rides Completed" />
+            <AnimatedCounter end={4} suffix=".9 / 5" label="Google Customer Rating" />
+            <AnimatedCounter end={100} suffix="%" label="On-Time Guarantee" />
+            <AnimatedCounter end={10} suffix="+ Yrs" label="Excellence in Palanganatham" />
           </div>
         </div>
       </section>
 
-      {/* ── CURATED TOUR PACKAGES ──────────────────────────── */}
-      <section className="py-20 lg:py-28 bg-[#030712] relative">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
+      {/* ── POPULAR VEHICLES & FLEET SHOWCASE ──────────────── */}
+      <section className="py-16 lg:py-24 bg-slate-50 border-b border-slate-200/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            tag="Signature Itineraries"
-            title={<>Curated South India <span className="text-gold-gradient">Experiences</span></>}
-            subtitle="Explore spiritual temples, misty tea valleys, and tropical backwaters with our private tour coordinators."
+            tag="Our Certified Fleet"
+            title="Premium Cabs for Every Journey"
+            subtitle="Spacious, clean, and fully sanitized air-conditioned vehicles driven by polite and experienced professionals."
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {packages.slice(0, 6).map((pkg, i) => (
-              <motion.div
-                key={pkg.id || pkg.name}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-                className="glass-obsidian rounded-3xl overflow-hidden border border-white/10 hover:border-[#D4AF37]/40 transition-all duration-500 hover:shadow-[0_10px_35px_rgba(212,175,55,0.15)] flex flex-col group"
+            {vehicles.map((car) => {
+              const plans = parseDesc(car.description);
+              return (
+                <div
+                  key={car.id}
+                  className="bg-white rounded-2xl border border-slate-200/90 shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col group"
+                >
+                  {/* Car Image Area */}
+                  <div className="relative h-52 bg-gradient-to-b from-slate-100 to-white flex items-center justify-center p-6 border-b border-slate-100">
+                    <img
+                      src={getVehicleImage(car.name, car.image)}
+                      alt={car.name}
+                      className="max-h-36 max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute top-3 right-3 bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-full border border-blue-200">
+                      {car.seats || '4+1'} Seater
+                    </div>
+                  </div>
+
+                  {/* Car Info */}
+                  <div className="p-6 flex-1 flex flex-col justify-between">
+                    <div>
+                      <h3 className="font-['Outfit'] font-black text-xl text-slate-900 mb-1">
+                        {car.name}
+                      </h3>
+                      <p className="text-xs text-slate-500 mb-4">
+                        Ideal for local transfers, temple visits & long distance tours.
+                      </p>
+
+                      {/* Specs Row */}
+                      <div className="grid grid-cols-3 gap-2 py-3 border-y border-slate-100 mb-4 text-xs text-slate-600">
+                        <div className="flex items-center gap-1.5 justify-center">
+                          <Users className="w-3.5 h-3.5 text-blue-600" />
+                          <span>{car.seats || '4+1'} Seats</span>
+                        </div>
+                        <div className="flex items-center gap-1.5 justify-center">
+                          <Luggage className="w-3.5 h-3.5 text-blue-600" />
+                          <span>Luggage</span>
+                        </div>
+                        <div className="flex items-center gap-1.5 justify-center">
+                          <Fuel className="w-3.5 h-3.5 text-blue-600" />
+                          <span>AC Cab</span>
+                        </div>
+                      </div>
+
+                      {/* Pricing Specs */}
+                      {plans && plans.plan_0 && (
+                        <div className="space-y-1.5 mb-5 bg-slate-50 p-3 rounded-xl border border-slate-200/60 text-xs">
+                          {plans.plan_0.items.slice(0, 2).map((item, idx) => (
+                            <div key={idx} className="flex justify-between items-center">
+                              <span className="text-slate-500">{item.label}</span>
+                              <span className="font-bold text-slate-900">{item.value}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-3 pt-2">
+                      <button
+                        onClick={() => openBookingModal('vehicle', car.name)}
+                        className="flex-1 bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition-all shadow-xs"
+                      >
+                        Book {car.name.split(' ')[0]}
+                      </button>
+                      <a
+                        href={`https://wa.me/916382513075?text=${encodeURIComponent(`Hi Madurai Best Taxi Travels, I want to book ${car.name}`)}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="p-3 rounded-xl border border-emerald-500/30 text-emerald-600 hover:bg-emerald-50 transition-colors"
+                        title="Chat for this car"
+                      >
+                        <MessageCircle className="w-4 h-4" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="text-center mt-12">
+            <Link
+              to="/vehicles"
+              className="inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-slate-900 font-bold px-6 py-3 rounded-xl border border-slate-200 shadow-xs transition-all text-xs uppercase tracking-wider"
+            >
+              <span>Explore Entire Fleet & Detailed Tariff</span>
+              <ArrowRight className="w-4 h-4 text-blue-700" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CURATED SOUTH INDIA TOUR PACKAGES ──────────────── */}
+      <section className="py-16 lg:py-24 bg-white border-b border-slate-200/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            tag="Signature Journeys"
+            title="Curated South India Tour Packages"
+            subtitle="Customized temple tours, family hill vacations, and coastal road trips with dedicated drivers."
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {packages.map((pkg) => (
+              <div
+                key={pkg.id}
+                className="bg-white rounded-2xl border border-slate-200/90 shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col group"
               >
-                <div className="h-60 relative overflow-hidden bg-gray-900">
+                <div className="relative h-48 overflow-hidden">
                   <img
-                    src={getPackageImage(pkg.image)}
+                    src={getPackageImage(pkg.name, pkg.image)}
                     alt={pkg.name}
-                    loading="lazy"
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B0F19] via-transparent to-transparent opacity-90" />
-                  <div className="absolute top-4 right-4 bg-black/70 border border-[#D4AF37]/50 text-[#F5D061] text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                    {pkg.duration}
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent" />
+                  
+                  <div className="absolute top-3 left-3 bg-amber-500 text-slate-950 font-black text-xs px-2.5 py-1 rounded-md shadow-xs">
+                    {pkg.days ? `${pkg.days} Days` : 'Tour Special'}
+                  </div>
+
+                  <div className="absolute bottom-3 left-3 right-3 text-white">
+                    <h3 className="font-['Outfit'] font-bold text-lg leading-tight text-white drop-shadow-md">
+                      {pkg.name}
+                    </h3>
                   </div>
                 </div>
 
-                <div className="p-6 flex flex-col flex-grow text-left">
-                  <div className="flex items-start justify-between gap-2 mb-2">
-                    <h3 className="font-cinzel text-lg font-bold text-white line-clamp-1">{t(pkg.name)}</h3>
-                    {pkg.rating && (
-                      <div className="flex items-center gap-1 text-xs font-bold text-[#F5D061] shrink-0">
-                        <Star className="w-3.5 h-3.5 fill-current" />
-                        <span>{pkg.rating}</span>
+                <div className="p-6 flex-1 flex flex-col justify-between">
+                  <div>
+                    <p className="text-xs text-slate-600 line-clamp-3 mb-4 leading-relaxed">
+                      {pkg.description || 'Full day guided tour covering prime attractions, viewpoints & temple darshans with complete sightseeing.'}
+                    </p>
+
+                    <div className="space-y-1.5 mb-5 text-xs text-slate-700">
+                      <div className="flex items-center gap-2">
+                        <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                        <span>Pickup from Madurai Airport / Railway Station</span>
                       </div>
-                    )}
+                      <div className="flex items-center gap-2">
+                        <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                        <span>Dedicated vehicle with experienced driver</span>
+                      </div>
+                    </div>
                   </div>
 
-                  <p className="text-gray-400 text-xs line-clamp-2 mb-6 leading-relaxed flex-grow">
-                    {t(pkg.places)}
-                  </p>
-
-                  <div className="flex items-center justify-between pt-4 border-t border-white/10 mt-auto">
+                  <div className="flex items-center justify-between pt-3 border-t border-slate-100">
                     <div>
-                      <span className="text-[10px] text-gray-500 uppercase font-bold block">Package Starting</span>
-                      <span className="font-cinzel font-black text-lg text-gold-gradient">{pkg.price}</span>
+                      <div className="text-[10px] text-slate-400 uppercase font-semibold">Package Rate</div>
+                      <div className="font-['Outfit'] font-black text-lg text-blue-700">
+                        {pkg.price ? `₹${pkg.price}` : 'Custom Quote'}
+                      </div>
                     </div>
+
                     <button
                       onClick={() => openBookingModal('package', pkg.name)}
-                      className="px-5 py-2.5 rounded-xl bg-white/[0.04] border border-[#D4AF37]/40 text-[#D4AF37] hover:bg-gold-gradient hover:text-black font-extrabold text-xs uppercase tracking-wider transition-all cursor-pointer"
+                      className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider transition-all"
                     >
                       Book Tour
                     </button>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <Link
+              to="/packages"
+              className="inline-flex items-center gap-2 bg-blue-700 hover:bg-blue-800 text-white font-bold px-7 py-3.5 rounded-xl shadow-xs transition-all text-xs uppercase tracking-wider"
+            >
+              <span>View All Tour Packages & Custom Itineraries</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* ── ICONIC DESTINATIONS ───────────────────────────── */}
-      <section className="py-20 lg:py-28 bg-[#0B0F19] border-t border-white/[0.06]">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
+      {/* ── POPULAR DESTINATIONS FILTER ───────────────────── */}
+      <section className="py-16 lg:py-24 bg-slate-50 border-b border-slate-200/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader
             tag="Explore South India"
-            title={<>Iconic Travel <span className="text-gold-gradient">Destinations</span></>}
-            subtitle="Round-trip and one-way drops originating from Palanganatham and Madurai Airport."
+            title="Popular Routes From Madurai"
+            subtitle="Connect seamlessly from Palanganatham, Madurai to Tamil Nadu & Kerala's most picturesque locations."
           />
 
           {/* Filter Pills */}
-          <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
-            {[
-              { id: 'all', label: 'All Circuits' },
-              { id: 'temple', label: 'Pilgrimage & Temples' },
-              { id: 'hills', label: 'Hill Stations' },
-              { id: 'beaches', label: 'Coastal Escapes' },
-              { id: 'nature', label: 'Nature & Backwaters' },
-              { id: 'heritage', label: 'Royal Heritage' }
-            ].map(tab => (
+          <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
+            {['all', 'temple', 'hills', 'nature', 'heritage', 'beaches'].map((cat) => (
               <button
-                key={tab.id}
-                onClick={() => setDestCategory(tab.id)}
-                className={`px-5 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${
-                  destCategory === tab.id
-                    ? 'bg-gold-gradient text-black shadow-lg shadow-[#D4AF37]/20 font-black'
-                    : 'bg-white/[0.03] text-gray-400 border border-white/10 hover:border-[#D4AF37]/30 hover:text-white'
+                key={cat}
+                onClick={() => setDestCategory(cat)}
+                className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${
+                  destCategory === cat
+                    ? 'bg-blue-700 text-white shadow-xs'
+                    : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
                 }`}
               >
-                {tab.label}
+                {cat}
               </button>
             ))}
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            <AnimatePresence mode="popLayout">
-              {destinations
-                .filter(dest => destCategory === 'all' || dest.category === destCategory)
-                .map((dest) => (
-                  <motion.div
-                    key={dest.name}
-                    layout
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.3 }}
-                    whileHover={{ y: -6 }}
-                    className="group cursor-pointer rounded-3xl overflow-hidden border border-white/10 shadow-lg relative aspect-[3/4] bg-gray-950"
-                    onClick={() => window.location.href = '/packages'}
-                  >
-                    <img
-                      src={dest.img}
-                      alt={dest.name}
-                      loading="lazy"
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
-                    <div className="absolute bottom-0 left-0 p-4 text-left z-10">
-                      <h4 className="font-cinzel font-bold text-white text-base leading-tight">{dest.name}</h4>
-                      <p className="text-[10px] text-[#F5D061] mt-0.5 font-medium">{dest.subtext}</p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+            {destinations
+              .filter(d => destCategory === 'all' || d.category === destCategory)
+              .map((dest, i) => (
+                <div
+                  key={i}
+                  className="group relative h-64 rounded-2xl overflow-hidden border border-slate-200 shadow-xs hover:shadow-md transition-all cursor-pointer"
+                  onClick={() => openBookingModal('package', `${dest.name} Tour`)}
+                >
+                  <img
+                    src={dest.img}
+                    alt={dest.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-900/30 to-transparent" />
+                  
+                  <div className="absolute bottom-4 left-4 right-4 text-white">
+                    <h4 className="font-['Outfit'] font-bold text-lg leading-tight mb-1">
+                      {dest.name}
+                    </h4>
+                    <p className="text-xs text-slate-300">
+                      {dest.subtext}
+                    </p>
+                    <div className="mt-3 flex items-center gap-1 text-[11px] font-bold text-amber-400 group-hover:underline">
+                      <span>Book Madurai to {dest.name}</span>
+                      <ArrowRight className="w-3 h-3" />
                     </div>
-                  </motion.div>
-                ))}
-            </AnimatePresence>
+                  </div>
+                </div>
+              ))}
           </div>
         </div>
       </section>
 
-      {/* ── PRESTIGE METRICS BAR ──────────────────────────── */}
-      <section className="py-16 bg-[#030712] border-y border-[#D4AF37]/20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.06)_0%,transparent_70%)] pointer-events-none" />
-        <div className="max-w-7xl mx-auto px-4 lg:px-8 relative z-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <AnimatedCounter end={5000} suffix="+" label="Satisfied Travelers" />
-            <AnimatedCounter end={100} suffix="+" label="Tailored Tours" />
-            <AnimatedCounter end={50} suffix="+" label="South India Destinations" />
-            <AnimatedCounter end={80} suffix="+" label="Premium Cabs & Coaches" />
+      {/* ── WHY CHOOSE US (BENTO GRID) ────────────────────── */}
+      <section className="py-16 lg:py-24 bg-white border-b border-slate-200/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            tag="The Madurai Best Difference"
+            title="Why Discerning Travellers Choose Us"
+            subtitle="Reliable, certified, and customer-focused cab service rooted in Madurai."
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                icon: ShieldCheck,
+                title: "Zero Hidden Charges",
+                desc: "Transparent per-km and fixed package tariffs. Toll, parking, and driver allowances are clearly communicated with zero unexpected additions."
+              },
+              {
+                icon: Compass,
+                title: "Ghat-Road Certified Drivers",
+                desc: "Experienced chauffeurs trained for misty hill station hairpin bends (Kodaikanal, Ooty, Munnar) with deep local cultural knowledge."
+              },
+              {
+                icon: Clock,
+                title: "24/7 Madurai Airport Tracking",
+                desc: "Real-time flight arrival monitoring for Madurai Airport (IXM). Guaranteed on-time pickup even if flights are delayed."
+              },
+              {
+                icon: Star,
+                title: "Palanganatham Madurai Heritage",
+                desc: "Serving thousands of pilgrims and tourists since 2015 with high ratings, verified cars, and dependable round-the-clock dispatch."
+              }
+            ].map((feature, idx) => (
+              <div
+                key={idx}
+                className="bg-slate-50 border border-slate-200/80 rounded-2xl p-6 text-left hover:bg-white hover:shadow-md transition-all group"
+              >
+                <div className="w-12 h-12 rounded-xl bg-blue-100/70 text-blue-700 flex items-center justify-center mb-5 group-hover:bg-blue-700 group-hover:text-white transition-colors">
+                  <feature.icon className="w-6 h-6" />
+                </div>
+                <h4 className="font-['Outfit'] font-black text-lg text-slate-900 mb-2">
+                  {feature.title}
+                </h4>
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  {feature.desc}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* ── GOOGLE REVIEWS SECTION ────────────────────────── */}
-      <Suspense fallback={<div className="py-12 text-center text-gray-500">Loading verified reviews...</div>}>
+      <Suspense fallback={<div className="py-12 text-center text-slate-400">Loading customer reviews...</div>}>
         <GoogleReviews />
       </Suspense>
 
-      {/* ── FAQ ACCORDION ─────────────────────────────────── */}
-      <section className="py-20 lg:py-28 bg-[#0B0F19] border-t border-white/[0.06]">
-        <div className="max-w-4xl mx-auto px-6 text-left">
-          <FAQAccordion />
+      {/* ── FREQUENTLY ASKED QUESTIONS (LIGHT ACCORDION) ──── */}
+      <section className="py-16 lg:py-24 bg-slate-50 border-b border-slate-200/80">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            tag="Got Questions?"
+            title="Frequently Asked Questions"
+            subtitle="Everything you need to know about booking our cabs in Madurai."
+          />
+
+          <div className="space-y-3.5">
+            {[
+              {
+                q: "Where is Madurai Best Taxi Travels officially located?",
+                a: "Our official registered travels is located at No. 18, Kovalan Nagar Last, Muniyandi Street, Palanganatham, Madurai, Tamil Nadu, India — Pin Code: 625003. We provide pickup from anywhere in Madurai city, railway station, and airport."
+              },
+              {
+                q: "How do I book a cab from Madurai Airport (IXM)?",
+                a: "You can book directly via our online form, call us at +91 63825 13075, or send a WhatsApp message with your flight number. Our chauffeur will meet you right at the arrival terminal with your name board."
+              },
+              {
+                q: "Are the outstation rates fixed or are there extra charges?",
+                a: "Our outstation pricing is completely clear and transparent. Standard outstation rentals are based on per-km rates with a standard 300 km/day minimum plus driver bata. Toll, parking, and state permit fees are charged at actuals."
+              },
+              {
+                q: "Do you provide one-way drop taxis from Madurai to Rameswaram or Kodaikanal?",
+                a: "Yes! We offer both one-way drop taxi service as well as round-trip tour packages with waiting charges included."
+              },
+              {
+                q: "What vehicles do you offer for large families or groups?",
+                a: "We have Toyota Innova Crystas (7-8 seater), Maruti Ertigas, and luxury 12 to 20-seater Force Urbania / Tempo Travellers ideal for family pilgrimages and weddings."
+              }
+            ].map((faq, idx) => (
+              <details
+                key={idx}
+                className="group bg-white border border-slate-200 rounded-2xl overflow-hidden cursor-pointer shadow-xs"
+              >
+                <summary className="flex items-center justify-between font-bold text-slate-900 p-5 select-none text-sm sm:text-base">
+                  <span>{faq.q}</span>
+                  <ChevronDown className="w-4 h-4 text-slate-500 transition-transform group-open:rotate-180 shrink-0 ml-3" />
+                </summary>
+                <div className="px-5 pb-5 text-slate-600 text-xs sm:text-sm leading-relaxed border-t border-slate-100 pt-3">
+                  {faq.a}
+                </div>
+              </details>
+            ))}
+          </div>
         </div>
       </section>
 
-      <BookingModal
-        isOpen={modalData.isOpen}
-        onClose={() => setModalData({ ...modalData, isOpen: false })}
-        defaultVehicle={modalData.vehicle}
-        defaultPackage={modalData.packageType}
-      />
-    </div>
-  );
-};
+      {/* ── MODAL ─────────────────────────────────────────── */}
+      {modalData.isOpen && (
+        <BookingModal
+          isOpen={modalData.isOpen}
+          defaultVehicle={modalData.vehicle}
+          defaultPackage={modalData.packageType}
+          onClose={() => setModalData({ isOpen: false, vehicle: '', packageType: '' })}
+        />
+      )}
 
-// ─── FAQ Component ────────────────────────────────────────────
-const FAQAccordion = () => {
-  const [openIndex, setOpenIndex] = useState(null);
-
-  const faqs = [
-    {
-      q: 'Where is Madurai Best Taxi Travels situated?',
-      a: 'Our registered headquarters is located at No. 18, Kovalan Nagar Last, Muniyandi Street, Palanganatham, Madurai, Tamil Nadu, Pin Code: 625003. We provide instant pickups across all locations in Madurai, railway stations, and airport terminals.'
-    },
-    {
-      q: 'How are the outstation cab fares calculated?',
-      a: 'We offer fully transparent, fixed per-kilometer pricing starting from ₹13/km for sedans and ₹18/km for Innova Crysta, with driver allowances and tolls clearly stated upfront with zero hidden charges.'
-    },
-    {
-      q: 'Do you offer pickup service from Madurai Airport (IXM)?',
-      a: 'Yes, our airport transfer service includes complimentary flight tracking. Even if your flight is delayed, our chauffeur will be waiting for you at the arrival terminal.'
-    },
-    {
-      q: 'What types of Tempo Travellers and group vehicles are available?',
-      a: 'We provide luxury 12, 14, and 18-seater air-conditioned Force Tempo Travellers, alongside Force Urbania coaches equipped with individual pushback seats, charging ports, and luggage bays.'
-    },
-    {
-      q: 'How do I secure an advance booking?',
-      a: 'You can submit your trip details via our online reservation form, contact our 24/7 hotline at +91 63825 13075, or message us on WhatsApp for instant booking confirmation.'
-    }
-  ];
-
-  return (
-    <div>
-      <div className="text-center mb-12">
-        <span className="text-[#D4AF37] text-xs font-bold uppercase tracking-[0.25em] block mb-2">HAVE QUESTIONS?</span>
-        <h2 className="font-cinzel text-3xl lg:text-4xl font-bold text-white">
-          Frequently Answered Inquiries
-        </h2>
-        <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent mx-auto mt-4" />
-      </div>
-
-      <div className="space-y-4">
-        {faqs.map((faq, idx) => (
-          <div key={idx} className="glass-obsidian rounded-2xl border border-white/10 overflow-hidden">
-            <button
-              onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
-              className="w-full flex items-center justify-between p-5 text-left font-semibold text-white text-sm sm:text-base hover:bg-white/[0.02] transition-colors cursor-pointer"
-            >
-              <span>{faq.q}</span>
-              <ChevronDown className={`w-4 h-4 text-[#D4AF37] shrink-0 ml-4 transition-transform duration-300 ${openIndex === idx ? 'rotate-180' : ''}`} />
-            </button>
-            <div
-              className={`transition-all duration-300 ease-in-out overflow-hidden ${openIndex === idx ? 'max-h-48 border-t border-white/10' : 'max-h-0'}`}
-            >
-              <div className="p-5 text-gray-300 text-xs sm:text-sm leading-relaxed bg-black/40">
-                {faq.a}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
     </div>
   );
 };

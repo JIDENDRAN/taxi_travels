@@ -49,64 +49,64 @@ const AppContent = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1200);
+    const timer = setTimeout(() => setIsLoading(false), 900);
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <div className="app-wrapper font-['Plus_Jakarta_Sans',sans-serif] bg-[#030712] text-white">
+    <div className="app-wrapper font-['Plus_Jakarta_Sans',sans-serif] bg-white text-slate-900 min-h-screen">
       <AnimatePresence mode="wait">
         {isLoading && (
           <motion.div
             key="preloader"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 0.98 }}
-            transition={{ duration: 0.6, ease: 'easeInOut' }}
-            className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#030712] text-white select-none overflow-hidden"
+            transition={{ duration: 0.5, ease: 'easeInOut' }}
+            className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white text-slate-900 select-none overflow-hidden"
           >
-            {/* Golden radial aura */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.12)_0%,transparent_65%)] pointer-events-none" />
+            {/* Luminous soft radial gradient */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(37,99,235,0.06)_0%,transparent_70%)] pointer-events-none" />
 
             <div className="relative flex flex-col items-center z-10">
               <motion.div
-                initial={{ opacity: 0, scale: 0.85 }}
+                initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, ease: 'easeOut' }}
-                className="relative mb-6"
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+                className="relative mb-5"
               >
-                <div className="relative z-10 w-28 h-28 lg:w-32 lg:h-32 rounded-3xl bg-[#0B0F19] shadow-[0_0_50px_rgba(212,175,55,0.25)] border border-[#D4AF37]/40 p-2.5 flex items-center justify-center overflow-hidden">
-                  <img src={Logo} alt="Madurai Best Taxi Travels Logo" className="w-full h-full object-contain rounded-2xl" />
+                <div className="relative z-10 w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-white shadow-[0_15px_35px_rgba(15,23,42,0.12)] border border-slate-100 p-2 flex items-center justify-center overflow-hidden">
+                  <img src={Logo} alt="Madurai Best Taxi Travels Logo" className="w-full h-full object-contain rounded-xl" />
                 </div>
-                {/* Rotating Gold Accent Ring */}
+                {/* Soft rotating pulse ring */}
                 <motion.div
                   animate={{ rotate: 360 }}
-                  transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
-                  className="absolute -inset-3 rounded-[2.2rem] border border-transparent border-t-[#D4AF37] border-r-[#D4AF37]/30 pointer-events-none"
+                  transition={{ duration: 3.5, repeat: Infinity, ease: 'linear' }}
+                  className="absolute -inset-2.5 rounded-[1.8rem] border-2 border-transparent border-t-amber-500 border-r-blue-600/40 pointer-events-none"
                 />
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, y: 12 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.6 }}
+                transition={{ delay: 0.15, duration: 0.5 }}
                 className="flex flex-col items-center text-center px-6"
               >
-                <span className="text-[11px] font-extrabold uppercase tracking-[0.3em] text-[#D4AF37] mb-1">
+                <span className="text-[10px] font-extrabold uppercase tracking-[0.28em] text-blue-700 mb-1">
                   TAXI TRAVELS
                 </span>
-                <h2 className="font-cinzel font-black text-2xl lg:text-3xl tracking-wider text-white">
-                  MADURAI <span className="text-gold-gradient">BEST</span>
+                <h2 className="font-['Outfit'] font-black text-2xl tracking-wide text-slate-900">
+                  MADURAI <span className="text-amber-500">BEST</span>
                 </h2>
-                <p className="text-xs text-gray-400 font-medium mt-1">Palanganatham, Madurai • Since 2015</p>
+                <p className="text-xs text-slate-500 font-medium mt-1">Palanganatham, Madurai • Official Travels</p>
               </motion.div>
 
-              {/* Shimmer Bar */}
-              <div className="mt-8 w-40 h-1 bg-white/10 rounded-full overflow-hidden">
+              {/* Modern progress indicator */}
+              <div className="mt-6 w-36 h-1.5 bg-slate-100 rounded-full overflow-hidden">
                 <motion.div
                   initial={{ x: '-100%' }}
                   animate={{ x: '100%' }}
-                  transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}
-                  className="w-1/2 h-full bg-gold-gradient rounded-full"
+                  transition={{ duration: 1.1, repeat: Infinity, ease: 'easeInOut' }}
+                  className="w-1/2 h-full bg-gradient-to-r from-blue-600 via-amber-500 to-blue-600 rounded-full"
                 />
               </div>
             </div>
@@ -114,7 +114,7 @@ const AppContent = () => {
         )}
       </AnimatePresence>
 
-      <div className="min-h-screen flex flex-col bg-[#030712]">
+      <div className="min-h-screen flex flex-col bg-white">
         <main className="flex-grow">
           {isAdminRoute ? (
             <Routes>
