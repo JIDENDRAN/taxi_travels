@@ -1,20 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Outfit:wght@300;400;500;600;700;800;900&family=Cinzel:wght@600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Outfit:wght@300;400;500;600;700;800;900&family=Dancing+Script:wght@600;700&display=swap');
 
 @import "tailwindcss";
 
-/* ─── WARM HERITAGE & ROYAL BLUE DESIGN TOKENS ───────────── */
+/* ─── NITHAMUDAYAR-STYLE TRAVEL PORTAL DESIGN TOKENS ────── */
 :root {
-  --bg-canvas: #FAF7F2;
-  --bg-card: #FFFFFF;
-  --bg-warm-tint: #F5EFE6;
-  --text-primary: #0F1D38;
-  --text-secondary: #475569;
-  --brand-navy: #0F2042;
+  --bg-main: #FFFFFF;
+  --bg-slate: #F8FAFC;
+  --brand-navy: #0A192F;
+  --brand-navy-light: #1E293B;
   --brand-blue: #1D4ED8;
-  --brand-blue-hover: #1E40AF;
-  --brand-amber: #F59E0B;
-  --brand-amber-dark: #D97706;
-  --brand-gold: #C28B1E;
+  --brand-yellow: #FBBF24;
+  --brand-yellow-dark: #F59E0B;
+  --brand-accent: #0284C7;
+  --text-dark: #0F172A;
+  --text-muted: #64748B;
 }
 
 * {
@@ -27,52 +26,66 @@ html {
 }
 
 body {
-  background-color: #FAF7F2;
-  color: #0F1D38;
+  background-color: #FFFFFF;
+  color: #0F172A;
   font-family: 'Plus Jakarta Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
 /* ─── TYPOGRAPHY ─────────────────────────────────────────── */
-.font-heading {
+.font-script {
+  font-family: 'Dancing Script', cursive;
+}
+
+.font-outfit {
   font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
 }
 
-.font-cinzel {
-  font-family: 'Cinzel', serif;
+/* ─── BUTTONS & PILLS FROM REFERENCE ─────────────────────── */
+.btn-yellow {
+  background: #FBBF24;
+  color: #0F172A;
+  font-weight: 700;
+  border-radius: 9999px;
+  transition: all 0.2s ease-in-out;
 }
 
-/* ─── ELEVATIONS & WARM SHADOWS ──────────────────────────── */
-.heritage-card {
+.btn-yellow:hover {
+  background: #F59E0B;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+}
+
+.btn-yellow:active {
+  transform: translateY(0);
+}
+
+/* ─── CARDS & SHADOWS ────────────────────────────────────── */
+.travel-card {
   background: #FFFFFF;
-  border: 1px solid rgba(226, 218, 206, 0.85);
-  box-shadow: 0 10px 30px -5px rgba(15, 29, 56, 0.06), 0 4px 6px -2px rgba(15, 29, 56, 0.02);
+  border-radius: 1.25rem;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.02);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.heritage-card:hover {
-  border-color: rgba(194, 139, 30, 0.4);
-  box-shadow: 0 20px 45px -10px rgba(15, 29, 56, 0.12), 0 8px 12px -4px rgba(15, 29, 56, 0.04);
-}
-
-.heritage-floating-box {
-  background: #FFFFFF;
-  border: 1px solid rgba(217, 119, 6, 0.2);
-  box-shadow: 0 25px 60px -12px rgba(15, 29, 56, 0.22), 0 12px 24px -8px rgba(15, 29, 56, 0.08);
+.travel-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 35px -10px rgba(15, 23, 42, 0.12);
+  border-color: rgba(251, 191, 36, 0.6);
 }
 
 /* ─── SCROLLBAR ──────────────────────────────────────────── */
 ::-webkit-scrollbar {
-  width: 9px;
+  width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #FAF7F2;
+  background: #F8FAFC;
 }
 ::-webkit-scrollbar-thumb {
   background: #CBD5E1;
   border-radius: 9999px;
-  border: 2px solid #FAF7F2;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #94A3B8;

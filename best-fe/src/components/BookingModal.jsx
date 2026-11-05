@@ -276,11 +276,11 @@ const BookingModal = ({ isOpen, onClose, defaultVehicle, defaultPackage }) => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full mt-4 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black py-4 rounded-xl transition-all shadow-md hover:shadow-lg flex justify-center items-center gap-2 cursor-pointer text-xs uppercase tracking-wider"
+                    className="w-full mt-4 bg-[#FBBF24] hover:bg-[#F59E0B] text-slate-950 font-black py-3.5 rounded-full transition-all shadow-md hover:shadow-lg flex justify-center items-center gap-2 cursor-pointer text-xs uppercase tracking-wider"
                   >
                     {isSubmitting ? t('Confirming...') : (
                       <>
-                        {t('Confirm Cab Booking')} <ArrowRight className="w-4 h-4" />
+                        {t('Confirm Cab Booking')} <ArrowRight className="w-4 h-4 stroke-[3]" />
                       </>
                     )}
                   </button>

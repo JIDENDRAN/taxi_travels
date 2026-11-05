@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 const FloatingButtons = () => {
   return (
-    <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3.5">
+    <div className="fixed bottom-20 sm:bottom-6 right-5 sm:right-6 z-40 flex flex-col items-end gap-3">
       {/* 24/7 Call Button */}
       <motion.a
         href="tel:6382513075"

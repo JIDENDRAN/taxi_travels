@@ -40,22 +40,18 @@ const Contact = () => {
     <div className="bg-white text-slate-900 min-h-screen font-['Plus_Jakarta_Sans',sans-serif] text-left">
 
       {/* ── HERO ──────────────────────────────── */}
-      <section className="relative pt-32 pb-16 lg:pt-36 lg:pb-20 bg-gradient-to-b from-blue-50/70 via-slate-50 to-white border-b border-slate-200/70 overflow-hidden">
+      <section className="relative h-72 sm:h-80 pt-24 flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#EBF5FF] to-white border-b border-slate-100">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-100/70 border border-blue-200 text-blue-800 text-xs font-bold uppercase tracking-wider mb-4">
-              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-              24/7 Booking Desk & Travel Inquiries
-            </div>
-            <h1 className="text-3xl sm:text-5xl lg:text-5xl font-['Outfit'] font-black text-slate-900 mb-4 tracking-tight leading-tight">
-              CONTACT <span className="text-blue-700">MADURAI BEST</span> TAXI
+            <h1 className="font-['Dancing_Script'] text-5xl sm:text-6xl text-blue-900 font-bold mb-2">
+              Contact Us
             </h1>
-            <p className="text-sm sm:text-base text-slate-600 max-w-xl mx-auto leading-relaxed">
-              Located at Palanganatham, Madurai. Get instant taxi quotes, outstation itineraries, and airport pickup confirmations in minutes.
+            <p className="text-sm sm:text-base text-slate-600 font-semibold tracking-wide">
+              24/7 Booking Desk & Travel Inquiries • Palanganatham, Madurai
             </p>
           </motion.div>
         </div>
@@ -214,7 +210,7 @@ const Contact = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3.5 rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 disabled:opacity-70 text-xs uppercase tracking-wider cursor-pointer"
+                    className="w-full bg-[#FBBF24] hover:bg-[#F59E0B] text-slate-950 font-black py-3.5 rounded-full shadow-xs transition-all flex items-center justify-center gap-2 disabled:opacity-70 text-xs uppercase tracking-wider cursor-pointer"
                   >
                     {isSubmitting ? 'Sending Request...' : 'Send Inquiry Now'}
                     <Send className="w-4 h-4 ml-1" />

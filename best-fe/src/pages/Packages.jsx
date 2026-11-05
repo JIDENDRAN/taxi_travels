@@ -1,18 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Clock, ArrowRight, X, Star, ShieldCheck, Calendar, Award } from 'lucide-react';
+import { Clock, ArrowRight, X, Star, ShieldCheck, Calendar, Plane, MapPin, Search, Compass } from 'lucide-react';
 import BookingModal from '../components/BookingModal';
 import API_BASE_URL from '../apiConfig';
 import { getPackageImage } from '../utils/imageImports';
-import ThirumalaiDesktop from '../assets/thirumalai_desktop.png';
-
-const trustItems = [
-  { icon: <ShieldCheck className="w-5 h-5 text-blue-700" />, title: 'Transparent Guarantee', desc: 'Direct rates from Palanganatham, Madurai' },
-  { icon: <Calendar className="w-5 h-5 text-amber-500" />, title: 'Tailored Itineraries', desc: 'Flexible stops & hill-trained chauffeurs' },
-  { icon: <Award className="w-5 h-5 text-blue-700" />, title: '24/7 Airport Support', desc: 'Flight tracking for airport pickups' },
-  { icon: <Star className="w-5 h-5 text-amber-500" />, title: 'Trusted Since 2015', desc: 'Over 50,000+ happy South India travelers' },
-];
+import CinematicSouthIndiaBg from '../assets/cinematic_south_india.png';
 
 const Packages = () => {
   const { t } = useTranslation();
@@ -21,151 +14,209 @@ const Packages = () => {
   const [modalData, setModalData] = useState({ isOpen: false, packageType: '' });
   const [selectedDetails, setSelectedDetails] = useState(null);
 
+  // Search & Filter state matching reference image search bar
+  const [filterDestination, setFilterDestination] = useState('All');
+  const [filterDuration, setFilterDuration] = useState('All');
+
   useEffect(() => {
-    const fetchPackages = async () => {
-      try {
-        const response = await fetch(`${API_BASE_URL}/api/packages`);
-        if (response.ok) {
-          const data = await response.json();
-          if (data && data.length > 0) setPackages(data);
-        }
-      } catch (error) {
-        console.error('Failed to fetch packages', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchPackages();
+    fetch(`${API_BASE_URL}/api/packages`)
+      .then(res => res.json())
+      .then(data => { if (data && data.length > 0) setPackages(data); })
+      .catch(err => console.error('Failed to load packages', err))
+      .finally(() => setLoading(false));
   }, []);
 
   const openBookingModal = (packageName) => setModalData({ isOpen: true, packageType: packageName });
 
-  return (
-    <div className="bg-white text-slate-900 min-h-screen font-['Plus_Jakarta_Sans',sans-serif] text-left">
+  const filteredPackages = packages.filter(pkg => {
+    const matchDest = filterDestination === 'All' || pkg.name.toLowerCase().includes(filterDestination.toLowerCase()) || (pkg.places && pkg.places.toLowerCase().includes(filterDestination.toLowerCase()));
+    const matchDur = filterDuration === 'All' || (pkg.duration && pkg.duration.toLowerCase().includes(filterDuration.toLowerCase()));
+    return matchDest && matchDur;
+  });
 
-      {/* ── HERO ──────────────────────────────── */}
-      <section className="relative pt-32 pb-16 lg:pt-36 lg:pb-20 bg-gradient-to-b from-blue-50/70 via-slate-50 to-white border-b border-slate-200/70 overflow-hidden">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center relative z-10">
+  return (
+    <div className="bg-white min-h-screen text-[#0F172A] font-['Plus_Jakarta_Sans',sans-serif] text-left">
+
+      {/* ── 1. PACKAGES HERO BANNER (MATCHING REFERENCE PACKAGES PAGE) ── */}
+      <section className="relative h-72 sm:h-80 pt-24 flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#EBF5FF] to-white border-b border-slate-100">
+        
+        {/* Decorative Airplane Icon in Sky matching reference */}
+        <div className="absolute top-16 right-12 sm:right-24 text-blue-700/30 transform rotate-12">
+          <Plane className="w-16 h-16" />
+        </div>
+
+        <div className="relative z-10 text-center px-4 max-w-3xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-100/70 border border-blue-200 text-blue-800 text-xs font-bold uppercase tracking-wider mb-4">
-              Madurai Best Taxi Travels • Curated Tours
-            </div>
-            <h1 className="text-3xl sm:text-5xl lg:text-5xl font-['Outfit'] font-black text-slate-900 mb-4 tracking-tight leading-tight">
-              SOUTH INDIA <span className="text-blue-700">TOUR PACKAGES</span>
+            {/* Script Heading matching reference: "Our Travel Packages" */}
+            <h1 className="font-['Dancing_Script'] text-5xl sm:text-6xl text-blue-900 font-bold mb-2">
+              Our Travel Packages
             </h1>
-            <p className="text-sm sm:text-base text-slate-600 max-w-xl mx-auto leading-relaxed">
-              Curated spiritual pilgrimages, misty hill stations, and holiday circuits with private experienced drivers.
+            {/* Subtitle matching reference: "Explore. Experience. Enjoy." */}
+            <p className="text-sm sm:text-base text-slate-600 font-semibold tracking-wide">
+              Explore. Experience. Enjoy.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* ── BREADCRUMB ────────────────────────────────────── */}
-      <div className="bg-slate-50 border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between text-xs text-slate-500">
-          <div className="flex items-center gap-2">
-            <a href="/" className="hover:text-blue-700 transition-colors">Home</a>
-            <span>/</span>
-            <span className="text-slate-900 font-bold">Tour Packages</span>
+      {/* ── 2. FLOATING SEARCH & FILTER BAR (MATCHING REFERENCE PILL BAR) ── */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 -mt-8 relative z-20">
+        <div className="bg-white rounded-2xl sm:rounded-full border border-slate-200/90 shadow-[0_15px_35px_rgba(15,23,42,0.08)] py-3 px-6 sm:px-8">
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 items-center">
+            
+            {/* Destination Dropdown */}
+            <div className="flex items-center gap-2 text-left">
+              <MapPin className="w-4 h-4 text-blue-700 shrink-0" />
+              <div className="flex-1">
+                <label className="text-[10px] text-slate-400 font-bold uppercase block leading-none">Destination</label>
+                <select
+                  value={filterDestination}
+                  onChange={(e) => setFilterDestination(e.target.value)}
+                  className="w-full text-xs font-bold text-slate-800 bg-transparent outline-none cursor-pointer mt-0.5"
+                >
+                  <option value="All">All Destinations</option>
+                  <option value="Madurai">Madurai</option>
+                  <option value="Rameswaram">Rameswaram</option>
+                  <option value="Kodaikanal">Kodaikanal</option>
+                  <option value="Ooty">Ooty</option>
+                  <option value="Munnar">Munnar</option>
+                  <option value="Kerala">Kerala</option>
+                  <option value="Kanyakumari">Kanyakumari</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Trip Type Dropdown */}
+            <div className="flex items-center gap-2 text-left sm:border-l border-slate-100 sm:pl-4">
+              <Compass className="w-4 h-4 text-amber-500 shrink-0" />
+              <div className="flex-1">
+                <label className="text-[10px] text-slate-400 font-bold uppercase block leading-none">Trip Type</label>
+                <select className="w-full text-xs font-bold text-slate-800 bg-transparent outline-none cursor-pointer mt-0.5">
+                  <option>All Types</option>
+                  <option>Temple Pilgrimage</option>
+                  <option>Hill Station</option>
+                  <option>Family Holiday</option>
+                  <option>Weekend Getaway</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Duration Dropdown */}
+            <div className="flex items-center gap-2 text-left sm:border-l border-slate-100 sm:pl-4">
+              <Clock className="w-4 h-4 text-blue-700 shrink-0" />
+              <div className="flex-1">
+                <label className="text-[10px] text-slate-400 font-bold uppercase block leading-none">Duration</label>
+                <select
+                  value={filterDuration}
+                  onChange={(e) => setFilterDuration(e.target.value)}
+                  className="w-full text-xs font-bold text-slate-800 bg-transparent outline-none cursor-pointer mt-0.5"
+                >
+                  <option value="All">All Durations</option>
+                  <option value="1 Day">1 Day</option>
+                  <option value="2">2 Days</option>
+                  <option value="3">3 Days</option>
+                  <option value="5">5 Days</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Yellow Search Button matching reference */}
+            <div className="flex justify-end">
+              <button
+                type="button"
+                className="w-full sm:w-auto bg-[#FBBF24] hover:bg-[#F59E0B] text-slate-950 font-black px-6 py-2.5 rounded-full text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-xs transition-all"
+              >
+                <Search className="w-3.5 h-3.5" />
+                <span>Search</span>
+              </button>
+            </div>
+
           </div>
-          <span className="text-blue-700 font-bold">{packages.length} Packages Available</span>
         </div>
       </div>
 
-      {/* ── PACKAGES GRID ─────────────────────────────────── */}
-      <section className="py-16 lg:py-24 bg-slate-50">
+      {/* ── 3. PACKAGE CARDS (3-COLUMN GRID MATCHING REFERENCE) ── */}
+      <section className="py-16 lg:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {loading ? (
-            <div className="text-center py-24">
-              <div className="w-10 h-10 border-4 border-slate-200 border-t-blue-700 rounded-full animate-spin mx-auto mb-4" />
-              <p className="text-slate-500 text-sm">Loading tour itineraries...</p>
+            <div className="text-center py-20 text-slate-400 text-sm">
+              Loading travel packages...
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {packages.map((pkg, i) => (
-                <motion.div
+              {filteredPackages.map((pkg, i) => (
+                <div
                   key={pkg.id || i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.05 }}
-                  className="bg-white rounded-2xl border border-slate-200/90 shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col group"
+                  className="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-xs hover:shadow-lg transition-all duration-300 flex flex-col group"
                 >
-                  <div className="h-56 relative overflow-hidden bg-slate-100">
+                  {/* Photo with subtle hover zoom */}
+                  <div className="h-52 relative overflow-hidden bg-slate-100">
                     <img
                       src={getPackageImage(pkg.image)}
                       alt={pkg.name}
-                      loading="lazy"
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
-                    <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-xs text-slate-900 text-xs font-bold px-3 py-1 rounded-full shadow-xs">
-                      {t(pkg.duration)}
-                    </div>
                   </div>
 
-                  <div className="p-6 text-left flex flex-col flex-grow">
-                    <div className="flex items-start justify-between gap-2 mb-2">
-                      <h3 className="font-['Outfit'] font-bold text-slate-900 text-lg line-clamp-1">{t(pkg.name)}</h3>
-                      {pkg.rating && (
-                        <div className="flex items-center gap-1 text-xs font-bold text-amber-500 shrink-0">
-                          <Star className="w-3.5 h-3.5 fill-current" />
-                          <span>{pkg.rating}</span>
-                        </div>
-                      )}
+                  {/* Body Content matching reference */}
+                  <div className="p-5 flex-1 flex flex-col justify-between text-left">
+                    <div>
+                      <h3 className="font-['Outfit'] font-black text-lg text-slate-900 mb-1 leading-tight">
+                        {pkg.name}
+                      </h3>
+                      {/* Duration Line: e.g. "3 Days / 2 Nights" */}
+                      <p className="text-xs text-slate-500 font-medium mb-4">
+                        {pkg.duration || '3 Days / 2 Nights'}
+                      </p>
                     </div>
 
-                    <p className="text-slate-600 text-xs line-clamp-2 mb-6 leading-relaxed flex-grow">
-                      {t(pkg.places)}
-                    </p>
+                    <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+                      {/* Yellow Price Badge: e.g. "₹ 8,999 per person" */}
+                      <span className="bg-[#FEF3C7] text-amber-900 border border-amber-300/60 font-black text-xs px-3 py-1 rounded-full">
+                        ₹ {pkg.price ? pkg.price.replace('₹', '') : '8,999'} per trip
+                      </span>
 
-                    <div className="pt-4 border-t border-slate-100 flex items-center justify-between mt-auto">
-                      <div>
-                        <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Starting Rate</div>
-                        <div className="text-lg font-['Outfit'] font-black text-blue-700">{pkg.price}</div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => setSelectedDetails(pkg)}
-                          className="px-3 py-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-bold transition-all cursor-pointer"
-                        >
-                          Details
-                        </button>
-                        <button
-                          onClick={() => openBookingModal(pkg.name)}
-                          className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs uppercase tracking-wider transition-all cursor-pointer shadow-xs"
-                        >
-                          Book Now
-                        </button>
-                      </div>
+                      {/* View Details Link with Arrow */}
+                      <button
+                        onClick={() => setSelectedDetails(pkg)}
+                        className="text-xs font-bold text-slate-800 hover:text-blue-700 flex items-center gap-1 transition-colors cursor-pointer"
+                      >
+                        <span>View Details</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
           )}
         </div>
       </section>
 
-      {/* ── TRUST BAR ─────────────────────────────────────── */}
-      <section className="py-12 bg-white border-t border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {trustItems.map((item, i) => (
-              <div key={i} className="flex items-center gap-3 text-left">
-                <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center shrink-0">
-                  {item.icon}
-                </div>
-                <div>
-                  <div className="text-slate-900 font-bold text-xs">{item.title}</div>
-                  <div className="text-slate-500 text-[11px] mt-0.5">{item.desc}</div>
-                </div>
-              </div>
-            ))}
+      {/* ── 4. BOTTOM NAVY BANNER WITH SCRIPT (MATCHING REFERENCE) ── */}
+      <section className="bg-[#0A192F] text-white py-12 text-center relative overflow-hidden">
+        <div className="max-w-4xl mx-auto px-4 relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="text-center sm:text-left">
+            <span className="font-['Dancing_Script'] text-3xl sm:text-4xl text-[#FBBF24] block mb-1">
+              Your Next Adventure Awaits...
+            </span>
+            <p className="text-xs text-slate-300">
+              Personalized itineraries for family vacations, divine temple tours, and hill escapes.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Plane className="w-8 h-8 text-amber-400 rotate-45 hidden sm:inline" />
+            <a
+              href="tel:6382513075"
+              className="bg-[#FBBF24] hover:bg-amber-500 text-slate-950 font-black px-6 py-2.5 rounded-full text-xs uppercase tracking-wider transition-all"
+            >
+              Book Now
+            </a>
           </div>
         </div>
       </section>
@@ -179,7 +230,7 @@ const Packages = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedDetails(null)}
-              className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs"
+              className="absolute inset-0 bg-slate-950/60 backdrop-blur-xs"
             />
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 15 }}
@@ -193,30 +244,23 @@ const Packages = () => {
                   alt={selectedDetails.name}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
-                <div className="absolute bottom-4 left-5 right-5">
-                  <h3 className="text-xl font-['Outfit'] font-bold text-white">{t(selectedDetails.name)}</h3>
-                  <div className="text-amber-400 font-bold text-sm mt-0.5">Starting at {selectedDetails.price}</div>
-                </div>
                 <button
                   onClick={() => setSelectedDetails(null)}
-                  className="absolute top-3 right-3 w-8 h-8 bg-slate-900/60 rounded-full flex items-center justify-center text-white transition-all cursor-pointer"
+                  className="absolute top-3 right-3 w-8 h-8 bg-slate-900/60 rounded-full flex items-center justify-center text-white cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>
               </div>
 
               <div className="p-6 space-y-4">
-                <div className="flex items-center gap-2.5 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3">
-                  <Clock className="w-4 h-4 text-blue-700 shrink-0" />
-                  <span className="font-semibold text-slate-800 text-sm">{selectedDetails.duration}</span>
+                <div>
+                  <h3 className="text-xl font-['Outfit'] font-black text-slate-900">{selectedDetails.name}</h3>
+                  <div className="text-amber-600 font-bold text-sm mt-0.5">Starting at {selectedDetails.price}</div>
                 </div>
 
-                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
-                  <div className="text-[10px] uppercase text-blue-700 font-bold tracking-wider mb-1.5">
-                    Itinerary Highlights
-                  </div>
-                  <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">{selectedDetails.places}</p>
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-xs text-slate-600 leading-relaxed">
+                  <div className="text-[10px] uppercase font-bold text-blue-700 mb-1">Sightseeing Highlights:</div>
+                  {selectedDetails.places || 'Covers prime attractions, viewpoints, temple darshan and photo spots.'}
                 </div>
 
                 <button
@@ -225,9 +269,10 @@ const Packages = () => {
                     setSelectedDetails(null);
                     openBookingModal(n);
                   }}
-                  className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 text-xs uppercase tracking-wider cursor-pointer shadow-xs"
+                  className="w-full bg-[#FBBF24] hover:bg-[#F59E0B] text-slate-950 font-black py-3.5 rounded-full transition-all text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-xs"
                 >
-                  Book This Package <ArrowRight className="w-4 h-4" />
+                  <span>Book This Tour Package</span>
+                  <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
             </motion.div>

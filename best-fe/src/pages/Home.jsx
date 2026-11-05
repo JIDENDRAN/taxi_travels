@@ -1,145 +1,84 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const GoogleReviews = lazy(() => import('../components/GoogleReviews'));
 import {
   PhoneCall, Calendar, MapPin, Clock, Users, ShieldCheck, Car as CarIcon,
   CheckCircle2, MessageCircle, Star, Navigation, ArrowRight,
-  Sparkles, Award, ChevronDown, Check, Compass, Fuel, Luggage, Plane, Phone
+  Plane, Compass, Award, ChevronDown, Check, Luggage, Fuel
 } from 'lucide-react';
 import { getVehicleImage, getPackageImage } from '../utils/imageImports';
 import BookingModal from '../components/BookingModal';
 import HeroImage from '../assets/hero.png';
 import API_BASE_URL from '../apiConfig';
 
-import MeenakshiDesktop from '../assets/meenakshi_desktop.png';
-import ThirumalaiDesktop from '../assets/thirumalai_desktop.png';
-import RameswaramDesktop from '../assets/rameswaram_desktop.png';
-import CinematicSouthIndiaBg from '../assets/cinematic_south_india.png';
+import MeenakshiBg from '../assets/meenakshi_bg.png';
+import RameswaramBg from '../assets/rameswaram_bg.png';
 import KodaikanalBg from '../assets/kodaikanal_bg.png';
 import OotyBg from '../assets/ooty_bg.png';
-import KanyakumariBg from '../assets/kanyakumari_bg.png';
 import MunnarBg from '../assets/munnar_bg.png';
-import ThanjavurBg from '../assets/thanjavur_bg.png';
-import MaduraiAerialBg from '../assets/madurai_aerial_bg.png';
-import RameswaramBg from '../assets/rameswaram_bg.png';
-import MeenakshiBg from '../assets/meenakshi_bg.png';
 import KeralaBg from '../assets/kerala_bg.png';
+import CinematicSouthIndiaBg from '../assets/cinematic_south_india.png';
+import ThirumalaiDesktop from '../assets/thirumalai_desktop.png';
 
-// ─── Default Data Parser ──────────────────────────────────────
-const parseDesc = (descString) => {
-  if (!descString) return null;
-  const plans = {};
-  const sections = descString.split(/\n\s*\n/);
-  let planCount = 0;
-  sections.forEach(sec => {
-    const lines = sec.split('\n').map(l => l.trim()).filter(Boolean);
-    if (lines.length === 0) return;
-    const titleLine = lines[0];
-    const title = titleLine.replace('[', '').replace(']', '').toUpperCase();
-    const items = [];
-    for (let i = 1; i < lines.length; i++) {
-      const parts = lines[i].split(':');
-      if (parts.length >= 2) {
-        const label = parts[0].trim();
-        let value = parts.slice(1).join(':').trim();
-
-        if (/^\d+$/.test(value)) {
-          const lowerLabel = label.toLowerCase();
-          if (lowerLabel.includes('rate') || lowerLabel.includes('per km')) {
-            value = `₹${value}/km`;
-          } else if (lowerLabel.includes('min distance')) {
-            value = `Above ${value} km`;
-          } else if (lowerLabel.includes('driver')) {
-            value = `₹${value}/day`;
-          } else if (lowerLabel.includes('base rent')) {
-            value = `₹${value}`;
-          }
-        }
-        items.push({ label, value });
-      }
-    }
-    plans[`plan_${planCount++}`] = { title, items };
-  });
-  return plans;
-};
-
-const destinations = [
-  { name: 'Madurai', subtext: 'Meenakshi Amman Temple', img: MeenakshiBg, category: 'temple' },
-  { name: 'Rameswaram', subtext: 'Dhanushkodi & APJ Memorial', img: RameswaramBg, category: 'temple' },
-  { name: 'Kodaikanal', subtext: 'Princess of Hill Stations', img: KodaikanalBg, category: 'hills' },
-  { name: 'Ooty', subtext: 'Nilgiri Tea Paradise', img: OotyBg, category: 'hills' },
-  { name: 'Kanyakumari', subtext: 'Triveni Sangam & Sunrise', img: KanyakumariBg, category: 'beaches' },
-  { name: 'Thanjavur', subtext: 'Great Living Chola Temples', img: ThanjavurBg, category: 'heritage' },
-  { name: 'Kerala', subtext: "God's Own Country", img: KeralaBg, category: 'nature' },
-  { name: 'Munnar', subtext: 'Tea Valley & Waterfalls', img: MunnarBg, category: 'hills' },
+const popularDestinations = [
+  {
+    name: 'Kerala',
+    subtitle: "God's Own Country",
+    image: KeralaBg,
+    category: 'Nature & Backwaters',
+  },
+  {
+    name: 'Kodaikanal',
+    subtitle: 'Princess of Hill Stations',
+    image: KodaikanalBg,
+    category: 'Scenic Escapes',
+  },
+  {
+    name: 'Rameswaram',
+    subtitle: 'Sacred Island & Pamban',
+    image: RameswaramBg,
+    category: 'Temple Pilgrimage',
+  },
+  {
+    name: 'Munnar',
+    subtitle: 'Tea Valley & Waterfalls',
+    image: MunnarBg,
+    category: 'Misty Mountains',
+  },
 ];
 
-// ─── Animated Metric Counter ──────────────────────────────────
-const AnimatedCounter = ({ end, duration = 2, suffix = '+', label }) => {
-  const [count, setCount] = useState(0);
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true });
+const trustFeatures = [
+  {
+    icon: <Plane className="w-5 h-5 text-blue-700" />,
+    title: 'Outstation & Airport Cabs',
+    desc: 'Madurai (IXM) & South India routes'
+  },
+  {
+    icon: <ShieldCheck className="w-5 h-5 text-emerald-600" />,
+    title: 'Safe & Comfortable Travel',
+    desc: 'Sanitized daily & GPS tracked'
+  },
+  {
+    icon: <Clock className="w-5 h-5 text-amber-500" />,
+    title: '24/7 Travel Support',
+    desc: 'Instant booking & dispatch'
+  },
+  {
+    icon: <Users className="w-5 h-5 text-blue-700" />,
+    title: 'Experienced Chauffeurs',
+    desc: 'Hill station & ghat certified'
+  }
+];
 
-  useEffect(() => {
-    if (!inView) return;
-    let startTime = null;
-    const animate = (currentTime) => {
-      if (!startTime) startTime = currentTime;
-      const progress = Math.min((currentTime - startTime) / (duration * 1000), 1);
-      setCount(Math.floor(progress * end));
-      if (progress < 1) requestAnimationFrame(animate);
-    };
-    requestAnimationFrame(animate);
-  }, [inView, end, duration]);
-
-  return (
-    <div ref={ref} className="text-center">
-      <div className="text-3xl lg:text-4xl font-['Outfit'] font-black text-blue-900 tracking-tight">
-        {count.toLocaleString()}{suffix}
-      </div>
-      <div className="text-xs text-slate-600 uppercase tracking-wider mt-1 font-bold">
-        {label}
-      </div>
-    </div>
-  );
-};
-
-// ─── Section Header ───────────────────────────────────────────
-const SectionHeader = ({ tag, title, subtitle, center = true }) => (
-  <div className={`mb-12 ${center ? 'text-center' : 'text-left'}`}>
-    <div className={`inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-800 text-xs font-bold uppercase tracking-wider mb-3 ${center ? 'justify-center' : ''}`}>
-      <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-      <span>{tag}</span>
-    </div>
-    <h2 className="text-2xl sm:text-4xl font-['Outfit'] font-black text-slate-900 tracking-tight leading-tight">
-      {title}
-    </h2>
-    {subtitle && (
-      <p className="text-sm sm:text-base text-slate-600 mt-2.5 max-w-2xl mx-auto leading-relaxed">
-        {subtitle}
-      </p>
-    )}
-  </div>
-);
-
-// ─── Main Home Component ──────────────────────────────────────
 const Home = () => {
   const { t } = useTranslation();
-  const [bgIndex, setBgIndex] = useState(0);
-  const [destCategory, setDestCategory] = useState('all');
-  const [tripType, setTripType] = useState('outstation'); // 'outstation' | 'oneway' | 'airport' | 'package' | 'local'
-
-  const heroBgs = [MeenakshiDesktop, ThirumalaiDesktop, RameswaramDesktop, CinematicSouthIndiaBg];
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setBgIndex(prev => (prev + 1) % heroBgs.length);
-    }, 6000);
-    return () => clearInterval(timer);
-  }, [heroBgs.length]);
+  const [tripType, setTripType] = useState('outstation');
+  const [vehicles, setVehicles] = useState([]);
+  const [packages, setPackages] = useState([]);
+  const [modalData, setModalData] = useState({ isOpen: false, vehicle: '', packageType: '' });
 
   const [formData, setFormData] = useState({
     fromLocation: '', toLocation: '', date: '', time: '',
@@ -147,42 +86,20 @@ const Home = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [vehicles, setVehicles] = useState([]);
-  const [packages, setPackages] = useState([]);
-
-  useEffect(() => {
-    const fetchCars = async () => {
-      try {
-        const response = await fetch(`${API_BASE_URL}/api/cars`);
-        if (response.ok) {
-          const data = await response.json();
-          if (data && data.length > 0) setVehicles(data);
-        }
-      } catch (error) {
-        console.error('Failed to fetch cars', error);
-      }
-    };
-    fetchCars();
-  }, []);
-
-  useEffect(() => {
-    const fetchPackages = async () => {
-      try {
-        const response = await fetch(`${API_BASE_URL}/api/packages`);
-        if (response.ok) {
-          const data = await response.json();
-          if (data && data.length > 0) setPackages(data);
-        }
-      } catch (error) {
-        console.error('Failed to fetch packages', error);
-      }
-    };
-    fetchPackages();
-  }, []);
-
-  const [modalData, setModalData] = useState({ isOpen: false, vehicle: '', packageType: '' });
   const [loadingPickup, setLoadingPickup] = useState(false);
   const [loadingDrop, setLoadingDrop] = useState(false);
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/api/cars`)
+      .then(res => res.json())
+      .then(data => { if (data && data.length > 0) setVehicles(data); })
+      .catch(err => console.error('Failed to load cars', err));
+
+    fetch(`${API_BASE_URL}/api/packages`)
+      .then(res => res.json())
+      .then(data => { if (data && data.length > 0) setPackages(data); })
+      .catch(err => console.error('Failed to load packages', err));
+  }, []);
 
   const detectLocation = (type) => {
     const isPickup = type === 'pickup';
@@ -233,120 +150,163 @@ const Home = () => {
     else setModalData({ isOpen: true, vehicle: '', packageType: value });
   };
 
-  const inputCls = 'w-full pl-10 pr-10 py-3.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs sm:text-sm placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 outline-none transition-all';
-  const selectCls = 'w-full px-3.5 py-3.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs sm:text-sm font-semibold appearance-none focus:bg-white focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 outline-none transition-all cursor-pointer';
+  const inputCls = 'w-full pl-9 pr-9 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs sm:text-sm placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 outline-none transition-all';
+  const selectCls = 'w-full px-3 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs sm:text-sm font-semibold appearance-none focus:bg-white focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 outline-none transition-all cursor-pointer';
 
   return (
-    <div className="bg-[#FAF7F2] text-[#0F1D38] min-h-screen font-['Plus_Jakarta_Sans',sans-serif] text-left">
+    <div className="bg-white min-h-screen text-[#0F172A] font-['Plus_Jakarta_Sans',sans-serif] text-left">
 
-      {/* ── FULL-WIDTH SCENIC HERO WITH CENTERED FLOATING BOOKING BOX ── */}
-      <section className="relative min-h-[92vh] flex flex-col justify-center items-center pt-28 pb-16 lg:pt-36 lg:pb-24 overflow-hidden">
+      {/* ── 1. HERO SECTION (MATCHING REFERENCE HOME PAGE HERO) ── */}
+      <section className="relative pt-24 pb-20 lg:pt-32 lg:pb-32 overflow-hidden bg-gradient-to-b from-[#EBF5FF] via-[#F4F9FF] to-white border-b border-slate-100">
         
-        {/* Full-width scenic South India background */}
-        <div className="absolute inset-0 z-0">
-          <AnimatePresence initial={false}>
-            <motion.img
-              key={bgIndex}
-              src={heroBgs[bgIndex]}
-              initial={{ opacity: 0, scale: 1.05 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.5, ease: 'easeInOut' }}
-              className="absolute inset-0 w-full h-full object-cover"
-              alt="South India Scenic Travel"
-            />
-          </AnimatePresence>
-
-          {/* Warm Dark Gradient Overlay for Maximum Readability */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0B1528]/95 via-[#0B1528]/80 to-[#0B1528]/60" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(245,158,11,0.08)_0%,transparent_70%)] pointer-events-none" />
+        {/* Soft Background Clouds / Scenic Hill Silhouette */}
+        <div className="absolute inset-0 pointer-events-none opacity-20">
+          <img src={CinematicSouthIndiaBg} alt="" className="w-full h-full object-cover object-bottom" />
         </div>
 
-        {/* Hero Content Container */}
-        <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 flex flex-col items-center text-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
 
-          {/* Heritage Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-amber-400/40 text-amber-300 text-xs font-bold uppercase tracking-widest mb-4 shadow-lg"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            <span>Madurai’s Trusted Travel Partner • Since 2015</span>
-          </motion.div>
+            {/* Left Column: Script Tagline, Bold Title, Tagline, Yellow CTA */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7 }}
+              className="lg:col-span-6 text-left"
+            >
+              {/* Script Subtitle matching reference */}
+              <div className="font-['Dancing_Script'] text-2xl sm:text-3xl text-blue-900 font-bold mb-1">
+                Explore South India with
+              </div>
 
-          {/* Main Title */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-['Outfit'] font-black text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-tight mb-3"
-          >
-            MADURAI <span className="text-amber-400">BEST</span> TAXI TRAVELS
-          </motion.h1>
+              {/* Bold Title */}
+              <h1 className="font-['Outfit'] font-black text-4xl sm:text-5xl lg:text-6xl text-slate-900 leading-[1.08] tracking-tight mb-3">
+                Madurai Best <br />
+                <span className="text-slate-900">Taxi Travels</span>
+              </h1>
 
-          {/* Subtitle & Official Address */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-slate-200 text-sm sm:text-base max-w-2xl mb-2 leading-relaxed"
-          >
-            Doorstep pickup, Madurai airport transfers, outstation drop taxis & customized South India temple & hill tour packages.
-          </motion.p>
+              {/* Bullet Subtitle matching reference: "Travel More • Worry Less • Create Lifelong Memories" */}
+              <p className="text-xs sm:text-sm font-semibold text-slate-600 tracking-wide mb-6">
+                Travel More <span className="text-amber-500 mx-1">•</span> Worry Less <span className="text-amber-500 mx-1">•</span> Create Lifelong Memories
+              </p>
 
-          <div className="inline-flex items-center gap-1.5 text-xs text-amber-200 mb-8 font-medium">
-            <MapPin className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-            <span>No. 18, Kovalan Nagar Last, Muniyandi St, Palanganatham, Madurai - 625003</span>
-          </div>
-
-          {/* ── THE CENTERED FLOATING BOOKING & FARE ESTIMATOR BOX ── */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.25 }}
-            className="w-full max-w-4xl bg-white rounded-3xl p-5 sm:p-7 shadow-[0_25px_60px_rgba(11,21,40,0.35)] border border-amber-300/40 relative text-left"
-          >
-            {/* Tabbed Selectors */}
-            <div className="flex flex-wrap rounded-2xl bg-slate-100 p-1 mb-5 gap-1">
-              {[
-                { id: 'outstation', label: '🚕 Outstation Trip' },
-                { id: 'oneway', label: '🚗 One-Way Drop' },
-                { id: 'airport', label: '✈️ Airport Pickup (IXM)' },
-                { id: 'package', label: '🕉️ Tour Package' },
-                { id: 'local', label: '🏙️ Local Sightseeing' }
-              ].map((tab) => (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={() => setTripType(tab.id)}
-                  className={`flex-1 min-w-[120px] py-2.5 px-3 rounded-xl text-xs font-bold transition-all ${
-                    tripType === tab.id
-                      ? 'bg-blue-700 text-white shadow-sm'
-                      : 'text-slate-700 hover:text-slate-900 hover:bg-slate-200/60'
-                  }`}
+              {/* Yellow Pill CTA Button matching reference: "Plan Your Trip →" */}
+              <div className="flex flex-wrap items-center gap-3 mb-6">
+                <a
+                  href="#book-ride"
+                  className="inline-flex items-center gap-2 bg-[#FBBF24] hover:bg-[#F59E0B] text-slate-950 font-black text-xs uppercase tracking-wider px-7 py-3.5 rounded-full shadow-md hover:shadow-lg transition-all active:scale-95 cursor-pointer"
                 >
-                  {tab.label}
-                </button>
-              ))}
+                  <span>Plan Your Trip</span>
+                  <ArrowRight className="w-4 h-4 stroke-[3]" />
+                </a>
+
+                <a
+                  href="tel:6382513075"
+                  className="inline-flex items-center gap-2 bg-white hover:bg-slate-50 border border-slate-200 text-slate-800 font-bold text-xs uppercase tracking-wider px-5 py-3.5 rounded-full shadow-xs transition-all"
+                >
+                  <PhoneCall className="w-3.5 h-3.5 text-blue-700" />
+                  <span>+91 63825 13075</span>
+                </a>
+              </div>
+
+              {/* Verified Location Stamp */}
+              <div className="flex items-center gap-2 text-xs text-slate-500 font-medium">
+                <MapPin className="w-4 h-4 text-amber-500 shrink-0" />
+                <span>No. 18, Kovalan Nagar Last, Muniyandi St, Palanganatham, Madurai - 625003</span>
+              </div>
+            </motion.div>
+
+            {/* Right Column: Dynamic Vehicle / Fleet Image on Road */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.15 }}
+              className="lg:col-span-6 relative flex justify-center"
+            >
+              <div className="relative w-full max-w-lg lg:max-w-xl">
+                <img
+                  src={HeroImage}
+                  alt="Madurai Best Taxi Fleet"
+                  className="w-full object-contain filter drop-shadow-[0_20px_40px_rgba(15,23,42,0.15)]"
+                />
+              </div>
+            </motion.div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ── 2. FLOATING PILL FEATURE BAR (EXACT REFERENCE OVERLAPPING CARD) ── */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 sm:-mt-10 relative z-20">
+        <div className="bg-white rounded-2xl sm:rounded-full border border-slate-200/90 shadow-[0_15px_35px_rgba(15,23,42,0.08)] py-4 px-6 sm:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-4 divide-y sm:divide-y-0 sm:divide-x divide-slate-100">
+            {trustFeatures.map((item, idx) => (
+              <div key={idx} className="flex items-center gap-3 pt-3 sm:pt-0 sm:px-4 text-left">
+                <div className="w-10 h-10 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0">
+                  {item.icon}
+                </div>
+                <div>
+                  <div className="font-['Outfit'] font-bold text-xs sm:text-sm text-slate-900 leading-tight">
+                    {item.title}
+                  </div>
+                  <div className="text-[11px] text-slate-500 mt-0.5">
+                    {item.desc}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── 3. INSTANT CAB BOOKING / FARE ESTIMATOR CARD ──── */}
+      <section id="book-ride" className="pt-16 pb-12 bg-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="bg-gradient-to-b from-slate-50 to-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-200/70">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-amber-600 block mb-1">
+                  Online Fare Estimate & Reservation
+                </span>
+                <h2 className="font-['Outfit'] font-black text-2xl text-slate-900">
+                  Book Your Cab in Madurai
+                </h2>
+              </div>
+
+              {/* Tabs */}
+              <div className="flex rounded-full bg-slate-200/70 p-1">
+                {[
+                  { id: 'outstation', label: 'Outstation' },
+                  { id: 'oneway', label: 'One-Way Drop' },
+                  { id: 'airport', label: 'Airport (IXM)' },
+                  { id: 'package', label: 'Tour Package' }
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => setTripType(tab.id)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
+                      tripType === tab.id
+                        ? 'bg-[#FBBF24] text-slate-950 shadow-xs'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {isSuccess ? (
-              <div className="py-12 text-center">
-                <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="py-10 text-center">
+                <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3">
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
-                <h4 className="font-bold text-xl text-slate-900 mb-1">Booking Confirmed!</h4>
-                <p className="text-xs text-slate-500 mb-4">Connecting to WhatsApp with trip details...</p>
-                <div className="w-full max-w-xs mx-auto h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-emerald-500 animate-pulse" />
-                </div>
+                <h3 className="font-bold text-xl text-slate-900">Booking Request Sent!</h3>
+                <p className="text-xs text-slate-500 mt-1">Connecting you to WhatsApp for instant fare confirmation...</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
-                
-                {/* Row 1: Pickup & Drop */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                   <div className="relative">
                     <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-700 w-4 h-4" />
@@ -355,7 +315,7 @@ const Home = () => {
                       name="fromLocation"
                       value={formData.fromLocation}
                       onChange={handleChange}
-                      placeholder="Pickup Location (e.g. Madurai Airport / Hotel / Railway)"
+                      placeholder="Pickup Location (e.g. Madurai Airport / Hotel)"
                       className={inputCls}
                       required
                     />
@@ -365,7 +325,7 @@ const Home = () => {
                       className="absolute right-3.5 top-1/2 -translate-y-1/2 text-blue-700 hover:text-blue-900"
                       title="Detect GPS"
                     >
-                      {loadingPickup ? <div className="w-4 h-4 border-2 border-blue-700 border-t-transparent rounded-full animate-spin" /> : <Navigation className="w-4 h-4" />}
+                      {loadingPickup ? <div className="w-3.5 h-3.5 border-2 border-blue-700 border-t-transparent rounded-full animate-spin" /> : <Navigation className="w-3.5 h-3.5" />}
                     </button>
                   </div>
 
@@ -376,7 +336,7 @@ const Home = () => {
                       name="toLocation"
                       value={formData.toLocation}
                       onChange={handleChange}
-                      placeholder="Drop Location (e.g. Rameswaram, Kodaikanal, Munnar)"
+                      placeholder="Drop Location (e.g. Rameswaram, Kodaikanal)"
                       className={inputCls}
                       required
                     />
@@ -386,37 +346,20 @@ const Home = () => {
                       className="absolute right-3.5 top-1/2 -translate-y-1/2 text-amber-500 hover:text-amber-700"
                       title="Detect GPS"
                     >
-                      {loadingDrop ? <div className="w-4 h-4 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" /> : <Navigation className="w-4 h-4" />}
+                      {loadingDrop ? <div className="w-3.5 h-3.5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" /> : <Navigation className="w-3.5 h-3.5" />}
                     </button>
                   </div>
                 </div>
 
-                {/* Row 2: Date, Time, Vehicle, Package */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3.5">
                   <div className="relative">
                     <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none" />
-                    <input
-                      type="date"
-                      name="date"
-                      value={formData.date}
-                      onChange={handleChange}
-                      className={inputCls}
-                      required
-                    />
+                    <input type="date" name="date" value={formData.date} onChange={handleChange} className={inputCls} required />
                   </div>
-
                   <div className="relative">
                     <Clock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none" />
-                    <input
-                      type="time"
-                      name="time"
-                      value={formData.time}
-                      onChange={handleChange}
-                      className={inputCls}
-                      required
-                    />
+                    <input type="time" name="time" value={formData.time} onChange={handleChange} className={inputCls} required />
                   </div>
-
                   <div>
                     <select name="vehicle" value={formData.vehicle} onChange={handleChange} className={selectCls}>
                       <option>Select Vehicle</option>
@@ -425,7 +368,6 @@ const Home = () => {
                       ))}
                     </select>
                   </div>
-
                   <div>
                     <select name="packageType" value={formData.packageType} onChange={handleChange} className={selectCls}>
                       <option>Custom Trip</option>
@@ -436,269 +378,168 @@ const Home = () => {
                   </div>
                 </div>
 
-                {/* Row 3: Name, Phone & Instant Submit CTA */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-1">
                   <div className="relative">
                     <Users className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      placeholder="Your Name"
-                      className={inputCls}
-                      required
-                    />
+                    <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Your Name" className={inputCls} required />
                   </div>
-
                   <div className="relative">
                     <PhoneCall className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      placeholder="Phone / WhatsApp"
-                      className={inputCls}
-                      required
-                    />
+                    <input type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder="Phone / WhatsApp" className={inputCls} required />
                   </div>
-
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black py-3.5 px-6 rounded-xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 text-xs uppercase tracking-wider cursor-pointer active:scale-95"
+                    className="bg-[#FBBF24] hover:bg-[#F59E0B] text-slate-950 font-black py-3.5 px-6 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2 text-xs uppercase tracking-wider cursor-pointer active:scale-95"
                   >
-                    {isSubmitting ? 'Confirming...' : (
+                    {isSubmitting ? 'Calculating...' : (
                       <>
-                        <span>Check Fare & Reserve Cab</span>
+                        <span>Check Fare & Reserve</span>
                         <ArrowRight className="w-4 h-4" />
                       </>
                     )}
                   </button>
                 </div>
-
-                {/* Trust Highlights */}
-                <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-slate-600 pt-2 border-t border-slate-100">
-                  <span className="flex items-center gap-1">
-                    <Check className="w-3.5 h-3.5 text-emerald-600 font-bold" /> Zero Hidden Charges
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Check className="w-3.5 h-3.5 text-emerald-600 font-bold" /> Free Cancellation
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Check className="w-3.5 h-3.5 text-emerald-600 font-bold" /> Sanitized AC Cabs
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Check className="w-3.5 h-3.5 text-emerald-600 font-bold" /> Pay Driver on Arrival
-                  </span>
-                </div>
-
               </form>
             )}
-          </motion.div>
+          </div>
+        </div>
+      </section>
 
-          {/* Quick Direct Hotline Strip */}
-          <div className="flex flex-wrap items-center justify-center gap-4 mt-6">
+      {/* ── 4. POPULAR DESTINATIONS (MATCHING REFERENCE HOME PAGE) ── */}
+      <section className="py-14 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          {/* Section Header */}
+          <div className="mb-8 text-left">
+            <h2 className="font-['Outfit'] font-black text-2xl sm:text-3xl text-slate-900">
+              Popular Destinations
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">
+              Discover breathtaking destinations across South India and beyond
+            </p>
+          </div>
+
+          {/* Cards Grid matching reference */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {popularDestinations.map((dest, idx) => (
+              <div
+                key={idx}
+                className="group relative h-64 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer"
+                onClick={() => openBookingModal('package', `${dest.name} Tour`)}
+              >
+                <img
+                  src={dest.image}
+                  alt={dest.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-900/25 to-transparent" />
+
+                {/* Content at Bottom */}
+                <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between">
+                  <div className="text-left text-white">
+                    <h3 className="font-['Outfit'] font-black text-xl leading-tight">
+                      {dest.name}
+                    </h3>
+                    <p className="text-xs text-slate-300 font-medium mt-0.5">
+                      {dest.subtitle}
+                    </p>
+                  </div>
+
+                  {/* Circular White Arrow Button matching reference */}
+                  <div className="w-9 h-9 rounded-full bg-white text-slate-950 flex items-center justify-center shrink-0 shadow-md group-hover:bg-[#FBBF24] transition-colors">
+                    <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ── 5. CURVED NAVY BANNER WITH SIGNATURE SCRIPT (MATCHING REFERENCE) ── */}
+      <section className="relative bg-[#0A192F] text-white py-14 overflow-hidden">
+        {/* Palm Frond Accent Glow */}
+        <div className="absolute top-0 right-0 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
+          <div className="text-center md:text-left">
+            <span className="font-['Dancing_Script'] text-3xl sm:text-4xl text-amber-400 block mb-1">
+              Let's Travel Together...
+            </span>
+            <p className="text-xs sm:text-sm text-slate-300 max-w-lg leading-relaxed">
+              From Meenakshi Temple darshan to misty Kodaikanal hills and Dhanushkodi beaches, Madurai Best Taxi Travels is your companion on every road.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
             <a
               href="tel:6382513075"
-              className="inline-flex items-center gap-2 bg-blue-700 hover:bg-blue-800 text-white font-bold px-6 py-2.5 rounded-full text-xs uppercase tracking-wider shadow-md transition-all active:scale-95"
+              className="inline-flex items-center gap-2 bg-[#FBBF24] hover:bg-[#F59E0B] text-slate-950 font-black px-6 py-3 rounded-full text-xs uppercase tracking-wider transition-all"
             >
-              <Phone className="w-3.5 h-3.5 fill-white" /> Direct Call: +91 63825 13075
+              <PhoneCall className="w-3.5 h-3.5 fill-slate-950" /> Call +91 63825 13075
             </a>
             <a
               href="https://wa.me/916382513075"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#1EBE5D] text-white font-bold px-6 py-2.5 rounded-full text-xs uppercase tracking-wider shadow-md transition-all active:scale-95"
+              className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-full text-xs uppercase tracking-wider transition-all"
             >
-              <MessageCircle className="w-3.5 h-3.5 fill-white" /> WhatsApp 24/7 Booking
+              <MessageCircle className="w-3.5 h-3.5" /> WhatsApp Us
             </a>
           </div>
-
         </div>
       </section>
 
-      {/* ── METRICS & HERITAGE TRUST STRIP ─────────────────── */}
-      <section className="py-12 bg-white border-b border-amber-200/50">
+      {/* ── 6. FLEET PREVIEW SECTION ──────────────────────── */}
+      <section className="py-16 bg-[#F8FAFC]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <AnimatedCounter end={50000} suffix="+" label="Happy Passengers" />
-            <AnimatedCounter end={4} suffix=".9 / 5" label="Google Verified Rating" />
-            <AnimatedCounter end={100} suffix="%" label="On-Time Dispatch" />
-            <AnimatedCounter end={10} suffix="+ Yrs" label="Palanganatham, Madurai" />
-          </div>
-        </div>
-      </section>
-
-      {/* ── CERTIFIED FLEET SHOWCASE ───────────────────────── */}
-      <section className="py-16 lg:py-24 bg-[#FAF7F2] border-b border-amber-200/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            tag="Verified Vehicle Fleet"
-            title="Choose Your Ride for Comfort & Safety"
-            subtitle="Spacious, clean, and fully sanitized air-conditioned vehicles driven by polite and experienced professionals."
-          />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {vehicles.map((car) => {
-              const plans = parseDesc(car.description);
-              return (
-                <div
-                  key={car.id}
-                  className="bg-white rounded-3xl border border-amber-200/60 shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col group"
-                >
-                  {/* Car Image Preview */}
-                  <div className="relative h-52 bg-gradient-to-b from-[#F5EFE6] to-white flex items-center justify-center p-6 border-b border-amber-100">
-                    <img
-                      src={getVehicleImage(car.name, car.image)}
-                      alt={car.name}
-                      className="max-h-36 max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute top-3 right-3 bg-blue-50 text-blue-800 text-xs font-bold px-3 py-1 rounded-full border border-blue-200">
-                      {car.seats || '4+1'} Seater
-                    </div>
-                  </div>
-
-                  {/* Car Info */}
-                  <div className="p-6 flex-1 flex flex-col justify-between">
-                    <div>
-                      <h3 className="font-['Outfit'] font-black text-xl text-slate-900 mb-1">
-                        {car.name}
-                      </h3>
-                      <p className="text-xs text-slate-500 mb-4">
-                        Ideal for airport transfers, temple darshan & South India hill journeys.
-                      </p>
-
-                      {/* Specs Row */}
-                      <div className="grid grid-cols-3 gap-2 py-3 border-y border-slate-100 mb-4 text-xs text-slate-600">
-                        <div className="flex items-center gap-1.5 justify-center">
-                          <Users className="w-3.5 h-3.5 text-blue-700" />
-                          <span>{car.seats || '4+1'} Seats</span>
-                        </div>
-                        <div className="flex items-center gap-1.5 justify-center">
-                          <Luggage className="w-3.5 h-3.5 text-blue-700" />
-                          <span>Boot Space</span>
-                        </div>
-                        <div className="flex items-center gap-1.5 justify-center">
-                          <Fuel className="w-3.5 h-3.5 text-blue-700" />
-                          <span>AC Cab</span>
-                        </div>
-                      </div>
-
-                      {/* Pricing Specs */}
-                      {plans && plans.plan_0 && (
-                        <div className="space-y-1.5 mb-5 bg-[#FAF7F2] p-3 rounded-xl border border-amber-200/50 text-xs">
-                          {plans.plan_0.items.slice(0, 2).map((item, idx) => (
-                            <div key={idx} className="flex justify-between items-center">
-                              <span className="text-slate-500">{item.label}</span>
-                              <span className="font-bold text-slate-900">{item.value}</span>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="flex items-center gap-3 pt-2">
-                      <button
-                        onClick={() => openBookingModal('vehicle', car.name)}
-                        className="flex-1 bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition-all shadow-xs"
-                      >
-                        Book {car.name.split(' ')[0]}
-                      </button>
-                      <a
-                        href={`https://wa.me/916382513075?text=${encodeURIComponent(`Hi Madurai Best Taxi Travels, I want to book ${car.name}`)}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="p-3 rounded-xl border border-emerald-500/40 text-emerald-600 hover:bg-emerald-50 transition-colors"
-                        title="Chat for this car"
-                      >
-                        <MessageCircle className="w-4 h-4" />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+          <div className="text-center mb-10">
+            <span className="text-xs font-bold uppercase tracking-widest text-amber-600 block mb-1">
+              Modern Vehicles
+            </span>
+            <h2 className="font-['Outfit'] font-black text-2xl sm:text-3xl text-slate-900">
+              Our Certified Fleet
+            </h2>
           </div>
 
-          <div className="text-center mt-12">
-            <Link
-              to="/vehicles"
-              className="inline-flex items-center gap-2 bg-white hover:bg-amber-50 text-slate-900 font-bold px-7 py-3 rounded-xl border border-amber-200 shadow-xs transition-all text-xs uppercase tracking-wider"
-            >
-              <span>Explore Entire Fleet & Detailed Tariff</span>
-              <ArrowRight className="w-4 h-4 text-blue-700" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── SIGNATURE HERITAGE & HILL TOUR PACKAGES ───────── */}
-      <section className="py-16 lg:py-24 bg-white border-b border-amber-200/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            tag="Curated Tour Packages"
-            title="Temple Pilgrimages & Scenic Hill Stations"
-            subtitle="Customized travel circuits covering Madurai Meenakshi, Rameswaram, Kodaikanal, Munnar, and Kanyakumari."
-          />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {packages.map((pkg) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {vehicles.slice(0, 3).map((car) => (
               <div
-                key={pkg.id}
-                className="bg-white rounded-3xl border border-amber-200/60 shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col group"
+                key={car.id}
+                className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
               >
-                <div className="relative h-48 overflow-hidden">
+                <div className="relative h-44 bg-slate-50 rounded-xl flex items-center justify-center p-4 mb-4">
                   <img
-                    src={getPackageImage(pkg.name, pkg.image)}
-                    alt={pkg.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    src={getVehicleImage(car.name, car.image)}
+                    alt={car.name}
+                    className="max-h-32 object-contain"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
-                  
-                  <div className="absolute top-3 left-3 bg-amber-500 text-slate-950 font-black text-xs px-2.5 py-1 rounded-md shadow-xs">
-                    {pkg.days ? `${pkg.days} Days` : 'Tour Special'}
-                  </div>
-
-                  <div className="absolute bottom-3 left-3 right-3 text-white">
-                    <h3 className="font-['Outfit'] font-bold text-lg leading-tight text-white drop-shadow-md">
-                      {pkg.name}
-                    </h3>
-                  </div>
+                  <span className="absolute top-2.5 right-2.5 bg-blue-50 text-blue-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full border border-blue-200">
+                    {car.seats || '4+1'} Seater
+                  </span>
                 </div>
 
-                <div className="p-6 flex-1 flex flex-col justify-between">
-                  <div>
-                    <p className="text-xs text-slate-600 line-clamp-3 mb-4 leading-relaxed">
-                      {pkg.description || 'Full day guided tour covering prime attractions, viewpoints & temple darshans with complete sightseeing.'}
-                    </p>
-
-                    <div className="space-y-1.5 mb-5 text-xs text-slate-700">
-                      <div className="flex items-center gap-2">
-                        <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                        <span>Pickup from Madurai Airport / Railway Station</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                        <span>Experienced chauffeur with local route expertise</span>
-                      </div>
-                    </div>
-                  </div>
+                <div className="text-left">
+                  <h3 className="font-['Outfit'] font-black text-lg text-slate-900 mb-1">
+                    {car.name}
+                  </h3>
+                  <p className="text-xs text-slate-500 mb-4">
+                    Comfortable AC ride for families and outstation travel.
+                  </p>
 
                   <div className="flex items-center justify-between pt-3 border-t border-slate-100">
                     <div>
-                      <div className="text-[10px] text-slate-400 uppercase font-semibold">Starting Rate</div>
-                      <div className="font-['Outfit'] font-black text-lg text-blue-700">
-                        {pkg.price ? `₹${pkg.price}` : 'Custom Quote'}
-                      </div>
+                      <div className="text-[10px] text-slate-400 uppercase font-semibold">Starting From</div>
+                      <div className="font-['Outfit'] font-black text-base text-blue-700">{car.price || '₹12/km'}</div>
                     </div>
-
                     <button
-                      onClick={() => openBookingModal('package', pkg.name)}
-                      className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider transition-all"
+                      onClick={() => openBookingModal('vehicle', car.name)}
+                      className="bg-[#FBBF24] hover:bg-amber-500 text-slate-950 font-bold px-4 py-2 rounded-full text-xs uppercase tracking-wider transition-all"
                     >
-                      Book Tour
+                      Book Now
                     </button>
                   </div>
                 </div>
@@ -706,163 +547,22 @@ const Home = () => {
             ))}
           </div>
 
-          <div className="text-center mt-12">
+          <div className="text-center mt-8">
             <Link
-              to="/packages"
-              className="inline-flex items-center gap-2 bg-blue-700 hover:bg-blue-800 text-white font-bold px-7 py-3.5 rounded-xl shadow-xs transition-all text-xs uppercase tracking-wider"
+              to="/vehicles"
+              className="inline-flex items-center gap-2 text-xs font-bold text-blue-700 hover:text-blue-900 uppercase tracking-wider"
             >
-              <span>View All Tour Packages & Custom Itineraries</span>
+              <span>View All Fleet Vehicles</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ── POPULAR DESTINATIONS GRID ─────────────────────── */}
-      <section className="py-16 lg:py-24 bg-[#FAF7F2] border-b border-amber-200/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            tag="South India Circuits"
-            title="Popular Routes Starting from Madurai"
-            subtitle="Direct pickup from Palanganatham, Madurai Junction, or Madurai Airport."
-          />
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-            {destinations.map((dest, i) => (
-              <div
-                key={i}
-                className="group relative h-64 rounded-3xl overflow-hidden border border-amber-200/70 shadow-xs hover:shadow-md transition-all cursor-pointer"
-                onClick={() => openBookingModal('package', `${dest.name} Tour`)}
-              >
-                <img
-                  src={dest.img}
-                  alt={dest.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-900/30 to-transparent" />
-                
-                <div className="absolute bottom-4 left-4 right-4 text-white">
-                  <h4 className="font-['Outfit'] font-bold text-lg leading-tight mb-1">
-                    {dest.name}
-                  </h4>
-                  <p className="text-xs text-slate-300">
-                    {dest.subtext}
-                  </p>
-                  <div className="mt-3 flex items-center gap-1 text-[11px] font-bold text-amber-400 group-hover:underline">
-                    <span>Reserve Madurai to {dest.name}</span>
-                    <ArrowRight className="w-3 h-3" />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── WHY CHOOSE US (HERITAGE PILLARS) ───────────────── */}
-      <section className="py-16 lg:py-24 bg-white border-b border-amber-200/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            tag="The Madurai Best Standard"
-            title="Why Families & Tourists Choose Us"
-            subtitle="Honest pricing, licensed drivers, and reliable door-to-door transportation."
-          />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                icon: ShieldCheck,
-                title: "100% Honest Pricing",
-                desc: "No sudden hidden charges or surprise tolls. Transparent per-km and fixed package tariffs explained clearly before every ride."
-              },
-              {
-                icon: Compass,
-                title: "Hill & Ghat-Road Experts",
-                desc: "Certified chauffeurs trained for misty hill station hairpin bends (Kodaikanal, Ooty, Munnar) with deep cultural respect."
-              },
-              {
-                icon: Clock,
-                title: "24/7 Madurai Airport Pickup",
-                desc: "Live flight arrival monitoring for Madurai Airport (IXM). On-time chauffeur pickup with complimentary waiting time."
-              },
-              {
-                icon: Star,
-                title: "Palanganatham Madurai Hub",
-                desc: "Operating from Kovalan Nagar Last, Palanganatham with over 10 years of trusted service across South India."
-              }
-            ].map((feature, idx) => (
-              <div
-                key={idx}
-                className="bg-[#FAF7F2] border border-amber-200/60 rounded-3xl p-6 text-left hover:bg-white hover:shadow-md transition-all group"
-              >
-                <div className="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-700 flex items-center justify-center mb-5 group-hover:bg-blue-700 group-hover:text-white transition-colors">
-                  <feature.icon className="w-6 h-6" />
-                </div>
-                <h4 className="font-['Outfit'] font-black text-lg text-slate-900 mb-2">
-                  {feature.title}
-                </h4>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  {feature.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── GOOGLE REVIEWS SECTION ────────────────────────── */}
-      <Suspense fallback={<div className="py-12 text-center text-slate-400">Loading customer reviews...</div>}>
+      {/* ── 7. GOOGLE REVIEWS SECTION ─────────────────────── */}
+      <Suspense fallback={<div className="py-10 text-center text-slate-400">Loading reviews...</div>}>
         <GoogleReviews />
       </Suspense>
-
-      {/* ── FREQUENTLY ASKED QUESTIONS (LIGHT ACCORDION) ──── */}
-      <section className="py-16 lg:py-24 bg-[#FAF7F2] border-b border-amber-200/50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            tag="Help & FAQs"
-            title="Frequently Asked Questions"
-            subtitle="Everything you need to know about booking our taxi travels in Madurai."
-          />
-
-          <div className="space-y-3.5">
-            {[
-              {
-                q: "Where is Madurai Best Taxi Travels officially located?",
-                a: "Our registered travels office is located at No. 18, Kovalan Nagar Last, Muniyandi Street, Palanganatham, Madurai, Tamil Nadu, India — Pin Code: 625003. We provide pickup from anywhere in Madurai city, railway station, and airport."
-              },
-              {
-                q: "How do I book a cab from Madurai Airport (IXM)?",
-                a: "You can book directly via our online form, call us at +91 63825 13075, or send a WhatsApp message with your flight number. Our chauffeur will meet you right at the arrival terminal with your name board."
-              },
-              {
-                q: "Are outstation taxi rates fixed?",
-                a: "Our outstation pricing is completely clear and transparent. Standard outstation rentals are based on per-km rates with a standard 300 km/day minimum plus driver bata. Toll and parking are charged at actuals."
-              },
-              {
-                q: "Do you provide one-way drop taxis from Madurai?",
-                a: "Yes! We offer one-way drop taxis to Chennai, Bangalore, Coimbatore, Trichy, Rameswaram, and all major cities across South India."
-              },
-              {
-                q: "What vehicles do you offer for large families or groups?",
-                a: "We have Toyota Innova Crystas (7-8 seater), Maruti Ertigas, and luxury 12 to 20-seater Force Tempo Travellers ideal for family pilgrimages and weddings."
-              }
-            ].map((faq, idx) => (
-              <details
-                key={idx}
-                className="group bg-white border border-amber-200/60 rounded-2xl overflow-hidden cursor-pointer shadow-xs"
-              >
-                <summary className="flex items-center justify-between font-bold text-slate-900 p-5 select-none text-sm sm:text-base">
-                  <span>{faq.q}</span>
-                  <ChevronDown className="w-4 h-4 text-slate-500 transition-transform group-open:rotate-180 shrink-0 ml-3" />
-                </summary>
-                <div className="px-5 pb-5 text-slate-600 text-xs sm:text-sm leading-relaxed border-t border-slate-100 pt-3">
-                  {faq.a}
-                </div>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ── MODAL ─────────────────────────────────────────── */}
       {modalData.isOpen && (

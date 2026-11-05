@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Phone, Mail, MapPin, MessageSquare, ShieldCheck, ArrowRight } from 'lucide-react';
+import { Phone, Mail, MapPin, MessageSquare, ShieldCheck, ArrowRight, Plane } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Logo from '../../assets/new_logo.jpg';
 
@@ -9,72 +9,72 @@ const Footer = () => {
 
   const quickLinks = [
     { name: 'Home', path: '/' },
-    { name: 'About Us', path: '/about' },
-    { name: 'Vehicles', path: '/vehicles' },
+    { name: 'About', path: '/about' },
     { name: 'Packages', path: '/packages' },
+    { name: 'Fleet', path: '/vehicles' },
     { name: 'Gallery', path: '/gallery' },
     { name: 'Contact Us', path: '/contact' },
   ];
 
-  const services = [
+  const popularRoutes = [
     { name: 'Madurai Taxi Service', path: '/madurai-taxi-service' },
-    { name: 'Airport Pickup & Drop', path: '/madurai-airport-taxi' },
-    { name: 'South India Tour Packages', path: '/madurai-tour-packages' },
-    { name: 'Madurai to Rameswaram', path: '/madurai-to-rameswaram-taxi' },
-    { name: 'Madurai to Kodaikanal', path: '/madurai-to-kodaikanal-taxi' },
+    { name: 'Madurai Airport Taxi (IXM)', path: '/madurai-airport-taxi' },
+    { name: 'Madurai to Rameswaram Taxi', path: '/madurai-to-rameswaram-taxi' },
+    { name: 'Madurai to Kodaikanal Cabs', path: '/madurai-to-kodaikanal-taxi' },
     { name: 'Tempo Traveller Rental', path: '/tempo-traveller-rental-madurai' },
+    { name: 'South India Tour Packages', path: '/madurai-tour-packages' },
   ];
 
   const destinations = [
-    'Madurai Meenakshi Temple', 'Rameswaram & Dhanushkodi', 'Kodaikanal Hill Station', 'Ooty Tea Gardens', 'Kanyakumari Triveni', 'Munnar & Kerala'
+    'Madurai Meenakshi', 'Rameswaram', 'Kodaikanal', 'Ooty', 'Kanyakumari', 'Munnar', 'Kerala', 'Thanjavur'
   ];
 
   return (
-    <footer className="bg-[#0B1528] text-slate-300 relative overflow-hidden pt-16 lg:pt-20 pb-10 text-left font-['Plus_Jakarta_Sans',sans-serif] border-t border-amber-500/20">
+    <footer className="bg-[#0A192F] text-slate-300 relative overflow-hidden pt-16 pb-10 text-left font-['Plus_Jakarta_Sans',sans-serif] border-t border-slate-800">
       
-      {/* Top Accent Ribbon */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-700 via-amber-500 to-blue-700" />
+      {/* Top Yellow Ribbon matching reference yellow brand accent */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-[#FBBF24]" />
 
       <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 mb-14">
 
           {/* Brand & Address Column */}
           <div className="lg:col-span-4">
-            <div className="flex items-center gap-3.5 mb-5">
-              <div className="w-13 h-13 rounded-2xl overflow-hidden border border-amber-300/40 p-1 bg-white shadow-md">
-                <img src={Logo} alt="Madurai Best Taxi Travels" className="w-full h-full object-contain rounded-xl" />
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 rounded-xl overflow-hidden border border-amber-300/60 p-0.5 bg-white shadow-md">
+                <img src={Logo} alt="Madurai Best Taxi Travels" className="w-full h-full object-contain rounded-lg" />
               </div>
               <div>
                 <div className="font-['Outfit'] font-black text-white text-xl tracking-tight leading-none">
-                  MADURAI <span className="text-amber-400">BEST</span>
+                  Madurai Best
                 </div>
-                <div className="text-blue-400 text-[10px] font-extrabold tracking-[0.24em] uppercase mt-1">
-                  TAXI TRAVELS
+                <div className="text-[#FBBF24] text-[11px] font-bold uppercase tracking-wider mt-0.5">
+                  Taxi Travels • Palanganatham
                 </div>
               </div>
             </div>
 
             <p className="text-slate-400 text-xs leading-relaxed mb-6 max-w-sm">
-              Madurai’s trusted 24/7 taxi & tour travel operator. Experience transparent fares, sanitized vehicles, and respectful ghat-road certified drivers across South India.
+              South India’s reliable private cab and tour operator. Trusted for sanitized vehicles, punctual chauffeurs, and transparent tariffs.
             </p>
 
             {/* Official Business Details */}
-            <div className="space-y-3.5 text-xs text-slate-300">
+            <div className="space-y-3 text-xs text-slate-300">
               <div className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 text-amber-400 mt-0.5 shrink-0" />
+                <MapPin className="w-4 h-4 text-[#FBBF24] mt-0.5 shrink-0" />
                 <span className="leading-relaxed">
                   No. 18, Kovalan Nagar Last, Muniyandi Street, Palanganatham, Madurai, Tamil Nadu, India — <strong className="text-white">625003</strong>
                 </span>
               </div>
               <div className="flex items-center gap-3">
-                <Phone className="w-4 h-4 text-amber-400 shrink-0" />
-                <a href="tel:+916382513075" className="hover:text-amber-400 transition-colors font-bold text-white">
-                  +91 63825 13075 (24/7 Booking Desk)
+                <Phone className="w-4 h-4 text-[#FBBF24] shrink-0" />
+                <a href="tel:+916382513075" className="hover:text-[#FBBF24] transition-colors font-bold text-white">
+                  +91 63825 13075 (24/7 Hotline)
                 </a>
               </div>
               <div className="flex items-center gap-3">
-                <Mail className="w-4 h-4 text-amber-400 shrink-0" />
-                <a href="mailto:maduraibesttoursandtravels01@gmail.com" className="hover:text-amber-400 transition-colors">
+                <Mail className="w-4 h-4 text-[#FBBF24] shrink-0" />
+                <a href="mailto:maduraibesttoursandtravels01@gmail.com" className="hover:text-[#FBBF24] transition-colors">
                   maduraibesttoursandtravels01@gmail.com
                 </a>
               </div>
@@ -84,7 +84,7 @@ const Footer = () => {
             <div className="flex items-center gap-3 mt-6">
               <a
                 href="tel:6382513075"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition-all"
+                className="inline-flex items-center gap-2 bg-[#FBBF24] hover:bg-amber-500 text-slate-950 font-black px-4 py-2 rounded-full text-xs uppercase tracking-wider transition-all"
               >
                 <Phone className="w-3.5 h-3.5 fill-slate-950" /> Call Now
               </a>
@@ -92,7 +92,7 @@ const Footer = () => {
                 href="https://wa.me/916382513075"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition-all"
+                className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-full text-xs uppercase tracking-wider transition-all"
               >
                 <MessageSquare className="w-3.5 h-3.5" /> WhatsApp
               </a>
@@ -102,14 +102,14 @@ const Footer = () => {
           {/* Quick Links */}
           <div className="lg:col-span-2">
             <h4 className="font-['Outfit'] font-bold text-white text-sm uppercase tracking-wider mb-5">
-              Explore
+              Quick Links
             </h4>
             <ul className="space-y-2.5 text-xs">
               {quickLinks.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.path}
-                    className="text-slate-400 hover:text-white transition-colors flex items-center gap-1.5 py-0.5"
+                    className="text-slate-400 hover:text-[#FBBF24] transition-colors flex items-center gap-1.5 py-0.5"
                   >
                     <ArrowRight className="w-3 h-3 text-amber-400" />
                     <span>{t(link.name)}</span>
@@ -119,13 +119,13 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Services */}
+          {/* Popular Routes */}
           <div className="lg:col-span-3">
             <h4 className="font-['Outfit'] font-bold text-white text-sm uppercase tracking-wider mb-5">
-              Popular Routes & Cabs
+              Popular Routes
             </h4>
             <ul className="space-y-2.5 text-xs">
-              {services.map((svc) => (
+              {popularRoutes.map((svc) => (
                 <li key={svc.name}>
                   <Link
                     to={svc.path}
@@ -142,20 +142,20 @@ const Footer = () => {
           {/* South India Destinations & Google Rating */}
           <div className="lg:col-span-3">
             <h4 className="font-['Outfit'] font-bold text-white text-sm uppercase tracking-wider mb-5">
-              Tour Circuits
+              Destinations
             </h4>
             <div className="flex flex-wrap gap-1.5 mb-6">
               {destinations.map((dest, i) => (
                 <span
                   key={i}
-                  className="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 text-[11px] font-medium border border-slate-700/60"
+                  className="px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 text-[11px] font-medium border border-slate-700"
                 >
                   {dest}
                 </span>
               ))}
             </div>
 
-            {/* Google Verified Review Badge */}
+            {/* Google Rating Card */}
             <div className="p-4 rounded-2xl bg-slate-800/80 border border-slate-700">
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-amber-400 text-sm">★★★★★</span>

@@ -7,6 +7,7 @@ import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import Logo from './assets/new_logo.jpg';
 import FloatingButtons from './components/FloatingButtons';
+import MobileBottomNav from './components/MobileBottomNav';
 
 const AppContent = () => {
   const location = useLocation();
@@ -109,7 +110,7 @@ const AppContent = () => {
         )}
       </AnimatePresence>
 
-      <div className="min-h-screen flex flex-col bg-[#FAF7F2]">
+      <div className="min-h-screen flex flex-col bg-white pb-14 lg:pb-0">
         <main className="flex-grow">
           {isAdminRoute ? (
             <Routes>
@@ -120,7 +121,12 @@ const AppContent = () => {
             <DesktopLayout />
           )}
         </main>
-        {!isAdminRoute && <FloatingButtons />}
+        {!isAdminRoute && (
+          <>
+            <FloatingButtons />
+            <MobileBottomNav />
+          </>
+        )}
       </div>
     </div>
   );
