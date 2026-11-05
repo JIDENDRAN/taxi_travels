@@ -54,20 +54,20 @@ const Navbar = () => {
       <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         
         {/* Top Info Bar */}
-        <div className={`bg-slate-900 text-slate-300 text-xs py-2 px-4 transition-all duration-300 hidden md:block ${isScrolled ? 'h-0 py-0 opacity-0 overflow-hidden' : 'opacity-100'}`}>
+        <div className={`bg-[#0B1528] text-amber-100 text-xs py-2 px-4 transition-all duration-300 hidden md:block ${isScrolled ? 'h-0 py-0 opacity-0 overflow-hidden' : 'opacity-100'}`}>
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-6">
-              <span className="flex items-center gap-1.5 text-slate-300">
+              <span className="flex items-center gap-1.5 text-slate-200">
                 <MapPin className="w-3.5 h-3.5 text-amber-400" />
                 <span>Palanganatham, Madurai - 625003</span>
               </span>
-              <span className="flex items-center gap-1.5 text-slate-300">
+              <span className="flex items-center gap-1.5 text-slate-200">
                 <Clock className="w-3.5 h-3.5 text-emerald-400" />
-                <span>24/7 Outstation, Airport & City Transfers</span>
+                <span>24/7 Outstation & Madurai Airport (IXM) Pickup</span>
               </span>
             </div>
             <div className="flex items-center gap-4">
-              <span className="flex items-center gap-1 text-amber-400 font-semibold">
+              <span className="flex items-center gap-1 text-amber-400 font-bold">
                 <Award className="w-3.5 h-3.5" />
                 <span>#1 Rated Taxi Travels in Madurai</span>
               </span>
@@ -83,8 +83,8 @@ const Navbar = () => {
         <nav
           className={`transition-all duration-300 ${
             isScrolled
-              ? 'bg-white/95 backdrop-blur-md shadow-md border-b border-slate-200/80 py-3'
-              : 'bg-white/95 backdrop-blur-md border-b border-slate-100 py-3.5 shadow-xs'
+              ? 'bg-white/95 backdrop-blur-md shadow-md border-b border-amber-100 py-3'
+              : 'bg-white/95 backdrop-blur-md border-b border-slate-200/60 py-3.5 shadow-xs'
           }`}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -92,7 +92,7 @@ const Navbar = () => {
 
               {/* Brand Logo & Name */}
               <Link to="/" className="flex items-center gap-3.5 group flex-shrink-0">
-                <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-slate-200 p-0.5 bg-white shadow-xs group-hover:border-blue-600 transition-all">
+                <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-amber-300/70 p-0.5 bg-white shadow-xs group-hover:border-blue-600 transition-all">
                   <img src={Logo} alt="Madurai Best Taxi Travels" className="w-full h-full object-contain rounded-lg" />
                 </div>
                 <div className="flex flex-col text-left">
@@ -110,15 +110,15 @@ const Navbar = () => {
               </Link>
 
               {/* Desktop Navigation Links */}
-              <div className="hidden lg:flex items-center space-x-1 bg-slate-50 border border-slate-200/80 px-3 py-1.5 rounded-full">
+              <div className="hidden lg:flex items-center space-x-1 bg-[#FAF7F2] border border-amber-200/60 px-3 py-1.5 rounded-full">
                 {navLinks.map((link) => (
                   <Link
                     key={link.name}
                     to={link.path}
                     className={`relative px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all duration-200 rounded-full ${
                       isActive(link.path)
-                        ? 'text-white bg-blue-700 shadow-sm'
-                        : 'text-slate-600 hover:text-blue-700 hover:bg-slate-100/80'
+                        ? 'text-white bg-blue-700 shadow-xs'
+                        : 'text-slate-700 hover:text-blue-700 hover:bg-white'
                     }`}
                   >
                     {t(link.name)}
@@ -133,7 +133,7 @@ const Navbar = () => {
                 <div className="relative" ref={langRef}>
                   <button
                     onClick={() => setLangOpen(!langOpen)}
-                    className="flex items-center gap-1.5 text-slate-700 hover:text-slate-900 text-xs font-semibold px-3 py-2 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-all cursor-pointer"
+                    className="flex items-center gap-1.5 text-slate-700 hover:text-slate-900 text-xs font-semibold px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200/80 border border-slate-200 transition-all cursor-pointer"
                   >
                     <span>{languages.find(l => l.code === i18n.language)?.label || 'English'}</span>
                     <ChevronDown className={`w-3.5 h-3.5 transition-transform text-slate-500 ${langOpen ? 'rotate-180' : ''}`} />
@@ -167,7 +167,7 @@ const Navbar = () => {
                 {/* Direct Call Button */}
                 <a
                   href="tel:6382513075"
-                  className="hidden sm:inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs uppercase tracking-wider px-5 py-2.5 rounded-full transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer active:scale-95"
+                  className="hidden sm:inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black text-xs uppercase tracking-wider px-5 py-2.5 rounded-full transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer active:scale-95"
                 >
                   <Phone className="w-3.5 h-3.5 fill-slate-950" />
                   <span>Call 24/7</span>
@@ -205,7 +205,7 @@ const Navbar = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 lg:hidden"
+              className="fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-50 lg:hidden"
               onClick={() => setMobileOpen(false)}
             />
             <motion.div
@@ -213,11 +213,11 @@ const Navbar = () => {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-              className="fixed inset-y-0 right-0 w-80 bg-white border-l border-slate-200 z-50 lg:hidden flex flex-col shadow-2xl p-6"
+              className="fixed inset-y-0 right-0 w-80 bg-[#FAF7F2] border-l border-amber-200 z-50 lg:hidden flex flex-col shadow-2xl p-6"
             >
-              <div className="flex items-center justify-between pb-5 border-b border-slate-100">
+              <div className="flex items-center justify-between pb-5 border-b border-amber-200/60">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-lg border border-slate-200 p-0.5 overflow-hidden">
+                  <div className="w-9 h-9 rounded-lg border border-amber-300 p-0.5 overflow-hidden bg-white">
                     <img src={Logo} alt="Logo" className="w-full h-full object-contain" />
                   </div>
                   <div className="text-left font-['Outfit'] font-black text-sm text-slate-900">
@@ -236,8 +236,8 @@ const Navbar = () => {
                     to={link.path}
                     className={`block px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
                       isActive(link.path)
-                        ? 'bg-blue-50 text-blue-700 font-bold border border-blue-200/60'
-                        : 'text-slate-700 hover:bg-slate-50'
+                        ? 'bg-blue-700 text-white font-bold'
+                        : 'text-slate-700 hover:bg-white'
                     }`}
                   >
                     {t(link.name)}
@@ -245,8 +245,8 @@ const Navbar = () => {
                 ))}
               </div>
 
-              <div className="pt-4 border-t border-slate-100 space-y-3">
-                <div className="text-xs text-slate-500 leading-relaxed mb-2">
+              <div className="pt-4 border-t border-amber-200/60 space-y-3">
+                <div className="text-xs text-slate-600 leading-relaxed mb-2">
                   📍 No. 18, Kovalan Nagar Last, Muniyandi St, Palanganatham, Madurai - 625003
                 </div>
                 <a

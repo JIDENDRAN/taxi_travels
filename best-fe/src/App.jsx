@@ -26,9 +26,9 @@ const AppContent = () => {
   // Dynamic Route Titles
   useEffect(() => {
     const routeTitles = {
-      '/': 'Madurai Best Taxi Travels | Premium Taxi Service, Airport Transfers & South India Tours',
-      '/about': 'About Us | Madurai Best Taxi Travels | Trusted Cab Partner Since 2015',
-      '/vehicles': 'Our Fleet - Cabs, Innova & Tempo Travellers | Madurai Best Taxi Travels',
+      '/': 'Madurai Best Taxi Travels | Outstation Cabs, Airport Transfers & South India Tours',
+      '/about': 'About Us | Madurai Best Taxi Travels | Trusted Cab Operator in Palanganatham',
+      '/vehicles': 'Our Fleet - Innova Crysta, Etios & Tempo Travellers | Madurai Best Taxi Travels',
       '/packages': 'South India Tour Packages | Madurai Best Taxi Travels',
       '/gallery': 'Travel Memories & Fleet Gallery | Madurai Best Taxi Travels',
       '/contact': 'Contact Us 24/7 | Madurai Best Taxi Travels | Palanganatham, Madurai',
@@ -49,24 +49,21 @@ const AppContent = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 900);
+    const timer = setTimeout(() => setIsLoading(false), 800);
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <div className="app-wrapper font-['Plus_Jakarta_Sans',sans-serif] bg-white text-slate-900 min-h-screen">
+    <div className="app-wrapper font-['Plus_Jakarta_Sans',sans-serif] bg-[#FAF7F2] text-[#0F1D38] min-h-screen">
       <AnimatePresence mode="wait">
         {isLoading && (
           <motion.div
             key="preloader"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 0.98 }}
-            transition={{ duration: 0.5, ease: 'easeInOut' }}
-            className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white text-slate-900 select-none overflow-hidden"
+            transition={{ duration: 0.45, ease: 'easeInOut' }}
+            className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#FAF7F2] text-[#0F1D38] select-none overflow-hidden"
           >
-            {/* Luminous soft radial gradient */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(37,99,235,0.06)_0%,transparent_70%)] pointer-events-none" />
-
             <div className="relative flex flex-col items-center z-10">
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -74,14 +71,13 @@ const AppContent = () => {
                 transition={{ duration: 0.5, ease: 'easeOut' }}
                 className="relative mb-5"
               >
-                <div className="relative z-10 w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-white shadow-[0_15px_35px_rgba(15,23,42,0.12)] border border-slate-100 p-2 flex items-center justify-center overflow-hidden">
+                <div className="relative z-10 w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-white shadow-xl border border-amber-200 p-2 flex items-center justify-center overflow-hidden">
                   <img src={Logo} alt="Madurai Best Taxi Travels Logo" className="w-full h-full object-contain rounded-xl" />
                 </div>
-                {/* Soft rotating pulse ring */}
                 <motion.div
                   animate={{ rotate: 360 }}
                   transition={{ duration: 3.5, repeat: Infinity, ease: 'linear' }}
-                  className="absolute -inset-2.5 rounded-[1.8rem] border-2 border-transparent border-t-amber-500 border-r-blue-600/40 pointer-events-none"
+                  className="absolute -inset-2.5 rounded-[1.8rem] border-2 border-transparent border-t-amber-500 border-r-blue-600/50 pointer-events-none"
                 />
               </motion.div>
 
@@ -94,19 +90,18 @@ const AppContent = () => {
                 <span className="text-[10px] font-extrabold uppercase tracking-[0.28em] text-blue-700 mb-1">
                   TAXI TRAVELS
                 </span>
-                <h2 className="font-['Outfit'] font-black text-2xl tracking-wide text-slate-900">
+                <h2 className="font-['Outfit'] font-black text-2xl tracking-wide text-[#0F1D38]">
                   MADURAI <span className="text-amber-500">BEST</span>
                 </h2>
                 <p className="text-xs text-slate-500 font-medium mt-1">Palanganatham, Madurai • Official Travels</p>
               </motion.div>
 
-              {/* Modern progress indicator */}
-              <div className="mt-6 w-36 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+              <div className="mt-6 w-36 h-1.5 bg-slate-200/60 rounded-full overflow-hidden">
                 <motion.div
                   initial={{ x: '-100%' }}
                   animate={{ x: '100%' }}
-                  transition={{ duration: 1.1, repeat: Infinity, ease: 'easeInOut' }}
-                  className="w-1/2 h-full bg-gradient-to-r from-blue-600 via-amber-500 to-blue-600 rounded-full"
+                  transition={{ duration: 1, repeat: Infinity, ease: 'easeInOut' }}
+                  className="w-1/2 h-full bg-gradient-to-r from-blue-700 via-amber-500 to-blue-700 rounded-full"
                 />
               </div>
             </div>
@@ -114,7 +109,7 @@ const AppContent = () => {
         )}
       </AnimatePresence>
 
-      <div className="min-h-screen flex flex-col bg-white">
+      <div className="min-h-screen flex flex-col bg-[#FAF7F2]">
         <main className="flex-grow">
           {isAdminRoute ? (
             <Routes>

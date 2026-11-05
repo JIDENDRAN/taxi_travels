@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Phone, Mail, MapPin, MessageSquare, ShieldCheck, ArrowRight, Heart } from 'lucide-react';
+import { Phone, Mail, MapPin, MessageSquare, ShieldCheck, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Logo from '../../assets/new_logo.jpg';
 
@@ -30,10 +30,10 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-slate-900 text-slate-300 relative overflow-hidden pt-16 lg:pt-20 pb-10 text-left font-['Plus_Jakarta_Sans',sans-serif] border-t border-slate-800">
+    <footer className="bg-[#0B1528] text-slate-300 relative overflow-hidden pt-16 lg:pt-20 pb-10 text-left font-['Plus_Jakarta_Sans',sans-serif] border-t border-amber-500/20">
       
       {/* Top Accent Ribbon */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-amber-500 to-blue-600" />
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-700 via-amber-500 to-blue-700" />
 
       <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 mb-16">
@@ -41,8 +41,8 @@ const Footer = () => {
           {/* Brand & Address Column */}
           <div className="lg:col-span-4">
             <div className="flex items-center gap-3.5 mb-5">
-              <div className="w-13 h-13 rounded-xl overflow-hidden border border-slate-700 p-1 bg-white shadow-md">
-                <img src={Logo} alt="Madurai Best Taxi Travels" className="w-full h-full object-contain rounded-lg" />
+              <div className="w-13 h-13 rounded-2xl overflow-hidden border border-amber-300/40 p-1 bg-white shadow-md">
+                <img src={Logo} alt="Madurai Best Taxi Travels" className="w-full h-full object-contain rounded-xl" />
               </div>
               <div>
                 <div className="font-['Outfit'] font-black text-white text-xl tracking-tight leading-none">
@@ -84,7 +84,7 @@ const Footer = () => {
             <div className="flex items-center gap-3 mt-6">
               <a
                 href="tel:6382513075"
-                className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition-all"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition-all"
               >
                 <Phone className="w-3.5 h-3.5 fill-slate-950" /> Call Now
               </a>
@@ -142,7 +142,7 @@ const Footer = () => {
           {/* South India Destinations & Google Rating */}
           <div className="lg:col-span-3">
             <h4 className="font-['Outfit'] font-bold text-white text-sm uppercase tracking-wider mb-5">
-              Tour Destinations
+              Tour Circuits
             </h4>
             <div className="flex flex-wrap gap-1.5 mb-6">
               {destinations.map((dest, i) => (
@@ -156,10 +156,10 @@ const Footer = () => {
             </div>
 
             {/* Google Verified Review Badge */}
-            <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700">
+            <div className="p-4 rounded-2xl bg-slate-800/80 border border-slate-700">
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-amber-400 text-sm">★★★★★</span>
-                <span className="text-white font-bold text-xs">4.9 / 5.0</span>
+                <span className="text-white font-bold text-xs">4.9 / 5.0 Rating</span>
               </div>
               <p className="text-[11px] text-slate-400 leading-tight">
                 Over 50,000+ satisfied passengers, tourists & temple pilgrims served since 2015.
