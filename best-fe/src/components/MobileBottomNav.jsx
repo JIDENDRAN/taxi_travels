@@ -29,9 +29,8 @@ const MobileBottomNav = () => {
             <Link
               key={item.name}
               to={item.path}
-              className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl transition-all ${
-                active ? 'text-[#FBBF24] font-black' : 'text-slate-400 hover:text-white'
-              }`}
+              className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl transition-all ${active ? 'text-[#FBBF24] font-black' : 'text-slate-400 hover:text-white'
+                }`}
             >
               <Icon className={`w-4 h-4 mb-1 ${active ? 'text-[#FBBF24]' : 'text-slate-400'}`} />
               <span className="text-[10px] tracking-wide">{item.name}</span>
@@ -44,3 +43,5 @@ const MobileBottomNav = () => {
 };
 
 export default MobileBottomNav;
+
+

@@ -40,17 +40,17 @@ const Contact = () => {
     <div className="bg-white text-slate-900 min-h-screen font-['Plus_Jakarta_Sans',sans-serif] text-left">
 
       {/* ── HERO ──────────────────────────────── */}
-      <section className="relative h-72 sm:h-80 pt-24 flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#EBF5FF] to-white border-b border-slate-100">
+      <section className="relative h-72 sm:h-80 pt-20 flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#DDF0FF] via-[#EDF6FF] to-white border-b border-slate-100">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="font-['Dancing_Script'] text-5xl sm:text-6xl text-blue-900 font-bold mb-2">
+            <div className="font-script text-4xl sm:text-5xl text-[#0B2545] font-semibold mb-1">
               Contact Us
-            </h1>
-            <p className="text-sm sm:text-base text-slate-600 font-semibold tracking-wide">
+            </div>
+            <p className="text-sm sm:text-base text-slate-600 font-medium tracking-wide">
               24/7 Booking Desk & Travel Inquiries • Palanganatham, Madurai
             </p>
           </motion.div>

@@ -1,19 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Outfit:wght@300;400;500;600;700;800;900&family=Dancing+Script:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Kaushan+Script&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,400..800&family=Satisfy&display=swap');
 
 @import "tailwindcss";
 
-/* ─── NITHAMUDAYAR-STYLE TRAVEL PORTAL DESIGN TOKENS ────── */
+/* ─── COLOR PALETTE (MATCHING USER REFERENCE DESIGN) ──── */
 :root {
   --bg-main: #FFFFFF;
   --bg-slate: #F8FAFC;
+  --bg-card: #FFFFFF;
   --brand-navy: #0A192F;
-  --brand-navy-light: #1E293B;
-  --brand-blue: #1D4ED8;
+  --brand-blue: #0F325E;
+  --brand-sky: #0284C7;
   --brand-yellow: #FBBF24;
-  --brand-yellow-dark: #F59E0B;
-  --brand-accent: #0284C7;
-  --text-dark: #0F172A;
-  --text-muted: #64748B;
+  --brand-yellow-hover: #F59E0B;
+  --text-dark: #0B192C;
+  --text-muted: #475569;
+  --text-subtle: #64748B;
+  --border-light: #E2E8F0;
 }
 
 * {
@@ -27,53 +29,72 @@ html {
 
 body {
   background-color: #FFFFFF;
-  color: #0F172A;
+  color: #0B192C;
   font-family: 'Plus Jakarta Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
 /* ─── TYPOGRAPHY ─────────────────────────────────────────── */
+.font-heading {
+  font-family: 'Outfit', sans-serif;
+}
+
 .font-script {
-  font-family: 'Dancing Script', cursive;
+  font-family: 'Satisfy', 'Dancing Script', 'Caveat', cursive;
 }
 
-.font-outfit {
-  font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+/* ─── REFERENCE THEME WIDGETS & BUTTONS ──────────────────── */
+.pill-active {
+  background-color: #FBBF24;
+  color: #0A192F;
+  font-weight: 700;
+  border-radius: 9999px;
 }
 
-/* ─── BUTTONS & PILLS FROM REFERENCE ─────────────────────── */
-.btn-yellow {
-  background: #FBBF24;
-  color: #0F172A;
+.btn-yellow-pill {
+  background-color: #FBBF24;
+  color: #0A192F;
   font-weight: 700;
   border-radius: 9999px;
   transition: all 0.2s ease-in-out;
+  box-shadow: 0 4px 14px -2px rgba(251, 191, 36, 0.4);
 }
 
-.btn-yellow:hover {
-  background: #F59E0B;
+.btn-yellow-pill:hover {
+  background-color: #F59E0B;
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+  box-shadow: 0 6px 20px -2px rgba(245, 158, 11, 0.5);
 }
 
-.btn-yellow:active {
-  transform: translateY(0);
+.destination-card {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ─── CARDS & SHADOWS ────────────────────────────────────── */
-.travel-card {
-  background: #FFFFFF;
-  border-radius: 1.25rem;
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.02);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+.destination-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 35px -10px rgba(10, 25, 47, 0.18);
 }
 
-.travel-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 35px -10px rgba(15, 23, 42, 0.12);
-  border-color: rgba(251, 191, 36, 0.6);
+.destination-card:hover img {
+  transform: scale(1.08);
+}
+
+.curved-shape {
+  border-radius: 60% 40% 50% 50% / 45% 55% 45% 55%;
+}
+
+.route-chip {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 0.75rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.route-chip:hover {
+  background: #EFF6FF;
+  border-color: #3B82F6;
+  transform: translateY(-2px);
 }
 
 /* ─── SCROLLBAR ──────────────────────────────────────────── */

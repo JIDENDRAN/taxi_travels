@@ -45,19 +45,24 @@ const Gallery = () => {
     <div className="bg-white min-h-screen text-[#0F172A] font-['Plus_Jakarta_Sans',sans-serif] text-left">
 
       {/* ── 1. GALLERY HERO BANNER (MATCHING REFERENCE GALLERY PAGE) ── */}
-      <section className="relative h-72 sm:h-80 pt-24 flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#EBF5FF] to-white border-b border-slate-100">
+      <section className="relative h-72 sm:h-80 pt-20 flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#DDF0FF] via-[#EDF6FF] to-white border-b border-slate-100">
+        
+        {/* Decorative Camera in Background matching reference */}
+        <div className="absolute top-12 left-10 sm:left-24 text-blue-600/20 transform -rotate-12">
+          <Camera className="w-16 h-16" />
+        </div>
+
         <div className="relative z-10 text-center px-4 max-w-3xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            {/* Script Title matching reference: "Our Gallery" */}
-            <h1 className="font-['Dancing_Script'] text-5xl sm:text-6xl text-blue-900 font-bold mb-2">
+            {/* Script Heading (Matching Mockup) */}
+            <div className="font-script text-4xl sm:text-5xl text-[#0B2545] font-semibold mb-1">
               Our Gallery
-            </h1>
-            {/* Subtitle matching reference: "Capturing Moments, Creating Memories" */}
-            <p className="text-sm sm:text-base text-slate-600 font-semibold tracking-wide">
+            </div>
+            <p className="text-sm sm:text-base text-slate-600 font-medium tracking-wide">
               Capturing Moments, Creating Memories
             </p>
           </motion.div>
@@ -111,10 +116,13 @@ const Gallery = () => {
 
       {/* ── 4. BOTTOM NAVY WAVE BAR (MATCHING REFERENCE) ── */}
       <section className="bg-[#0A192F] text-white py-10 text-center relative overflow-hidden">
-        <div className="max-w-4xl mx-auto px-4">
-          <span className="font-['Dancing_Script'] text-3xl sm:text-4xl text-[#FBBF24] block mb-1">
-            Travel • Explore • Remember
-          </span>
+        <div className="max-w-4xl mx-auto px-4 flex flex-col items-center justify-center">
+          <div className="flex items-center gap-2 text-[#FBBF24] mb-1">
+            <Camera className="w-5 h-5" />
+            <h3 className="font-['Outfit'] font-black text-xl sm:text-2xl text-white">
+              Travel • Explore • Remember
+            </h3>
+          </div>
           <p className="text-xs text-slate-300">
             Book your next road journey with Madurai Best Taxi Travels.
           </p>

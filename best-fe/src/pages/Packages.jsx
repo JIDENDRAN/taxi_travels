@@ -38,10 +38,10 @@ const Packages = () => {
     <div className="bg-white min-h-screen text-[#0F172A] font-['Plus_Jakarta_Sans',sans-serif] text-left">
 
       {/* ── 1. PACKAGES HERO BANNER (MATCHING REFERENCE PACKAGES PAGE) ── */}
-      <section className="relative h-72 sm:h-80 pt-24 flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#EBF5FF] to-white border-b border-slate-100">
+      <section className="relative h-72 sm:h-80 pt-20 flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#DDF0FF] via-[#EDF6FF] to-white border-b border-slate-100">
         
-        {/* Decorative Airplane Icon in Sky matching reference */}
-        <div className="absolute top-16 right-12 sm:right-24 text-blue-700/30 transform rotate-12">
+        {/* Decorative Airplane in Sky matching reference */}
+        <div className="absolute top-12 right-12 sm:right-28 text-blue-600/30 transform rotate-12">
           <Plane className="w-16 h-16" />
         </div>
 
@@ -51,12 +51,11 @@ const Packages = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            {/* Script Heading matching reference: "Our Travel Packages" */}
-            <h1 className="font-['Dancing_Script'] text-5xl sm:text-6xl text-blue-900 font-bold mb-2">
+            {/* Script Heading (Matching Mockup) */}
+            <div className="font-script text-4xl sm:text-5xl text-[#0B2545] font-semibold mb-1">
               Our Travel Packages
-            </h1>
-            {/* Subtitle matching reference: "Explore. Experience. Enjoy." */}
-            <p className="text-sm sm:text-base text-slate-600 font-semibold tracking-wide">
+            </div>
+            <p className="text-sm sm:text-base text-slate-600 font-medium tracking-wide">
               Explore. Experience. Enjoy.
             </p>
           </motion.div>
@@ -201,19 +200,18 @@ const Packages = () => {
       <section className="bg-[#0A192F] text-white py-12 text-center relative overflow-hidden">
         <div className="max-w-4xl mx-auto px-4 relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="text-center sm:text-left">
-            <span className="font-['Dancing_Script'] text-3xl sm:text-4xl text-[#FBBF24] block mb-1">
-              Your Next Adventure Awaits...
-            </span>
+            <div className="font-script text-3xl sm:text-4xl text-[#FBBF24] mb-1">
+              Your Next Adventure Awaits... ✈
+            </div>
             <p className="text-xs text-slate-300">
-              Personalized itineraries for family vacations, divine temple tours, and hill escapes.
+              Personalized itineraries for family vacations, divine temple tours, and hill escapes across South India.
             </p>
           </div>
 
           <div className="flex items-center gap-3">
-            <Plane className="w-8 h-8 text-amber-400 rotate-45 hidden sm:inline" />
             <a
               href="tel:6382513075"
-              className="bg-[#FBBF24] hover:bg-amber-500 text-slate-950 font-black px-6 py-2.5 rounded-full text-xs uppercase tracking-wider transition-all"
+              className="btn-yellow-pill px-7 py-3 text-xs uppercase tracking-wider transition-all shadow-md cursor-pointer"
             >
               Book Now
             </a>
