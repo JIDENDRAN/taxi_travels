@@ -6,7 +6,7 @@ const TempoTravellerRentalMadurai = () => {
     {
       heading: 'Premium Tempo Traveller Rental in Madurai',
       content: `
-        <p>Planning a group trip with extended family, friends, or colleagues? A <strong>Tempo Traveller rental in Madurai</strong> is the most comfortable and cost-effective way to travel together. Madurai Best Tours and Travels offers a fleet of modern, spacious, and impeccably maintained Tempo Travellers and Force Urbanias.</p>
+        <p>Planning a group trip with extended family, friends, or colleagues? A <strong>Tempo Traveller rental in Madurai</strong> is the most comfortable and cost-effective way to travel together. Madurai Best Taxi Travels offers a fleet of modern, spacious, and impeccably maintained Tempo Travellers and Force Urbanias.</p>
         <p>Traveling together means no one gets left behind in a separate car. You get to share the conversations, the music, and the memories while our professional driver handles the navigation and traffic.</p>
       `
     },
@@ -25,7 +25,7 @@ const TempoTravellerRentalMadurai = () => {
     {
       heading: 'Why Book a Tempo Traveller With Us?',
       content: `
-        <p>When you book a Tempo Traveller with Madurai Best Tours and Travels, you are guaranteed a premium experience:</p>
+        <p>When you book a Tempo Traveller with Madurai Best Taxi Travels, you are guaranteed a premium experience:</p>
         <ul class="list-disc pl-5 space-y-2 mt-4">
           <li><strong>Spacious Interiors:</strong> High roofs allowing passengers to stand and move comfortably, along with deep push-back reclining seats.</li>
           <li><strong>Entertainment Systems:</strong> Premium music and video systems to keep the group entertained during long outstation drives.</li>

@@ -6,7 +6,7 @@ const MaduraiTaxiService = () => {
     {
       heading: 'Reliable and Affordable Taxi Service in Madurai',
       content: `
-        <p>When you are looking for the best <strong>Madurai taxi service</strong>, Madurai Best Tours and Travels stands out as the most trusted choice. We offer a diverse fleet of well-maintained vehicles, professional drivers, and an unwavering commitment to your safety and comfort.</p>
+        <p>When you are looking for the best <strong>Madurai taxi service</strong>, Madurai Best Taxi Travels stands out as the most trusted choice. We offer a diverse fleet of well-maintained vehicles, professional drivers, and an unwavering commitment to your safety and comfort.</p>
         <p>Whether you need a quick drop within the city, a full day of local sightseeing, or a long-distance outstation trip across South India, our comprehensive cab booking services are tailored to meet all your travel requirements at highly competitive prices.</p>
       `
     },

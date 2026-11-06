@@ -32,60 +32,60 @@ const routes = [
 // Define static SEO metadata for each route
 const routeMetadata = {
   '/': {
-    title: 'Madurai Best Tours and Travels | Taxi Service, Airport Pickup & Tour Packages',
-    description: 'Madurai Best Tours and Travels offers taxi services, airport pickup and drop, outstation cabs, Tempo Traveller rental, Madurai sightseeing, Rameswaram tour packages, Kodaikanal tours, Ooty tours and South India holiday packages.'
+    title: 'Madurai Best Taxi Travels | Taxi Service, Airport Pickup & Tour Packages',
+    description: 'Madurai Best Taxi Travels offers taxi services, airport pickup and drop, outstation cabs, Tempo Traveller rental, Madurai sightseeing, Rameswaram tour packages, Kodaikanal tours, Ooty tours and South India holiday packages.'
   },
   '/about': {
-    title: 'About Us | Madurai Best Tours and Travels | South India Taxi',
-    description: 'Learn more about Madurai Best Tours and Travels (known also as Madurai Best Travels and Madurai Best Tours). We are your trusted travel partner in South India since 2015, providing premium taxi services, outstation cabs, and custom tours.'
+    title: 'About Us | Madurai Best Taxi Travels | South India Taxi',
+    description: 'Learn more about Madurai Best Taxi Travels (known also as Madurai Best Travels and Madurai Best Tours). We are your trusted travel partner in South India since 2015, providing premium taxi services, outstation cabs, and custom tours.'
   },
   '/vehicles': {
-    title: 'Our Premium Fleet - Cabs & Tempo Travellers | Madurai Best Tours and Travels',
-    description: 'Choose from our wide range of well-maintained vehicles including Swift Dzire, Innova Crysta, Tempo Traveller, and Urbania for a comfortable ride in Madurai with Madurai Best Tours and Travels.'
+    title: 'Our Premium Fleet - Cabs & Tempo Travellers | Madurai Best Taxi Travels',
+    description: 'Choose from our wide range of well-maintained vehicles including Swift Dzire, Innova Crysta, Tempo Traveller, and Urbania for a comfortable ride in Madurai with Madurai Best Taxi Travels.'
   },
   '/packages': {
-    title: 'South India Tour Packages | Madurai Best Tours and Travels',
-    description: 'Book customized tour packages for Madurai local sightseeing, Rameswaram, Kodaikanal, Ooty, Munnar, Kanyakumari, and Cochin with expert guides from Madurai Best Tours and Travels.'
+    title: 'South India Tour Packages | Madurai Best Taxi Travels',
+    description: 'Book customized tour packages for Madurai local sightseeing, Rameswaram, Kodaikanal, Ooty, Munnar, Kanyakumari, and Cochin with expert guides from Madurai Best Taxi Travels.'
   },
   '/gallery': {
-    title: 'Our Journey Gallery | Madurai Best Tours and Travels',
-    description: 'View glimpses of beautiful destinations, happy moments, and tour experiences with our travelers across South India - Madurai Best Tours and Travels.'
+    title: 'Our Journey Gallery | Madurai Best Taxi Travels',
+    description: 'View glimpses of beautiful destinations, happy moments, and tour experiences with our travelers across South India - Madurai Best Taxi Travels.'
   },
   '/contact': {
-    title: 'Contact Us | Madurai Best Tours and Travels | 24/7 Cab Booking',
-    description: 'Get in touch with Madurai Best Tours and Travels. Contact us 24/7 for booking cabs, tempo travellers, and custom South India tour packages.'
+    title: 'Contact Us | Madurai Best Taxi Travels | 24/7 Cab Booking',
+    description: 'Get in touch with Madurai Best Taxi Travels. Contact us 24/7 for booking cabs, tempo travellers, and custom South India tour packages.'
   },
   '/privacy-policy': {
-    title: 'Privacy Policy | Madurai Best Tours and Travels',
-    description: 'Read the privacy policy of Madurai Best Tours and Travels regarding user data and booking details.'
+    title: 'Privacy Policy | Madurai Best Taxi Travels',
+    description: 'Read the privacy policy of Madurai Best Taxi Travels regarding user data and booking details.'
   },
   '/terms-and-conditions': {
-    title: 'Terms & Conditions | Madurai Best Tours and Travels',
-    description: 'Review the terms and conditions for booking taxis, cabs, and tour packages with Madurai Best Tours and Travels.'
+    title: 'Terms & Conditions | Madurai Best Taxi Travels',
+    description: 'Review the terms and conditions for booking taxis, cabs, and tour packages with Madurai Best Taxi Travels.'
   },
   '/madurai-taxi-service': {
-    title: 'Madurai Taxi Service & Cab Booking | Madurai Best Tours and Travels',
-    description: 'Book reliable and affordable Madurai taxi service for local sightseeing, outstation drops, and airport transfers with premium vehicles from Madurai Best Tours and Travels.'
+    title: 'Madurai Taxi Service & Cab Booking | Madurai Best Taxi Travels',
+    description: 'Book reliable and affordable Madurai taxi service for local sightseeing, outstation drops, and airport transfers with premium vehicles from Madurai Best Taxi Travels.'
   },
   '/madurai-airport-taxi': {
-    title: 'Madurai Airport Taxi & Transfers | Madurai Best Tours and Travels',
-    description: 'Pre-book your Madurai Airport taxi with Madurai Best Tours and Travels for punctual, 24/7 pickup and drop services. Avoid waiting with our premium airport cab service.'
+    title: 'Madurai Airport Taxi & Transfers | Madurai Best Taxi Travels',
+    description: 'Pre-book your Madurai Airport taxi with Madurai Best Taxi Travels for punctual, 24/7 pickup and drop services. Avoid waiting with our premium airport cab service.'
   },
   '/madurai-tour-packages': {
-    title: 'Best Madurai Tour Packages | Madurai Best Tours and Travels',
-    description: 'Customized Madurai tour packages from Madurai Best Tours and Travels covering Meenakshi Temple, Rameswaram, Kodaikanal, and all major South Indian destinations.'
+    title: 'Best Madurai Tour Packages | Madurai Best Taxi Travels',
+    description: 'Customized Madurai tour packages from Madurai Best Taxi Travels covering Meenakshi Temple, Rameswaram, Kodaikanal, and all major South Indian destinations.'
   },
   '/madurai-to-rameswaram-taxi': {
-    title: 'Madurai to Rameswaram Taxi & Cabs | Madurai Best Tours and Travels',
-    description: 'Book a safe and comfortable Madurai to Rameswaram taxi. We offer affordable one-way drops and comprehensive round-trip packages with Madurai Best Tours and Travels.'
+    title: 'Madurai to Rameswaram Taxi & Cabs | Madurai Best Taxi Travels',
+    description: 'Book a safe and comfortable Madurai to Rameswaram taxi. We offer affordable one-way drops and comprehensive round-trip packages with Madurai Best Taxi Travels.'
   },
   '/madurai-to-kodaikanal-taxi': {
-    title: 'Madurai to Kodaikanal Taxi Service | Madurai Best Tours and Travels',
-    description: 'Enjoy a scenic drive with our Madurai to Kodaikanal taxi service from Madurai Best Tours and Travels. Expert mountain drivers for a safe journey to the hill station.'
+    title: 'Madurai to Kodaikanal Taxi Service | Madurai Best Taxi Travels',
+    description: 'Enjoy a scenic drive with our Madurai to Kodaikanal taxi service from Madurai Best Taxi Travels. Expert mountain drivers for a safe journey to the hill station.'
   },
   '/tempo-traveller-rental-madurai': {
-    title: 'Tempo Traveller Rental in Madurai | Madurai Best Tours and Travels',
-    description: 'Book spacious 12, 14, and 18-seater Tempo Travellers or premium Force Urbanias in Madurai for comfortable group and family travel with Madurai Best Tours and Travels.'
+    title: 'Tempo Traveller Rental in Madurai | Madurai Best Taxi Travels',
+    description: 'Book spacious 12, 14, and 18-seater Tempo Travellers or premium Force Urbanias in Madurai for comfortable group and family travel with Madurai Best Taxi Travels.'
   }
 };
 

@@ -17,7 +17,7 @@ const Footer = () => {
               </span>
               <span className="leading-tight">
                 <span className="block font-display font-semibold text-xl text-white">Madurai Best</span>
-                <span className="block text-[11px] font-semibold tracking-[0.12em] uppercase text-gold-300">Tours &amp; Travels</span>
+                <span className="block text-[11px] font-semibold tracking-[0.12em] uppercase text-gold-300">Taxi Travels</span>
               </span>
             </Link>
             <p className="mt-5 text-sm leading-relaxed text-ink-300 max-w-sm">

@@ -6,7 +6,7 @@ const MaduraiTourPackages = () => {
     {
       heading: 'Customized Madurai Tour Packages',
       content: `
-        <p>Explore the cultural capital of Tamil Nadu and its breathtaking surroundings with our expertly crafted <strong>Madurai tour packages</strong>. Madurai Best Tours and Travels specializes in creating unforgettable itineraries that cover the finest temples, heritage sites, and hill stations in South India.</p>
+        <p>Explore the cultural capital of Tamil Nadu and its breathtaking surroundings with our expertly crafted <strong>Madurai tour packages</strong>. Madurai Best Taxi Travels specializes in creating unforgettable itineraries that cover the finest temples, heritage sites, and hill stations in South India.</p>
         <p>Whether you are planning a short 1-day local sightseeing trip or a comprehensive 7-day South India temple tour, our customizable packages are designed to provide maximum value, comfort, and convenience. Leave the route planning, driving, and logistics to us while you focus on making memories with your family.</p>
       `
     },

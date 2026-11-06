@@ -43,7 +43,7 @@ const Navbar = () => {
                 Madurai Best
               </span>
               <span className={`block text-[11px] font-semibold tracking-[0.12em] uppercase ${solid ? 'text-gold-600' : 'text-gold-300'}`}>
-                Tours &amp; Travels
+                Taxi Travels
               </span>
             </span>
           </Link>

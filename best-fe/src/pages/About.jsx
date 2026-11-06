@@ -26,7 +26,7 @@ const About = () => (
       <div className="container-x grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
         <div>
           <p className="eyebrow">Our story</p>
-          <h2 className="h-display text-3xl sm:text-4xl text-ink-900 mt-3">Welcome to Madurai Best Tours &amp; Travels</h2>
+          <h2 className="h-display text-3xl sm:text-4xl text-ink-900 mt-3">Welcome to Madurai Best Taxi Travels</h2>
           <div className="mt-6 space-y-4 text-ink-700 text-lg leading-relaxed">
             <p>
               We are a trusted travel partner dedicated to making your journeys safe, comfortable and memorable. From our base in Palanganatham, Madurai, we run airport transfers, outstation cabs, Tempo Traveller hire and complete tour packages across South India.

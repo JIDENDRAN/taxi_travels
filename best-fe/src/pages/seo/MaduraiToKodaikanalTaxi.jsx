@@ -6,7 +6,7 @@ const MaduraiToKodaikanalTaxi = () => {
     {
       heading: 'Safe and Comfortable Madurai to Kodaikanal Taxi',
       content: `
-        <p>Escape the heat of the plains and journey up to the "Princess of Hill Stations" with our premium <strong>Madurai to Kodaikanal taxi</strong> service. Madurai Best Tours and Travels provides safe, comfortable, and highly reliable cab services for this scenic uphill journey.</p>
+        <p>Escape the heat of the plains and journey up to the "Princess of Hill Stations" with our premium <strong>Madurai to Kodaikanal taxi</strong> service. Madurai Best Taxi Travels provides safe, comfortable, and highly reliable cab services for this scenic uphill journey.</p>
         <p>Driving on hill station ghat roads requires immense skill and experience. Our drivers are specially trained for mountain driving, ensuring your family feels completely safe while you sit back and enjoy the spectacular views of the Western Ghats.</p>
       `
     },

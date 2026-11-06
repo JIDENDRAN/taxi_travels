@@ -6,7 +6,7 @@ const MaduraiToRameswaramTaxi = () => {
     {
       heading: 'Book a Madurai to Rameswaram Taxi',
       content: `
-        <p>Planning a spiritual journey to the sacred island of Rameswaram? Booking a reliable <strong>Madurai to Rameswaram taxi</strong> with Madurai Best Tours and Travels is the most convenient and comfortable way to travel. Thousands of pilgrims undertake this journey every year to visit the Ramanathaswamy Temple and bathe in its holy theerthams.</p>
+        <p>Planning a spiritual journey to the sacred island of Rameswaram? Booking a reliable <strong>Madurai to Rameswaram taxi</strong> with Madurai Best Taxi Travels is the most convenient and comfortable way to travel. Thousands of pilgrims undertake this journey every year to visit the Ramanathaswamy Temple and bathe in its holy theerthams.</p>
         <p>We offer specialized one-way drops as well as comprehensive 1-day or 2-day round-trip packages from Madurai to Rameswaram. Our drivers are highly experienced with this specific route and will guide you to all the essential spiritual and scenic spots along the way.</p>
       `
     },

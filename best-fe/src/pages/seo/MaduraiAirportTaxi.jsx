@@ -6,7 +6,7 @@ const MaduraiAirportTaxi = () => {
     {
       heading: 'Premium Madurai Airport Taxi Service',
       content: `
-        <p>Arriving at or departing from Madurai Airport (IXM)? Madurai Best Tours and Travels provides seamless, on-time <strong>Madurai airport taxi</strong> and cab services. We understand that airport transfers require punctuality and reliability above all else, which is why our airport fleet is available 24/7 to ensure you never miss a flight.</p>
+        <p>Arriving at or departing from Madurai Airport (IXM)? Madurai Best Taxi Travels provides seamless, on-time <strong>Madurai airport taxi</strong> and cab services. We understand that airport transfers require punctuality and reliability above all else, which is why our airport fleet is available 24/7 to ensure you never miss a flight.</p>
         <p>Avoid the hassle of waiting in long queues for unreliable app-based cabs. Pre-book your airport transfer with us, and our professional driver will be waiting for you at the arrivals gate with a name-board, ready to assist you with your luggage.</p>
       `
     },
