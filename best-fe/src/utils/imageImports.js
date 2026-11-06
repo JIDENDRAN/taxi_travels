@@ -1,23 +1,34 @@
 /* src/utils/imageImports.js */
-// Centralized image imports for the Madurai Best Tours and Travels project
-// This file provides mapping objects to resolve image names to imported modules.
-// It enables static imports while allowing dynamic lookup based on image filename.
+// Resolves image names stored in the database (cars.image, cars.bgImage, packages.image)
+// to bundled, optimised WebP assets. Uploaded images (/uploads/...) and absolute URLs
+// pass through unchanged.
 
 import API_BASE_URL from '../apiConfig.js';
 
-// Vehicle images
-import InnovaImg from '../assets/innova_crysta-removebg-preview.png';
-import SedanImg from '../assets/sedan_cab-removebg-preview.png';
-import SuvImg from '../assets/suv-removebg-preview.png';
-import EtiosImg from '../assets/toyota_etios-removebg-preview.png';
-import TravellerImg from '../assets/trmpo_traveller-removebg-preview.png';
+import InnovaImg from '../assets/opt/innova-cutout.webp';
+import SedanImg from '../assets/opt/sedan-cutout.webp';
+import SuvImg from '../assets/opt/suv-cutout.webp';
+import EtiosImg from '../assets/opt/etios-cutout.webp';
+import TravellerImg from '../assets/opt/tempo-cutout.webp';
 
-import Car1 from '../assets/car 1.jpeg';
-import Car2 from '../assets/car 2.jpeg';
-import Car3 from '../assets/car 3.png';
-import Car4 from '../assets/car 4.jpg';
-import Car5 from '../assets/car 5.jpeg';
-import Car6 from '../assets/car 6.jpeg';
+import Car1 from '../assets/opt/car-1.webp';
+import Car2 from '../assets/opt/car-2.webp';
+import Car3 from '../assets/opt/car-3.webp';
+import Car4 from '../assets/opt/car-4.webp';
+import Car5 from '../assets/opt/car-5.webp';
+import Car6 from '../assets/opt/car-6.webp';
+
+import MeenakshiBg from '../assets/opt/meenakshi.webp';
+import MaduraiAerialBg from '../assets/opt/madurai-aerial.webp';
+import ThirumalaiBg from '../assets/opt/thirumalai.webp';
+import RameswaramBg from '../assets/opt/rameswaram.webp';
+import KodaikanalBg from '../assets/opt/kodaikanal.webp';
+import OotyBg from '../assets/opt/ooty.webp';
+import KanyakumariBg from '../assets/opt/kanyakumari.webp';
+import MunnarBg from '../assets/opt/munnar.webp';
+import ThanjavurBg from '../assets/opt/thanjavur.webp';
+import KeralaBg from '../assets/opt/kerala.webp';
+import HeroBg from '../assets/opt/hero-south-india.webp';
 
 export const vehicleImageMap = {
   'innova_crysta-removebg-preview.png': InnovaImg,
@@ -25,24 +36,14 @@ export const vehicleImageMap = {
   'suv-removebg-preview.png': SuvImg,
   'toyota_etios-removebg-preview.png': EtiosImg,
   'tempo_traveller-removebg-preview.png': TravellerImg,
+  'trmpo_traveller-removebg-preview.png': TravellerImg,
   'car 1.jpeg': Car1,
   'car 2.jpeg': Car2,
   'car 3.png': Car3,
   'car 4.jpg': Car4,
   'car 5.jpeg': Car5,
-  'car 6.jpeg': Car6
+  'car 6.jpeg': Car6,
 };
-
-// Background images for vehicles and packages
-import MeenakshiBg from '../assets/meenakshi_bg.png';
-import MaduraiAerialBg from '../assets/madurai_aerial_bg.png';
-import ThirumalaiBg from '../assets/thirumalai_mahal_bg.png';
-import RameswaramBg from '../assets/rameswaram_bg.png';
-import KodaikanalBg from '../assets/kodaikanal_bg.png';
-import OotyBg from '../assets/ooty_bg.png';
-import KanyakumariBg from '../assets/kanyakumari_bg.png';
-import MunnarBg from '../assets/munnar_bg.png';
-import ThanjavurBg from '../assets/thanjavur_bg.png';
 
 export const bgImageMap = {
   'meenakshi_bg.png': MeenakshiBg,
@@ -53,24 +54,16 @@ export const bgImageMap = {
   'ooty_bg.png': OotyBg,
   'kanyakumari_bg.png': KanyakumariBg,
   'munnar_bg.png': MunnarBg,
-  'thanjavur_bg.png': ThanjavurBg
+  'thanjavur_bg.png': ThanjavurBg,
+  'kerala_bg.png': KeralaBg,
 };
 
-// Package images (reuse some background images)
 export const packageImageMap = {
-  'hero.png': '../assets/hero.png', // direct path for lazy loading if needed
-  'madurai_aerial_bg.png': MaduraiAerialBg,
-  'meenakshi_bg.png': MeenakshiBg,
-  'thirumalai_mahal_bg.png': ThirumalaiBg,
-  'rameswaram_bg.png': RameswaramBg,
-  'kodaikanal_bg.png': KodaikanalBg,
-  'ooty_bg.png': OotyBg,
-  'kanyakumari_bg.png': KanyakumariBg,
-  'munnar_bg.png': MunnarBg,
-  'thanjavur_bg.png': ThanjavurBg
+  ...bgImageMap,
+  'hero.png': HeroBg,
+  'cinematic_south_india.png': HeroBg,
 };
 
-// Helper functions
 const resolveImage = (name, staticMap, fallback) => {
   if (!name) return fallback;
   if (name.startsWith('data:') || name.startsWith('http')) return name;

@@ -1,6 +1,5 @@
-import React from 'react';
 import SEOLandingPage from '../../components/SEOLandingPage';
-import HeroBg from '../../assets/cinematic_south_india.png';
+import HeroBg from '../../assets/opt/hero-south-india.webp';
 
 const MaduraiTaxiService = () => {
   const sections = [

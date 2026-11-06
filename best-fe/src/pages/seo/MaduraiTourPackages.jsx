@@ -1,6 +1,5 @@
-import React from 'react';
 import SEOLandingPage from '../../components/SEOLandingPage';
-import HeroBg from '../../assets/meenakshi_desktop.png';
+import HeroBg from '../../assets/opt/meenakshi-wide.webp';
 
 const MaduraiTourPackages = () => {
   const sections = [

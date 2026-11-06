@@ -1,6 +1,5 @@
-import React from 'react';
 import SEOLandingPage from '../../components/SEOLandingPage';
-import HeroBg from '../../assets/kodaikanal_bg.png';
+import HeroBg from '../../assets/opt/kodaikanal.webp';
 
 const MaduraiToKodaikanalTaxi = () => {
   const sections = [
@@ -59,6 +58,7 @@ const MaduraiToKodaikanalTaxi = () => {
       heroBg={HeroBg}
       sections={sections}
       faqs={faqs}
+      bookingPreset={{ fromLocation: 'Madurai', toLocation: 'Kodaikanal' }}
     />
   );
 };

@@ -1,47 +1,29 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Home, Info, Briefcase, Image, PhoneCall } from 'lucide-react';
+import { Phone, MessageCircle, CalendarCheck } from 'lucide-react';
+import { SITE } from '../data/site';
+import { useBooking } from '../context/BookingContext';
 
+/**
+ * Sticky action bar on phones/tablets: the three ways to book, always one tap away.
+ * (Page navigation lives in the header menu.)
+ */
 const MobileBottomNav = () => {
-  const location = useLocation();
-
-  const navItems = [
-    { name: 'Home', path: '/', icon: Home },
-    { name: 'About', path: '/about', icon: Info },
-    { name: 'Packages', path: '/packages', icon: Briefcase },
-    { name: 'Gallery', path: '/gallery', icon: Image },
-    { name: 'Contact', path: '/contact', icon: PhoneCall },
-  ];
-
-  const isActive = (path) => {
-    if (path === '/' && location.pathname === '/') return true;
-    if (path !== '/' && location.pathname.startsWith(path)) return true;
-    return false;
-  };
+  const { openBooking } = useBooking();
 
   return (
-    <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0A192F] border-t border-slate-800 text-slate-300 py-2 px-3 shadow-2xl">
-      <div className="flex items-center justify-around max-w-md mx-auto">
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          const active = isActive(item.path);
-          return (
-            <Link
-              key={item.name}
-              to={item.path}
-              className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl transition-all ${active ? 'text-[#FBBF24] font-black' : 'text-slate-400 hover:text-white'
-                }`}
-            >
-              <Icon className={`w-4 h-4 mb-1 ${active ? 'text-[#FBBF24]' : 'text-slate-400'}`} />
-              <span className="text-[10px] tracking-wide">{item.name}</span>
-            </Link>
-          );
-        })}
+    <div className="lg:hidden fixed inset-x-0 bottom-0 z-40 bg-white/95 backdrop-blur-md border-t border-sand-200 px-3 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
+      <div className="grid grid-cols-[1fr_1fr_1.6fr] gap-2 max-w-lg mx-auto">
+        <a href={SITE.phoneHref} className="btn btn-outline !min-h-11 !px-2 !text-sm">
+          <Phone className="w-4 h-4" aria-hidden /> Call
+        </a>
+        <a href={SITE.whatsappHref} target="_blank" rel="noreferrer" className="btn btn-whatsapp !min-h-11 !px-2 !text-sm">
+          <MessageCircle className="w-4 h-4" aria-hidden /> WhatsApp
+        </a>
+        <button type="button" onClick={() => openBooking()} className="btn btn-primary !min-h-11 !px-2 !text-sm">
+          <CalendarCheck className="w-4 h-4" aria-hidden /> Book a ride
+        </button>
       </div>
     </div>
   );
 };
 
 export default MobileBottomNav;
-
-

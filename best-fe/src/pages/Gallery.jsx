@@ -1,156 +1,177 @@
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Image, MapPin, X, ChevronLeft, ChevronRight, Camera } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { X, ChevronLeft, ChevronRight, Expand } from 'lucide-react';
+import Hero from '../assets/opt/thirumalai-wide.webp';
+import G1 from '../assets/opt/gallery-1.webp';
+import G2 from '../assets/opt/gallery-2.webp';
+import G3 from '../assets/opt/gallery-3.webp';
+import G4 from '../assets/opt/gallery-4.webp';
+import G5 from '../assets/opt/gallery-5.webp';
+import G6 from '../assets/opt/gallery-6.webp';
+import G7 from '../assets/opt/gallery-7.webp';
+import G8 from '../assets/opt/gallery-8.webp';
+import Meenakshi from '../assets/opt/meenakshi.webp';
+import Rameswaram from '../assets/opt/rameswaram.webp';
+import Kodaikanal from '../assets/opt/kodaikanal.webp';
+import Munnar from '../assets/opt/munnar.webp';
+import Thanjavur from '../assets/opt/thanjavur.webp';
+import Alleppey from '../assets/opt/alleppey.webp';
+import { TRAVELLER_PHOTOS } from '../data/site';
+import { CtaBand, PageHero } from '../components/ui';
 
-import imgMeenakshi from '../assets/gallery/51714.png';
-import imgAlagar from '../assets/gallery/51887.jpg.jpeg';
-import imgThirumalai from '../assets/gallery/51893.jpg.jpeg';
-import imgRameswaram from '../assets/gallery/51904.png';
-import imgKodaikanal from '../assets/gallery/WhatsApp Image 2026-05-29 at 4.14.12 PM.jpeg';
-import imgOoty from '../assets/gallery/WhatsApp Image 2026-05-29 at 4.14.14 PM.jpeg';
-import imgKanyakumari from '../assets/gallery/WhatsApp Image 2026-05-29 at 4.14.16 PM.jpeg';
-import imgCustomers from '../assets/gallery/WhatsApp Image 2026-05-29 at 4.14.18 PM.jpeg';
-import CinematicSouthIndiaBg from '../assets/cinematic_south_india.png';
+const PLACES = [
+  { src: G8, title: 'Meenakshi Amman Temple from above', place: 'Madurai' },
+  { src: G7, title: 'Vandiyur Mariamman Teppakulam', place: 'Madurai' },
+  { src: G2, title: 'Thirumalai Nayakkar Mahal', place: 'Madurai' },
+  { src: G3, title: 'Gandhi Memorial Museum', place: 'Madurai' },
+  { src: G1, title: 'Vivekananda Rock & Thiruvalluvar Statue', place: 'Kanyakumari' },
+  { src: G5, title: 'Dam and reservoir views', place: 'Tamil Nadu' },
+  { src: G6, title: 'Hillside temple and tank', place: 'Tamil Nadu' },
+  { src: G4, title: 'Gardens at golden hour', place: 'Tamil Nadu' },
+  { src: Meenakshi, title: 'Temple gopurams at dusk', place: 'Madurai' },
+  { src: Rameswaram, title: 'Island temple & Pamban Bridge', place: 'Rameswaram' },
+  { src: Kodaikanal, title: 'Misty lake valley', place: 'Kodaikanal' },
+  { src: Munnar, title: 'Tea estates', place: 'Munnar' },
+  { src: Thanjavur, title: 'Brihadeeswarar Temple', place: 'Thanjavur' },
+  { src: Alleppey, title: 'Backwater houseboat', place: 'Alleppey' },
+];
+
+const TRAVELLERS = TRAVELLER_PHOTOS.map((p) => ({ src: p.src, title: p.alt, place: 'Our guests' }));
+
+const TABS = [
+  { id: 'all', label: 'All' },
+  { id: 'places', label: 'Places' },
+  { id: 'travellers', label: 'Our travellers' },
+];
 
 const Gallery = () => {
-  const { t } = useTranslation();
-  const [activeFilter, setActiveFilter] = useState('all');
-  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+  const [tab, setTab] = useState('all');
+  const [index, setIndex] = useState(null);
 
-  const galleryItems = [
-    { id: 1, title: 'Meenakshi Amman Temple', location: 'Madurai', category: 'temple', image: imgMeenakshi, desc: 'Spiritual beacon of South India' },
-    { id: 2, title: 'Alagar Kovil', location: 'Madurai', category: 'temple', image: imgAlagar, desc: 'Historic temple at the foot of Alagar Hills' },
-    { id: 3, title: 'Thirumalai Nayakkar Mahal', location: 'Madurai', category: 'heritage', image: imgThirumalai, desc: '17th-century architectural grandeur' },
-    { id: 4, title: 'Rameswaram Temple & Pamban', location: 'Rameswaram', category: 'temple', image: imgRameswaram, desc: 'Sacred coastal island & sea bridge' },
-    { id: 5, title: 'Kodaikanal Hill Station', location: 'Kodaikanal', category: 'hills', image: imgKodaikanal, desc: 'Mist-clad mountains & pine forests' },
-    { id: 6, title: 'Ooty Tea Estates', location: 'Ooty', category: 'hills', image: imgOoty, desc: 'Nilgiri lush green tea gardens' },
-    { id: 7, title: 'Kanyakumari Triveni Sangam', location: 'Kanyakumari', category: 'heritage', image: imgKanyakumari, desc: 'Spectacular sunset & ocean confluence' },
-    { id: 8, title: 'Our Happy Travelers', location: 'Customer Diaries', category: 'customers', image: imgCustomers, desc: 'Golden travel memories with families' },
-  ];
+  const items = useMemo(() => {
+    if (tab === 'places') return PLACES;
+    if (tab === 'travellers') return TRAVELLERS;
+    // interleave so guests' photos sit among the scenery
+    const out = [];
+    const max = Math.max(PLACES.length, TRAVELLERS.length);
+    for (let i = 0; i < max; i++) {
+      if (PLACES[i]) out.push(PLACES[i]);
+      if (i % 2 === 1 && TRAVELLERS[(i - 1) / 2]) out.push(TRAVELLERS[(i - 1) / 2]);
+    }
+    return out.concat(TRAVELLERS.slice(Math.ceil(max / 2)));
+  }, [tab]);
 
-  const filteredItems = activeFilter === 'all'
-    ? galleryItems
-    : galleryItems.filter(item => item.category === activeFilter);
+  const close = useCallback(() => setIndex(null), []);
+  const step = useCallback((d) => setIndex((i) => (i === null ? i : (i + d + items.length) % items.length)), [items.length]);
 
-  const filters = [
-    { id: 'all', name: 'All' },
-    { id: 'temple', name: 'Temple Circuits' },
-    { id: 'hills', name: 'Hill Stations' },
-    { id: 'heritage', name: 'Heritage' },
-    { id: 'customers', name: 'Happy Customers' }
-  ];
+  useEffect(() => {
+    if (index === null) return;
+    const onKey = (e) => {
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowRight') step(1);
+      if (e.key === 'ArrowLeft') step(-1);
+    };
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [index, close, step]);
+
+  const current = index !== null ? items[index] : null;
 
   return (
-    <div className="bg-white min-h-screen text-[#0F172A] font-['Plus_Jakarta_Sans',sans-serif] text-left">
+    <>
+      <PageHero
+        eyebrow="Gallery"
+        title="Places we drive to, people we drive with"
+        intro="Scenes from across Tamil Nadu and Kerala — and photos our guests shared from their trips."
+        image={Hero}
+        crumbs={['Gallery']}
+      />
 
-      {/* ── 1. GALLERY HERO BANNER (MATCHING REFERENCE GALLERY PAGE) ── */}
-      <section className="relative h-72 sm:h-80 pt-20 flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#DDF0FF] via-[#EDF6FF] to-white border-b border-slate-100">
-        
-        {/* Decorative Camera in Background matching reference */}
-        <div className="absolute top-12 left-10 sm:left-24 text-blue-600/20 transform -rotate-12">
-          <Camera className="w-16 h-16" />
-        </div>
-
-        <div className="relative z-10 text-center px-4 max-w-3xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            {/* Script Heading (Matching Mockup) */}
-            <div className="font-script text-4xl sm:text-5xl text-[#0B2545] font-semibold mb-1">
-              Our Gallery
-            </div>
-            <p className="text-sm sm:text-base text-slate-600 font-medium tracking-wide">
-              Capturing Moments, Creating Memories
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ── 2. FILTER PILLS (MATCHING REFERENCE GALLERY PAGE) ── */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-20">
-        <div className="flex flex-wrap items-center justify-center gap-2">
-          {filters.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveFilter(tab.id)}
-              className={`px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer shadow-xs ${
-                activeFilter === tab.id
-                  ? 'bg-[#FBBF24] text-slate-950 font-black'
-                  : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
-              }`}
-            >
-              {tab.name}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* ── 3. PHOTO GRID (MATCHING REFERENCE PHOTO CARDS) ── */}
-      <section className="py-14 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-            {filteredItems.map((item, idx) => (
-              <div
-                key={item.id}
-                onClick={() => setSelectedImageIndex(idx)}
-                className="group relative h-60 rounded-2xl overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 cursor-pointer"
+      <section className="py-12 sm:py-16">
+        <div className="container-x">
+          <div className="flex gap-2 mb-8 overflow-x-auto no-scrollbar" role="tablist" aria-label="Gallery filter">
+            {TABS.map((t) => (
+              <button
+                key={t.id}
+                role="tab"
+                aria-selected={tab === t.id}
+                onClick={() => setTab(t.id)}
+                className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold border transition-colors cursor-pointer ${tab === t.id ? 'bg-ink-900 text-white border-ink-900' : 'bg-white text-ink-700 border-sand-200 hover:border-ink-300'}`}
               >
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
-                <div className="absolute bottom-3 left-3 right-3 text-white">
-                  <h4 className="font-['Outfit'] font-bold text-sm leading-tight">{item.title}</h4>
-                  <p className="text-[11px] text-amber-300 font-medium">{item.location}</p>
-                </div>
-              </div>
+                {t.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="columns-2 md:columns-3 lg:columns-4 gap-3 sm:gap-4 [&>*]:mb-3 sm:[&>*]:mb-4">
+            {items.map((item, i) => (
+              <motion.button
+                key={`${tab}-${i}`}
+                type="button"
+                layout
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4, delay: Math.min(i * 0.02, 0.3) }}
+                onClick={() => setIndex(i)}
+                className="group relative block w-full break-inside-avoid overflow-hidden rounded-[12px] bg-sand-100 cursor-zoom-in text-left"
+                aria-label={`Open photo: ${item.title}`}
+              >
+                <img src={item.src} alt={item.title} loading="lazy" className="w-full h-auto img-zoom" />
+                <span className="absolute inset-0 bg-gradient-to-t from-ink-950/75 via-transparent to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity" />
+                <span className="absolute inset-x-0 bottom-0 p-3 text-white translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all">
+                  <span className="block text-[11px] font-semibold uppercase tracking-wider text-gold-300">{item.place}</span>
+                  <span className="block text-sm font-semibold leading-snug line-clamp-2">{item.title}</span>
+                </span>
+                <Expand className="absolute top-3 right-3 w-4 h-4 text-white opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden />
+              </motion.button>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── 4. BOTTOM NAVY WAVE BAR (MATCHING REFERENCE) ── */}
-      <section className="bg-[#0A192F] text-white py-10 text-center relative overflow-hidden">
-        <div className="max-w-4xl mx-auto px-4 flex flex-col items-center justify-center">
-          <div className="flex items-center gap-2 text-[#FBBF24] mb-1">
-            <Camera className="w-5 h-5" />
-            <h3 className="font-['Outfit'] font-black text-xl sm:text-2xl text-white">
-              Travel • Explore • Remember
-            </h3>
-          </div>
-          <p className="text-xs text-slate-300">
-            Book your next road journey with Madurai Best Taxi Travels.
-          </p>
-        </div>
-      </section>
-
-      {/* Lightbox Modal */}
       <AnimatePresence>
-        {selectedImageIndex !== null && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-sm">
-            <button
-              onClick={() => setSelectedImageIndex(null)}
-              className="absolute top-5 right-5 text-white/80 hover:text-white p-2 rounded-full bg-white/10 cursor-pointer z-10"
-            >
-              <X className="w-6 h-6" />
-            </button>
-            <div className="max-w-3xl w-full max-h-[80vh] rounded-2xl overflow-hidden bg-black flex items-center justify-center">
-              <img
-                src={filteredItems[selectedImageIndex].image}
-                alt=""
-                className="max-h-[75vh] max-w-full object-contain"
-              />
+        {current && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-ink-950/95 flex flex-col"
+            role="dialog"
+            aria-modal="true"
+            aria-label={current.title}
+            onClick={close}
+          >
+            <div className="flex items-center justify-between p-4 text-white" onClick={(e) => e.stopPropagation()}>
+              <p className="text-sm text-ink-200">{index + 1} / {items.length}</p>
+              <button onClick={close} className="p-2 rounded-full hover:bg-white/10 cursor-pointer" aria-label="Close"><X className="w-6 h-6" /></button>
             </div>
-          </div>
+            <div className="flex-1 min-h-0 flex items-center justify-center px-4 sm:px-16 relative">
+              <motion.img
+                key={current.src}
+                src={current.src}
+                alt={current.title}
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="max-h-full max-w-full object-contain rounded-[8px]"
+                onClick={(e) => e.stopPropagation()}
+              />
+              <button onClick={(e) => { e.stopPropagation(); step(-1); }} className="absolute left-2 sm:left-4 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white cursor-pointer" aria-label="Previous photo"><ChevronLeft className="w-6 h-6" /></button>
+              <button onClick={(e) => { e.stopPropagation(); step(1); }} className="absolute right-2 sm:right-4 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white cursor-pointer" aria-label="Next photo"><ChevronRight className="w-6 h-6" /></button>
+            </div>
+            <div className="p-4 sm:p-6 text-center text-white" onClick={(e) => e.stopPropagation()}>
+              <p className="text-xs font-semibold uppercase tracking-wider text-gold-300">{current.place}</p>
+              <p className="font-semibold mt-1">{current.title}</p>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
 
-    </div>
+      <CtaBand title="Make your own memories." />
+    </>
   );
 };
 

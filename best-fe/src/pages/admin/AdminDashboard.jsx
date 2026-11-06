@@ -1,34 +1,314 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Car,
   Package,
-  MapPin,
   CalendarCheck,
   Edit,
   Trash2,
   LogOut,
   CheckCircle,
   Clock,
-  Trash,
   MessageSquare,
   Settings,
   UserPlus,
   X,
   Plus,
-  ChevronRight,
   Phone,
   Mail,
-  User,
-  Lock,
-  Compass,
-  Sparkles,
-  Info,
-  Upload
+  Upload,
+  Menu,
+  ArrowUpRight,
+  AlertCircle,
+  Loader2,
+  CalendarDays,
+  Users,
+  CircleCheck,
+  Hourglass,
+  BadgeCheck,
+  Send,
+  RefreshCw,
+  Unplug,
+  QrCode,
+  MessageCircle,
+  Inbox,
+  ShieldCheck,
+  MapPin,
 } from 'lucide-react';
 import { getVehicleImage, getPackageImage } from '../../utils/imageImports';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import API_BASE_URL from '../../apiConfig.js';
+import logo from '../../assets/new_logo.jpg';
+
+/* ─── Navigation metadata ─────────────────────────────────── */
+const NAV_ITEMS = [
+  { id: 'bookings', label: 'Bookings', icon: CalendarCheck, title: 'Bookings', description: 'Review trip requests submitted from the website and update their status.' },
+  { id: 'cars', label: 'Vehicles', icon: Car, title: 'Fleet', description: 'Manage the vehicles, rates and images shown on the public site.' },
+  { id: 'packages', label: 'Tour packages', icon: Package, title: 'Tour packages', description: 'Create and edit the tour packages customers can book.' },
+  { id: 'contacts', label: 'Enquiries', icon: MessageSquare, title: 'Enquiries', description: 'Messages received through the Contact Us form.' },
+  { id: 'settings', label: 'Settings', icon: Settings, title: 'Settings', description: 'Admin profile, notification numbers and the WhatsApp alert bot.' },
+  { id: 'add-admin', label: 'Add administrator', icon: UserPlus, title: 'Add administrator', description: 'Give another team member access to this dashboard.' },
+];
+
+const STATUS_STYLES = {
+  Pending: 'bg-gold-50 text-gold-700 ring-gold-300/60',
+  Approved: 'bg-leaf-50 text-leaf-600 ring-leaf-500/30',
+  Completed: 'bg-ink-100 text-ink-700 ring-ink-300/70',
+};
+
+const STATUS_DOT = {
+  Pending: 'bg-gold-500',
+  Approved: 'bg-leaf-500',
+  Completed: 'bg-ink-500',
+};
+
+const waLink = (phone) => {
+  const digits = String(phone || '').replace(/\D/g, '');
+  if (!digits) return null;
+  return `https://wa.me/${digits.length === 10 ? `91${digits}` : digits}`;
+};
+
+/* ─── Presentational helpers ──────────────────────────────── */
+const Sidebar = ({ activeTab, onSelect, onLogout, onClose }) => (
+  <div className="flex h-full flex-col bg-ink-900 text-white">
+    <div className="flex items-center justify-between gap-3 border-b border-white/10 px-5 py-5">
+      <div className="flex min-w-0 items-center gap-3">
+        <img src={logo} alt="" className="h-11 w-11 shrink-0 rounded-[10px] bg-white object-contain p-0.5" />
+        <div className="min-w-0 leading-tight">
+          <p className="truncate text-sm font-bold">Madurai Best</p>
+          <p className="truncate text-xs font-semibold text-gold-400">Admin console</p>
+        </div>
+      </div>
+      {onClose && (
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close menu"
+          className="flex h-9 w-9 items-center justify-center rounded-lg text-ink-300 transition-colors hover:bg-white/10 hover:text-white"
+        >
+          <X className="h-5 w-5" />
+        </button>
+      )}
+    </div>
+
+    <nav aria-label="Admin sections" className="flex-1 overflow-y-auto px-3 py-5">
+      <p className="px-3 pb-2 text-[11px] font-bold uppercase tracking-[0.14em] text-ink-400">Manage</p>
+      <ul className="space-y-1">
+        {NAV_ITEMS.map((item) => (
+          <li key={item.id}>
+            <NavItem item={item} active={activeTab === item.id} onClick={() => onSelect(item.id)} />
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div className="space-y-1 border-t border-white/10 px-3 py-4">
+      <Link
+        to="/"
+        className="flex items-center gap-3 rounded-[10px] px-3 py-2.5 text-sm font-semibold text-ink-300 transition-colors hover:bg-white/5 hover:text-white"
+      >
+        <ArrowUpRight className="h-[18px] w-[18px]" aria-hidden="true" />
+        View public site
+      </Link>
+      <button
+        type="button"
+        onClick={onLogout}
+        className="flex w-full items-center gap-3 rounded-[10px] px-3 py-2.5 text-sm font-semibold text-ink-300 transition-colors hover:bg-red-500/10 hover:text-red-300"
+      >
+        <LogOut className="h-[18px] w-[18px]" aria-hidden="true" />
+        Log out
+      </button>
+    </div>
+  </div>
+);
+
+const NavItem = ({ item, active, onClick }) => {
+  const Icon = item.icon;
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-current={active ? 'page' : undefined}
+      className={`relative flex w-full items-center gap-3 rounded-[10px] px-3 py-2.5 text-sm font-semibold transition-colors ${
+        active ? 'bg-white/[0.08] text-white' : 'text-ink-300 hover:bg-white/5 hover:text-white'
+      }`}
+    >
+      {active && <span aria-hidden="true" className="absolute inset-y-2 left-0 w-[3px] rounded-r-full bg-gold-500" />}
+      <Icon className={`h-[18px] w-[18px] ${active ? 'text-gold-400' : ''}`} aria-hidden="true" />
+      {item.label}
+    </button>
+  );
+};
+
+const StatCard = ({ label, value, icon: Icon, tone = 'ink' }) => {
+  const tones = {
+    ink: 'bg-ink-50 text-ink-700',
+    gold: 'bg-gold-50 text-gold-600',
+    leaf: 'bg-leaf-50 text-leaf-600',
+  };
+  return (
+    <div className="card flex items-center gap-4 p-4 sm:p-5">
+      <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] ${tones[tone]}`}>
+        <Icon className="h-5 w-5" aria-hidden="true" />
+      </span>
+      <div className="min-w-0">
+        <p className="truncate text-xs font-semibold text-ink-500">{label}</p>
+        <p className="font-display text-2xl font-semibold leading-tight text-ink-900">{value}</p>
+      </div>
+    </div>
+  );
+};
+
+const StatusBadge = ({ status }) => {
+  const s = status || 'Pending';
+  return (
+    <span className={`inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-bold ring-1 ring-inset ${STATUS_STYLES[s] || STATUS_STYLES.Pending}`}>
+      <span className={`h-1.5 w-1.5 rounded-full ${STATUS_DOT[s] || STATUS_DOT.Pending}`} aria-hidden="true" />
+      {s}
+    </span>
+  );
+};
+
+const Field = ({ id, label, hint, className = '', children }) => (
+  <div className={className}>
+    <label htmlFor={id} className="field-label">{label}</label>
+    {children}
+    {hint && <p className="mt-1.5 text-xs text-ink-400">{hint}</p>}
+  </div>
+);
+
+const SectionCard = ({ title, description, icon: Icon, action, children, className = '' }) => (
+  <section className={`card overflow-hidden ${className}`}>
+    <header className="flex flex-wrap items-start justify-between gap-3 border-b border-sand-200 px-5 py-4 sm:px-6">
+      <div className="flex min-w-0 items-start gap-3">
+        {Icon && (
+          <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] bg-sand-100 text-ink-700">
+            <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
+          </span>
+        )}
+        <div className="min-w-0">
+          <h2 className="text-base font-bold text-ink-900">{title}</h2>
+          {description && <p className="mt-0.5 text-sm text-ink-500">{description}</p>}
+        </div>
+      </div>
+      {action}
+    </header>
+    <div className="p-5 sm:p-6">{children}</div>
+  </section>
+);
+
+const LoadingState = ({ label }) => (
+  <div className="flex flex-col items-center justify-center gap-3 px-6 py-16 text-sm font-medium text-ink-500" role="status">
+    <Loader2 className="h-7 w-7 animate-spin text-gold-500" aria-hidden="true" />
+    {label}
+  </div>
+);
+
+const SkeletonGrid = () => (
+  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3" role="status" aria-label="Loading">
+    {[0, 1, 2].map((i) => (
+      <div key={i} className="card overflow-hidden">
+        <div className="h-44 animate-pulse bg-sand-100" />
+        <div className="space-y-3 p-5">
+          <div className="h-4 w-2/3 animate-pulse rounded bg-sand-200" />
+          <div className="h-3 w-1/2 animate-pulse rounded bg-sand-100" />
+          <div className="h-3 w-1/3 animate-pulse rounded bg-sand-100" />
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
+const EmptyState = ({ icon: Icon, title, description, action }) => (
+  <div className="flex flex-col items-center justify-center px-6 py-16 text-center">
+    <span className="flex h-14 w-14 items-center justify-center rounded-[14px] bg-sand-100 text-ink-400">
+      <Icon className="h-7 w-7" aria-hidden="true" />
+    </span>
+    <p className="mt-4 text-base font-bold text-ink-900">{title}</p>
+    {description && <p className="mt-1 max-w-sm text-sm text-ink-500">{description}</p>}
+    {action && <div className="mt-5">{action}</div>}
+  </div>
+);
+
+const ModalShell = ({ title, description, onClose, onSubmit, submitLabel, children }) => {
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [onClose]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-ink-950/60 p-3 backdrop-blur-sm sm:p-4"
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <motion.div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="admin-modal-title"
+        initial={{ scale: 0.97, opacity: 0, y: 8 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.97, opacity: 0, y: 8 }}
+        transition={{ duration: 0.2 }}
+        className="flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-[14px] bg-white shadow-[var(--shadow-panel)]"
+      >
+        <form onSubmit={onSubmit} className="flex min-h-0 flex-1 flex-col">
+          <div className="flex shrink-0 items-start justify-between gap-4 border-b border-sand-200 px-5 py-4 sm:px-6">
+            <div>
+              <h3 id="admin-modal-title" className="font-display text-xl font-semibold text-ink-900">{title}</h3>
+              {description && <p className="mt-0.5 text-sm text-ink-500">{description}</p>}
+            </div>
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close dialog"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-ink-400 transition-colors hover:bg-sand-100 hover:text-ink-900"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+
+          <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-6">{children}</div>
+
+          <div className="flex shrink-0 flex-col-reverse gap-2 border-t border-sand-200 bg-sand-50 px-5 py-4 sm:flex-row sm:justify-end sm:px-6">
+            <button type="button" onClick={onClose} className="btn btn-outline">Cancel</button>
+            <button type="submit" className="btn btn-primary">{submitLabel}</button>
+          </div>
+        </form>
+      </motion.div>
+    </motion.div>
+  );
+};
+
+const FormGroupTitle = ({ children }) => (
+  <h4 className="mb-3 text-xs font-bold uppercase tracking-[0.12em] text-gold-600">{children}</h4>
+);
+
+const ImagePicker = ({ id, label, previewSrc, contain, onChange }) => (
+  <Field id={id} label={label}>
+    <div className="flex items-center gap-3 rounded-[10px] border border-dashed border-ink-200 bg-sand-50 p-2.5">
+      <span className="flex h-14 w-20 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-sand-200 bg-white">
+        {previewSrc ? (
+          <img src={previewSrc} alt="Current image preview" className={`h-full w-full ${contain ? 'object-contain p-1' : 'object-cover'}`} />
+        ) : (
+          <Upload className="h-5 w-5 text-ink-300" aria-hidden="true" />
+        )}
+      </span>
+      <label htmlFor={id} className="btn btn-outline min-h-0 cursor-pointer px-3 py-2 text-sm focus-within:outline focus-within:outline-2 focus-within:outline-gold-500">
+        <Upload className="h-4 w-4" aria-hidden="true" />
+        Upload image
+        <input id={id} type="file" accept="image/*" className="sr-only" onChange={onChange} />
+      </label>
+    </div>
+  </Field>
+);
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -208,7 +488,7 @@ const AdminDashboard = () => {
       } else {
         showToast('Failed to trigger reconnect', 'error');
       }
-    } catch (error) {
+    } catch {
       showToast('Error reconnecting bot', 'error');
     } finally {
       setLoadingWhatsapp(false);
@@ -225,7 +505,7 @@ const AdminDashboard = () => {
       } else {
         showToast('Failed to disconnect bot', 'error');
       }
-    } catch (error) {
+    } catch {
       showToast('Error disconnecting bot', 'error');
     } finally {
       setLoadingWhatsapp(false);
@@ -241,7 +521,7 @@ const AdminDashboard = () => {
       } else {
         showToast('Failed to send test message.', 'error');
       }
-    } catch (error) {
+    } catch {
       showToast('Error sending test message.', 'error');
     } finally {
       setLoadingWhatsapp(false);
@@ -267,7 +547,7 @@ const AdminDashboard = () => {
       } else {
         showToast('Failed to send message. Is number registered on WhatsApp?', 'error');
       }
-    } catch (error) {
+    } catch {
       showToast('Error sending message', 'error');
     } finally {
       setSendingCustomMsg(false);
@@ -550,851 +830,906 @@ Driver Charge: ${data.dayDriver || ''}`;
     }
   };
 
+
+  // ─── Presentation-only state & helpers ───────────────────
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+  const selectTab = (id) => {
+    setActiveTab(id);
+    setMobileNavOpen(false);
+  };
+
+  const closeCarModal = () => setCarModal({ isOpen: false, isEdit: false, data: null });
+  const closePkgModal = () => setPkgModal({ isOpen: false, isEdit: false, data: null });
+  const setCarField = (key) => (e) => setCarModal({ ...carModal, data: { ...carModal.data, [key]: e.target.value } });
+  const setPkgField = (key) => (e) => setPkgModal({ ...pkgModal, data: { ...pkgModal.data, [key]: e.target.value } });
+
+  const currentNav = NAV_ITEMS.find((n) => n.id === activeTab) || NAV_ITEMS[0];
+
+  const bookingStats = {
+    total: bookings.length,
+    pending: bookings.filter((b) => (b.status || 'Pending') === 'Pending').length,
+    approved: bookings.filter((b) => b.status === 'Approved').length,
+    completed: bookings.filter((b) => b.status === 'Completed').length,
+  };
+
+  const headerAction =
+    activeTab === 'cars' ? (
+      <button type="button" onClick={() => handleOpenCarModal(false)} className="btn btn-primary">
+        <Plus className="h-4 w-4" aria-hidden="true" /> Add vehicle
+      </button>
+    ) : activeTab === 'packages' ? (
+      <button type="button" onClick={() => handleOpenPkgModal(false)} className="btn btn-primary">
+        <Plus className="h-4 w-4" aria-hidden="true" /> Add package
+      </button>
+    ) : null;
+
+  const viewMotion = {
+    initial: { opacity: 0, y: 10 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -6 },
+    transition: { duration: 0.2 },
+  };
+
   return (
-    <div className="min-h-screen bg-[#f5f0e8] text-gray-800 flex flex-col md:flex-row font-outfit">
+    <div className="min-h-screen bg-sand-50 font-sans text-ink-900">
+      {/* Desktop sidebar */}
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 lg:block">
+        <Sidebar activeTab={activeTab} onSelect={selectTab} onLogout={handleLogout} />
+      </aside>
 
-      {/* Sidebar navigation */}
-      <div className="w-full md:w-64 bg-[#1a3c34] flex flex-col border-r border-[#1a3c34] shadow-2xl z-20">
-        <div className="p-6 flex items-center gap-3 border-b border-[#2d5a4e]">
-          <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-md p-1">
-            <img src="/logo.jpeg" alt="Logo" className="w-full h-full object-contain" />
+      {/* Mobile drawer */}
+      <AnimatePresence>
+        {mobileNavOpen && (
+          <div className="fixed inset-0 z-40 lg:hidden">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-ink-950/60"
+              onClick={() => setMobileNavOpen(false)}
+              aria-hidden="true"
+            />
+            <motion.aside
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'tween', duration: 0.25 }}
+              className="absolute inset-y-0 left-0 w-[min(18rem,85vw)] shadow-[var(--shadow-panel)]"
+            >
+              <Sidebar
+                activeTab={activeTab}
+                onSelect={selectTab}
+                onLogout={handleLogout}
+                onClose={() => setMobileNavOpen(false)}
+              />
+            </motion.aside>
           </div>
-          <div>
-            <h2 className="font-bold text-lg leading-tight text-white font-poppins">Madurai Best</h2>
-            <p className="text-xs text-[#d4951e] font-medium tracking-wide">Control Center</p>
-          </div>
-        </div>
-
-        <nav className="flex-grow py-6">
-          <ul className="space-y-2 px-4">
-            <li>
-              <button
-                onClick={() => setActiveTab('bookings')}
-                className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all font-medium ${activeTab === 'bookings'
-                  ? 'bg-[#d4951e] text-white font-bold shadow-md'
-                  : 'text-[#a3b8b1] hover:text-white hover:bg-[#2d5a4e]'
-                  }`}
-              >
-                <CalendarCheck className="w-5 h-5" /> Manage Bookings
-              </button>
-            </li>
-
-            <li>
-              <button
-                onClick={() => setActiveTab('cars')}
-                className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all font-medium ${activeTab === 'cars'
-                  ? 'bg-[#d4951e] text-white font-bold shadow-md'
-                  : 'text-[#a3b8b1] hover:text-white hover:bg-[#2d5a4e]'
-                  }`}
-              >
-                <Car className="w-5 h-5" /> Manage Vehicles
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => setActiveTab('packages')}
-                className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all font-medium ${activeTab === 'packages'
-                  ? 'bg-[#d4951e] text-white font-bold shadow-md'
-                  : 'text-[#a3b8b1] hover:text-white hover:bg-[#2d5a4e]'
-                  }`}
-              >
-                <Package className="w-5 h-5" /> Manage Packages
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => setActiveTab('contacts')}
-                className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all font-medium ${activeTab === 'contacts'
-                  ? 'bg-[#d4951e] text-white font-bold shadow-md'
-                  : 'text-[#a3b8b1] hover:text-white hover:bg-[#2d5a4e]'
-                  }`}
-              >
-                <MessageSquare className="w-5 h-5" /> Contact Queries
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => setActiveTab('settings')}
-                className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all font-medium ${activeTab === 'settings'
-                  ? 'bg-[#d4951e] text-white font-bold shadow-md'
-                  : 'text-[#a3b8b1] hover:text-white hover:bg-[#2d5a4e]'
-                  }`}
-              >
-                <Settings className="w-5 h-5" /> Admin Settings
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => setActiveTab('add-admin')}
-                className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all font-medium ${activeTab === 'add-admin'
-                  ? 'bg-[#d4951e] text-white font-bold shadow-md'
-                  : 'text-[#a3b8b1] hover:text-white hover:bg-[#2d5a4e]'
-                  }`}
-              >
-                <UserPlus className="w-5 h-5" /> Add Administrator
-              </button>
-            </li>
-          </ul>
-        </nav>
-
-        <div className="p-4 border-t border-[#2d5a4e]">
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3.5 bg-red-500/10 text-red-300 hover:bg-red-500 hover:text-white rounded-xl transition-all font-bold text-sm shadow-sm"
-          >
-            <LogOut className="w-4 h-4" /> Logout Admin
-          </button>
-        </div>
-      </div>
+        )}
+      </AnimatePresence>
 
       {/* Toast notifications */}
       <AnimatePresence>
         {toast && (
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
+            role="status"
+            aria-live="polite"
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
-            className={`fixed bottom-6 right-6 z-50 px-6 py-4 rounded-xl shadow-2xl font-bold flex items-center gap-3 ${toast.type === 'error' ? 'bg-red-600 text-white' : 'bg-green-600 text-white'
-              }`}
+            exit={{ opacity: 0, y: 24 }}
+            className="fixed bottom-4 left-4 right-4 z-[60] flex items-center gap-3 rounded-[12px] bg-ink-900 px-4 py-3.5 text-sm font-semibold text-white shadow-[var(--shadow-panel)] sm:left-auto sm:right-6 sm:bottom-6 sm:max-w-sm"
           >
-            {toast.type === 'error' ? <Trash2 className="w-5 h-5" /> : <CheckCircle className="w-5 h-5" />}
+            {toast.type === 'error' ? (
+              <AlertCircle className="h-5 w-5 shrink-0 text-red-400" aria-hidden="true" />
+            ) : (
+              <CheckCircle className="h-5 w-5 shrink-0 text-leaf-500" aria-hidden="true" />
+            )}
             {toast.message}
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Main dashboard content view */}
-      <div className="flex-1 flex flex-col min-w-0 bg-[#f5f0e8] text-gray-800">
-
-        <header className="bg-white border-b border-[#edeae1] px-6 py-4 md:px-8 flex justify-between items-center shadow-sm relative z-10">
-          <h1 className="text-xl md:text-2xl font-bold text-[#1a3c34] uppercase tracking-wider flex items-center gap-2 font-poppins">
-            <span className="text-[#d4951e]">●</span> {activeTab.replace('-', ' ')}
-          </h1>
-          <div className="flex items-center gap-3">
-            <div className="text-right hidden sm:block">
-              <span className="block text-sm font-semibold text-[#1a3c34]">Superadmin Panel</span>
-              <span className="block text-xs text-[#d4951e] font-medium tracking-wide">Madurai Best Tours and Travels</span>
-            </div>
-            <div className="w-10 h-10 bg-[#1a3c34] text-[#d4951e] rounded-full font-bold flex items-center justify-center text-lg shadow-sm border border-[#edeae1]">
-              SA
+      <div className="flex min-h-screen min-w-0 flex-col lg:pl-64">
+        {/* Mobile top bar */}
+        <div className="sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-ink-800 bg-ink-900 px-4 py-3 text-white lg:hidden">
+          <div className="flex min-w-0 items-center gap-2.5">
+            <img src={logo} alt="" className="h-9 w-9 shrink-0 rounded-lg bg-white object-contain p-0.5" />
+            <div className="min-w-0 leading-tight">
+              <p className="truncate text-sm font-bold">Madurai Best</p>
+              <p className="truncate text-[11px] font-semibold text-gold-400">{currentNav.label}</p>
             </div>
           </div>
-        </header>
+          <button
+            type="button"
+            onClick={() => setMobileNavOpen(true)}
+            aria-label="Open menu"
+            aria-expanded={mobileNavOpen}
+            className="flex h-10 w-10 items-center justify-center rounded-[10px] text-white transition-colors hover:bg-white/10"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+        </div>
 
-        <main className="flex-grow p-6 md:p-8 overflow-y-auto">
-          <AnimatePresence mode="wait">
+        <main className="flex-1 px-4 py-6 sm:px-6 lg:px-10 lg:py-10">
+          <div className="mx-auto w-full max-w-[1240px]">
+            {/* Page header */}
+            <div className="mb-6 flex flex-col gap-4 sm:mb-8 sm:flex-row sm:items-end sm:justify-between">
+              <div className="min-w-0">
+                <p className="eyebrow">Admin console</p>
+                <h1 className="mt-2 font-display text-3xl font-semibold tracking-tight text-ink-900 sm:text-[2.125rem]">
+                  {currentNav.title}
+                </h1>
+                <p className="mt-1.5 max-w-2xl text-sm text-ink-500">{currentNav.description}</p>
+              </div>
+              {headerAction && <div className="shrink-0">{headerAction}</div>}
+            </div>
 
-            {/* BOOKINGS VIEW */}
-            {activeTab === 'bookings' && (
-              <motion.div key="bookings" initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -15 }}>
-                <div className="bg-white rounded-3xl border border-[#edeae1] shadow-[0_8px_30px_rgb(0,0,0,0.06)] overflow-hidden">
+            <AnimatePresence mode="wait">
+              {/* BOOKINGS VIEW */}
+              {activeTab === 'bookings' && (
+                <motion.div key="bookings" {...viewMotion} className="space-y-6">
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
+                    <StatCard label="Total bookings" value={loading ? '–' : bookingStats.total} icon={CalendarDays} tone="ink" />
+                    <StatCard label="Pending" value={loading ? '–' : bookingStats.pending} icon={Hourglass} tone="gold" />
+                    <StatCard label="Approved" value={loading ? '–' : bookingStats.approved} icon={BadgeCheck} tone="leaf" />
+                    <StatCard label="Completed" value={loading ? '–' : bookingStats.completed} icon={CircleCheck} tone="ink" />
+                  </div>
 
-                  {loading ? (
-                    <div className="flex flex-col items-center justify-center py-20 text-gray-500 font-medium">
-                      <div className="w-10 h-10 border-4 border-[#d4951e] border-t-transparent rounded-full animate-spin mb-4"></div>
-                      Loading bookings from database...
-                    </div>
-                  ) : bookings.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center py-20 text-gray-400">
-                      <CalendarCheck className="w-16 h-16 mb-4 text-gray-300" />
-                      <p className="text-lg font-bold text-gray-800">No Bookings Found</p>
-                      <p className="text-sm text-gray-500 mt-1">Bookings submitted from the site show up automatically.</p>
-                    </div>
-                  ) : (
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-left border-collapse min-w-[900px]">
-                        <thead>
-                          <tr className="bg-[#f7f5f0] border-b border-[#edeae1] text-gray-500 text-xs uppercase tracking-wider font-bold">
-                            <th className="px-6 py-4">Booking ID</th>
-                            <th className="px-6 py-4">Customer Details</th>
-                            <th className="px-6 py-4">Route (Start → End)</th>
-                            <th className="px-6 py-4">Date & Time</th>
-                            <th className="px-6 py-4">Vehicle / Package</th>
-                            <th className="px-6 py-4">Status</th>
-                            <th className="px-6 py-4 text-right">Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-[#edeae1] text-sm">
-                          {bookings.map(booking => (
-                            <tr key={booking.id} className="hover:bg-[#f7f5f0]/50 transition-colors">
-                              <td className="px-6 py-4 font-mono font-bold text-xs text-[#1a3c34]">
-                                BKG-{String(booking.id).padStart(4, '0')}
-                              </td>
-                              <td className="px-6 py-4">
-                                <div className="font-bold text-gray-800">{booking.name}</div>
-                                <div className="text-xs text-gray-500 font-medium">{booking.phone}</div>
-                              </td>
-                              <td className="px-6 py-4 max-w-[260px]">
-                                <div className="text-xs truncate text-gray-700 font-medium" title={booking.fromLocation}>
-                                  <span className="text-[#1a3c34] mr-1.5 font-bold">●</span>{booking.fromLocation}
+                  <div className="card overflow-hidden">
+                    {loading ? (
+                      <LoadingState label="Loading bookings..." />
+                    ) : bookings.length === 0 ? (
+                      <EmptyState
+                        icon={CalendarCheck}
+                        title="No bookings yet"
+                        description="Bookings submitted from the website will show up here automatically."
+                      />
+                    ) : (
+                      <>
+                        {/* Desktop table */}
+                        <div className="hidden max-h-[70vh] overflow-auto lg:block">
+                          <table className="w-full min-w-[960px] border-collapse text-left text-sm">
+                            <thead className="sticky top-0 z-10 bg-sand-50">
+                              <tr className="text-[11px] font-bold uppercase tracking-[0.1em] text-ink-500">
+                                <th scope="col" className="border-b border-sand-200 px-5 py-3">Booking</th>
+                                <th scope="col" className="border-b border-sand-200 px-5 py-3">Customer</th>
+                                <th scope="col" className="border-b border-sand-200 px-5 py-3">Route</th>
+                                <th scope="col" className="border-b border-sand-200 px-5 py-3">Date &amp; time</th>
+                                <th scope="col" className="border-b border-sand-200 px-5 py-3">Vehicle / package</th>
+                                <th scope="col" className="border-b border-sand-200 px-5 py-3">Status</th>
+                                <th scope="col" className="border-b border-sand-200 px-5 py-3 text-right">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {bookings.map((booking) => (
+                                <tr key={booking.id} className="align-top transition-colors hover:bg-sand-50">
+                                  <td className="border-b border-sand-200 px-5 py-4 font-mono text-xs font-bold text-ink-700">
+                                    BKG-{String(booking.id).padStart(4, '0')}
+                                  </td>
+                                  <td className="border-b border-sand-200 px-5 py-4">
+                                    <div className="font-bold text-ink-900">{booking.name}</div>
+                                    <BookingPhone phone={booking.phone} />
+                                  </td>
+                                  <td className="max-w-[260px] border-b border-sand-200 px-5 py-4">
+                                    <BookingRoute from={booking.fromLocation} to={booking.toLocation} />
+                                  </td>
+                                  <td className="border-b border-sand-200 px-5 py-4">
+                                    <div className="font-semibold text-ink-900">{booking.date}</div>
+                                    <div className="text-xs text-ink-500">{booking.time || 'Not specified'}</div>
+                                  </td>
+                                  <td className="border-b border-sand-200 px-5 py-4">
+                                    <div className="font-semibold text-ink-900">{booking.vehicle || 'Not Selected'}</div>
+                                    <div className="text-xs text-ink-500">{booking.packageType || 'Custom Trip'}</div>
+                                  </td>
+                                  <td className="border-b border-sand-200 px-5 py-4">
+                                    <StatusBadge status={booking.status} />
+                                  </td>
+                                  <td className="border-b border-sand-200 px-5 py-4">
+                                    <BookingActions
+                                      booking={booking}
+                                      onStatus={handleStatusUpdate}
+                                      onDelete={handleDeleteBooking}
+                                    />
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+
+                        {/* Mobile cards */}
+                        <ul className="divide-y divide-sand-200 lg:hidden">
+                          {bookings.map((booking) => (
+                            <li key={booking.id} className="space-y-3 p-4 sm:p-5">
+                              <div className="flex items-start justify-between gap-3">
+                                <div className="min-w-0">
+                                  <p className="font-mono text-[11px] font-bold text-ink-500">
+                                    BKG-{String(booking.id).padStart(4, '0')}
+                                  </p>
+                                  <p className="truncate font-bold text-ink-900">{booking.name}</p>
+                                  <BookingPhone phone={booking.phone} />
                                 </div>
-                                <div className="text-xs truncate text-gray-700 mt-1.5 font-medium" title={booking.toLocation}>
-                                  <span className="text-[#d4951e] mr-1.5 font-bold">●</span>{booking.toLocation}
+                                <StatusBadge status={booking.status} />
+                              </div>
+                              <BookingRoute from={booking.fromLocation} to={booking.toLocation} />
+                              <dl className="grid grid-cols-2 gap-3 rounded-[10px] bg-sand-50 p-3 text-xs">
+                                <div>
+                                  <dt className="font-semibold text-ink-500">Date &amp; time</dt>
+                                  <dd className="mt-0.5 font-semibold text-ink-900">
+                                    {booking.date}
+                                    <span className="block font-medium text-ink-500">{booking.time || 'Not specified'}</span>
+                                  </dd>
                                 </div>
-                              </td>
-                              <td className="px-6 py-4">
-                                <div className="font-semibold text-gray-800">{booking.date}</div>
-                                <div className="text-xs text-gray-500 font-medium">{booking.time || 'Not specified'}</div>
-                              </td>
-                              <td className="px-6 py-4">
-                                <div className="font-semibold text-[#1a3c34]">{booking.vehicle || 'Not Selected'}</div>
-                                <div className="text-xs text-gray-500 italic">{booking.packageType || 'Custom Trip'}</div>
-                              </td>
-                              <td className="px-6 py-4">
-                                <span className={`px-3 py-1.5 rounded-full text-xs font-bold ${booking.status === 'Approved'
-                                  ? 'bg-emerald-100 text-emerald-700 border border-emerald-200'
-                                  : booking.status === 'Completed'
-                                    ? 'bg-blue-100 text-blue-700 border border-blue-200'
-                                    : 'bg-amber-100 text-amber-700 border border-amber-200'
-                                  }`}>
-                                  {booking.status || 'Pending'}
-                                </span>
-                              </td>
-                              <td className="px-6 py-4 text-right">
-                                <div className="flex gap-2 justify-end">
-                                  <select
-                                    value={booking.status || 'Pending'}
-                                    onChange={(e) => handleStatusUpdate(booking.id, e.target.value)}
-                                    className="bg-gray-50 text-gray-700 hover:bg-gray-100 font-medium text-xs px-2 py-1.5 rounded-lg border border-gray-200 outline-none transition-all shadow-sm focus:ring-1 focus:ring-[#1a3c34] cursor-pointer"
-                                  >
-                                    <option value="Pending">Pending</option>
-                                    <option value="Approved">Approved</option>
-                                    <option value="Completed">Completed</option>
-                                  </select>
-                                  <button
-                                    onClick={() => handleDeleteBooking(booking.id)}
-                                    className="bg-red-50 text-red-500 hover:bg-red-500 hover:text-white p-2 rounded-lg border border-red-100 transition-all shadow-sm"
-                                  >
-                                    <Trash2 className="w-3.5 h-3.5" />
-                                  </button>
+                                <div>
+                                  <dt className="font-semibold text-ink-500">Vehicle / package</dt>
+                                  <dd className="mt-0.5 font-semibold text-ink-900">
+                                    {booking.vehicle || 'Not Selected'}
+                                    <span className="block font-medium text-ink-500">{booking.packageType || 'Custom Trip'}</span>
+                                  </dd>
                                 </div>
-                              </td>
-                            </tr>
+                              </dl>
+                              <BookingActions
+                                booking={booking}
+                                onStatus={handleStatusUpdate}
+                                onDelete={handleDeleteBooking}
+                                stretch
+                              />
+                            </li>
                           ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-            )}
-
-
-
-            {/* CARS VIEW */}
-            {activeTab === 'cars' && (
-              <motion.div key="cars" initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -15 }}>
-                <div className="bg-white rounded-3xl border border-[#edeae1] shadow-[0_8px_30px_rgb(0,0,0,0.06)] overflow-hidden">
-                  <div className="p-6 border-b border-[#edeae1] flex justify-between items-center">
-                    <h2 className="text-xl font-bold text-[#1a3c34]">Fleet Management</h2>
-                    <button
-                      onClick={() => handleOpenCarModal(false)}
-                      className="bg-[#d4951e] hover:bg-[#b57a15] text-white px-4 py-2 rounded-xl flex items-center gap-2 font-bold text-sm shadow-md transition-all"
-                    >
-                      <Plus className="w-4 h-4" /> Add Vehicle
-                    </button>
+                        </ul>
+                      </>
+                    )}
                   </div>
+                </motion.div>
+              )}
+
+              {/* CARS VIEW */}
+              {activeTab === 'cars' && (
+                <motion.div key="cars" {...viewMotion}>
                   {loading ? (
-                    <div className="flex flex-col items-center justify-center py-20 text-gray-500 font-medium">
-                      <div className="w-10 h-10 border-4 border-[#d4951e] border-t-transparent rounded-full animate-spin mb-4"></div>
-                      Loading vehicles...
-                    </div>
+                    <SkeletonGrid />
                   ) : cars.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center py-20 text-gray-400">
-                      <Car className="w-16 h-16 mb-4 text-gray-300" />
-                      <p className="text-lg font-bold text-gray-800">No Vehicles Found</p>
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 p-6">
-                      {cars.map(car => (
-                        <div key={car.id} className="border border-[#edeae1] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all">
-                          <div className="h-40 bg-gray-100 relative">
-                            <img src={getVehicleImage(car.image)} alt={car.name} className="w-full h-full object-contain absolute inset-0" />
-                          </div>
-                          <div className="p-4">
-                            <h3 className="font-bold text-lg text-[#1a3c34] truncate">{car.name}</h3>
-                            <div className="flex items-center gap-2 mt-1 text-xs font-semibold text-gray-500">
-                              <span className="bg-gray-100 px-2 py-1 rounded-md">{car.seats}</span>
-                              <span className="bg-gray-100 px-2 py-1 rounded-md">{car.ac}</span>
-                              <span className="bg-gray-100 px-2 py-1 rounded-md text-[#d4951e]">{car.price}</span>
-                            </div>
-                            <div className="mt-4 flex justify-between items-center pt-3 border-t border-[#edeae1]">
-                              <button onClick={() => handleOpenCarModal(true, car)} className="text-[#1a3c34] hover:text-[#d4951e] font-bold text-sm flex items-center gap-1">
-                                <Edit className="w-4 h-4" /> Edit
-                              </button>
-                              <button onClick={() => handleDeleteCar(car.id)} className="text-red-500 hover:text-red-600 font-bold text-sm flex items-center gap-1">
-                                <Trash2 className="w-4 h-4" /> Delete
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-            )}
-
-            {/* PACKAGES VIEW */}
-            {activeTab === 'packages' && (
-              <motion.div key="packages" initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -15 }}>
-                <div className="bg-white rounded-3xl border border-[#edeae1] shadow-[0_8px_30px_rgb(0,0,0,0.06)] overflow-hidden">
-                  <div className="p-6 border-b border-[#edeae1] flex justify-between items-center">
-                    <h2 className="text-xl font-bold text-[#1a3c34]">Tour Packages</h2>
-                    <button
-                      onClick={() => handleOpenPkgModal(false)}
-                      className="bg-[#d4951e] hover:bg-[#b57a15] text-white px-4 py-2 rounded-xl flex items-center gap-2 font-bold text-sm shadow-md transition-all"
-                    >
-                      <Plus className="w-4 h-4" /> Add Package
-                    </button>
-                  </div>
-                  {loading ? (
-                    <div className="flex flex-col items-center justify-center py-20 text-gray-500 font-medium">
-                      <div className="w-10 h-10 border-4 border-[#d4951e] border-t-transparent rounded-full animate-spin mb-4"></div>
-                      Loading packages...
-                    </div>
-                  ) : packages.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center py-20 text-gray-400">
-                      <Package className="w-16 h-16 mb-4 text-gray-300" />
-                      <p className="text-lg font-bold text-gray-800">No Packages Found</p>
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 p-6">
-                      {packages.map(pkg => (
-                        <div key={pkg.id} className="border border-[#edeae1] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col">
-                          <div className="h-40 bg-gray-100">
-                            <img src={getPackageImage(pkg.image)} alt={pkg.name} className="w-full h-full object-cover" />
-                          </div>
-                          <div className="p-4 flex-grow flex flex-col">
-                            <h3 className="font-bold text-lg text-[#1a3c34] truncate">{pkg.name}</h3>
-                            <div className="flex justify-between items-center mt-1 text-xs font-bold">
-                              <span className="text-gray-500 flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {pkg.duration}</span>
-                              <span className="text-[#d4951e]">{pkg.price}</span>
-                            </div>
-                            <p className="text-xs text-gray-600 mt-3 line-clamp-3 flex-grow">{pkg.places}</p>
-                            <div className="mt-4 flex justify-between items-center pt-3 border-t border-[#edeae1]">
-                              <button onClick={() => handleOpenPkgModal(true, pkg)} className="text-[#1a3c34] hover:text-[#d4951e] font-bold text-sm flex items-center gap-1">
-                                <Edit className="w-4 h-4" /> Edit
-                              </button>
-                              <button onClick={() => handleDeletePackage(pkg.id)} className="text-red-500 hover:text-red-600 font-bold text-sm flex items-center gap-1">
-                                <Trash2 className="w-4 h-4" /> Delete
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-            )}
-
-            {/* CONTACT MESSAGES VIEW */}
-            {activeTab === 'contacts' && (
-              <motion.div key="contacts" initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -15 }}>
-                <div className="bg-white rounded-3xl border border-[#edeae1] shadow-[0_8px_30px_rgb(0,0,0,0.06)] overflow-hidden">
-                  {loading ? (
-                    <div className="text-center py-20">
-                      <div className="w-10 h-10 border-4 border-[#d4951e] border-t-transparent rounded-full animate-spin mx-auto" />
-                    </div>
-                  ) : contacts.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center py-20 text-gray-400">
-                      <MessageSquare className="w-16 h-16 mb-4 text-gray-300" />
-                      <p className="text-lg font-bold text-gray-800">No Message Queries</p>
-                      <p className="text-sm text-gray-500 mt-1">Queries from customer Contact Us form show here.</p>
-                    </div>
-                  ) : (
-                    <div className="divide-y divide-[#edeae1]">
-                      {contacts.map(c => (
-                        <div key={c.id} className="p-6 hover:bg-[#f7f5f0]/50 transition-colors flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                          <div className="space-y-2 w-full max-w-3xl">
-                            <div className="flex flex-wrap items-center gap-3">
-                              <span className="font-bold text-gray-800 text-lg">{c.name}</span>
-                              <span className="text-xs text-[#1a3c34] bg-[#1a3c34]/5 px-2.5 py-1 rounded-md border border-[#1a3c34]/10 font-bold">
-                                {new Date(c.createdAt).toLocaleDateString()}
-                              </span>
-                            </div>
-                            <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-gray-500 text-sm font-medium">
-                              <span className="flex items-center gap-1.5"><Phone className="w-4 h-4 text-[#d4951e]" /> {c.phone}</span>
-                              <span className="flex items-center gap-1.5"><Mail className="w-4 h-4 text-[#d4951e]" /> {c.email}</span>
-                            </div>
-                            <p className="text-gray-700 text-sm leading-relaxed pt-2 bg-[#f7f5f0] p-4 rounded-xl border border-[#edeae1] mt-3">
-                              {c.message}
-                            </p>
-                          </div>
-                          <button
-                            onClick={() => handleDeleteContact(c.id)}
-                            className="bg-red-50 text-red-500 hover:bg-red-500 hover:text-white p-3 rounded-xl border border-red-100 transition-all self-end md:self-auto cursor-pointer shadow-sm"
-                          >
-                            <Trash2 className="w-5 h-5" />
+                    <div className="card">
+                      <EmptyState
+                        icon={Car}
+                        title="No vehicles yet"
+                        description="Add your first vehicle to show it on the Fleet page."
+                        action={
+                          <button type="button" onClick={() => handleOpenCarModal(false)} className="btn btn-primary">
+                            <Plus className="h-4 w-4" aria-hidden="true" /> Add vehicle
                           </button>
-                        </div>
+                        }
+                      />
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                      {cars.map((car) => (
+                        <article key={car.id} className="card card-hover flex flex-col overflow-hidden">
+                          <div className="relative h-44 bg-sand-100">
+                            <img
+                              src={getVehicleImage(car.image)}
+                              alt={car.name}
+                              className="absolute inset-0 h-full w-full object-contain p-4"
+                            />
+                          </div>
+                          <div className="flex flex-1 flex-col p-5">
+                            <div className="flex items-start justify-between gap-3">
+                              <h3 className="min-w-0 truncate text-base font-bold text-ink-900">{car.name}</h3>
+                              <span className="shrink-0 text-sm font-bold text-gold-700">{car.price}</span>
+                            </div>
+                            <div className="mt-2 flex flex-wrap gap-1.5 text-xs font-semibold text-ink-600">
+                              <span className="inline-flex items-center gap-1 rounded-md bg-ink-50 px-2 py-1">
+                                <Users className="h-3.5 w-3.5" aria-hidden="true" /> {car.seats}
+                              </span>
+                              <span className="rounded-md bg-ink-50 px-2 py-1">{car.ac}</span>
+                            </div>
+                            <CardActions
+                              name={car.name}
+                              onEdit={() => handleOpenCarModal(true, car)}
+                              onDelete={() => handleDeleteCar(car.id)}
+                            />
+                          </div>
+                        </article>
                       ))}
                     </div>
                   )}
-                </div>
-              </motion.div>
-            )}
+                </motion.div>
+              )}
 
-            {/* SETTINGS VIEW */}
-            {activeTab === 'settings' && (
-              <motion.div key="settings" initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -15 }}>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  {/* Settings form card */}
-                  <div className="bg-white rounded-3xl border border-[#edeae1] shadow-[0_8px_30px_rgb(0,0,0,0.06)] p-8">
-                    <h3 className="text-xl font-bold text-[#1a3c34] mb-6 pb-3 border-b border-[#edeae1] flex items-center gap-2 font-poppins">
-                      <Settings className="w-5 h-5 text-[#d4951e]" /> Superadmin Profile Configurations
-                    </h3>
+              {/* PACKAGES VIEW */}
+              {activeTab === 'packages' && (
+                <motion.div key="packages" {...viewMotion}>
+                  {loading ? (
+                    <SkeletonGrid />
+                  ) : packages.length === 0 ? (
+                    <div className="card">
+                      <EmptyState
+                        icon={Package}
+                        title="No packages yet"
+                        description="Create a tour package to list it on the website."
+                        action={
+                          <button type="button" onClick={() => handleOpenPkgModal(false)} className="btn btn-primary">
+                            <Plus className="h-4 w-4" aria-hidden="true" /> Add package
+                          </button>
+                        }
+                      />
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                      {packages.map((pkg) => (
+                        <article key={pkg.id} className="card card-hover flex flex-col overflow-hidden">
+                          <div className="h-44 bg-sand-100">
+                            <img src={getPackageImage(pkg.image)} alt={pkg.name} className="h-full w-full object-cover" />
+                          </div>
+                          <div className="flex flex-1 flex-col p-5">
+                            <div className="flex items-start justify-between gap-3">
+                              <h3 className="min-w-0 truncate text-base font-bold text-ink-900">{pkg.name}</h3>
+                              <span className="shrink-0 text-sm font-bold text-gold-700">{pkg.price}</span>
+                            </div>
+                            <p className="mt-1.5 flex items-center gap-1.5 text-xs font-semibold text-ink-500">
+                              <Clock className="h-3.5 w-3.5" aria-hidden="true" /> {pkg.duration}
+                            </p>
+                            <p className="mt-3 line-clamp-3 flex-1 text-sm text-ink-600">{pkg.places}</p>
+                            <CardActions
+                              name={pkg.name}
+                              onEdit={() => handleOpenPkgModal(true, pkg)}
+                              onDelete={() => handleDeletePackage(pkg.id)}
+                            />
+                          </div>
+                        </article>
+                      ))}
+                    </div>
+                  )}
+                </motion.div>
+              )}
 
-                    <form onSubmit={handleSettingsSubmit} className="space-y-6">
-                      <div className="space-y-2">
-                        <label className="text-gray-500 text-xs font-bold uppercase tracking-wider pl-1">Superadmin Username</label>
-                        <div className="relative">
-                          <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+              {/* CONTACT MESSAGES VIEW */}
+              {activeTab === 'contacts' && (
+                <motion.div key="contacts" {...viewMotion}>
+                  <div className="card overflow-hidden">
+                    {loading ? (
+                      <LoadingState label="Loading enquiries..." />
+                    ) : contacts.length === 0 ? (
+                      <EmptyState
+                        icon={Inbox}
+                        title="No enquiries yet"
+                        description="Messages from the Contact Us form will appear here."
+                      />
+                    ) : (
+                      <ul className="divide-y divide-sand-200">
+                        {contacts.map((c) => (
+                          <li key={c.id} className="flex flex-col gap-4 p-4 transition-colors hover:bg-sand-50 sm:flex-row sm:items-start sm:p-5">
+                            <span className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-full bg-ink-100 text-sm font-bold text-ink-700 sm:flex" aria-hidden="true">
+                              {String(c.name || '?').trim().charAt(0).toUpperCase()}
+                            </span>
+                            <div className="min-w-0 flex-1">
+                              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                                <p className="font-bold text-ink-900">{c.name}</p>
+                                <span className="text-xs font-semibold text-ink-400">
+                                  {new Date(c.createdAt).toLocaleDateString()}
+                                </span>
+                              </div>
+                              <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-ink-500">
+                                <a href={`tel:${c.phone}`} className="inline-flex items-center gap-1.5 hover:text-ink-900">
+                                  <Phone className="h-3.5 w-3.5 text-gold-600" aria-hidden="true" /> {c.phone}
+                                </a>
+                                {c.email && (
+                                  <a href={`mailto:${c.email}`} className="inline-flex min-w-0 items-center gap-1.5 break-all hover:text-ink-900">
+                                    <Mail className="h-3.5 w-3.5 shrink-0 text-gold-600" aria-hidden="true" /> {c.email}
+                                  </a>
+                                )}
+                              </div>
+                              <p className="mt-3 whitespace-pre-line rounded-[10px] border border-sand-200 bg-sand-50 p-3.5 text-sm leading-relaxed text-ink-700">
+                                {c.message}
+                              </p>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteContact(c.id)}
+                              aria-label={`Delete message from ${c.name}`}
+                              className="flex h-9 w-9 shrink-0 items-center justify-center self-end rounded-[10px] border border-sand-200 text-ink-400 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-600 sm:self-start"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </motion.div>
+              )}
+
+              {/* SETTINGS VIEW */}
+              {activeTab === 'settings' && (
+                <motion.div key="settings" {...viewMotion} className="grid grid-cols-1 items-start gap-6 xl:grid-cols-2">
+                  {/* Profile settings */}
+                  <SectionCard
+                    title="Admin profile"
+                    description="Login name, contact and alert numbers for the superadmin account."
+                    icon={ShieldCheck}
+                  >
+                    {loading ? (
+                      <LoadingState label="Loading settings..." />
+                    ) : (
+                      <form onSubmit={handleSettingsSubmit} className="space-y-5">
+                        <Field id="settings-name" label="Superadmin username">
                           <input
+                            id="settings-name"
                             type="text"
                             value={settings.name}
                             onChange={(e) => setSettings({ ...settings, name: e.target.value })}
-                            className="w-full bg-[#f7f5f0] border border-[#edeae1] text-gray-800 pl-12 pr-4 py-3.5 rounded-xl focus:outline-none focus:border-[#d4951e] focus:ring-1 focus:ring-[#d4951e] transition-all text-sm font-semibold"
+                            className="field"
+                            autoComplete="username"
                             required
                           />
-                        </div>
-                      </div>
+                        </Field>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div className="space-y-2">
-                          <label className="text-gray-500 text-xs font-bold uppercase tracking-wider pl-1">Contact Phone</label>
-                          <div className="relative">
-                            <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+                        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                          <Field id="settings-phone" label="Contact phone">
                             <input
+                              id="settings-phone"
                               type="text"
+                              inputMode="tel"
                               value={settings.phone}
                               onChange={(e) => setSettings({ ...settings, phone: e.target.value })}
-                              className="w-full bg-[#f7f5f0] border border-[#edeae1] text-gray-800 pl-12 pr-4 py-3.5 rounded-xl focus:outline-none focus:border-[#d4951e] focus:ring-1 focus:ring-[#d4951e] transition-all text-sm font-semibold"
+                              className="field"
                               required
                             />
-                          </div>
-                        </div>
-
-                        <div className="space-y-2">
-                          <label className="text-gray-500 text-xs font-bold uppercase tracking-wider pl-1">WhatsApp Dispatch Number</label>
-                          <div className="relative">
-                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-sm">WA</span>
+                          </Field>
+                          <Field id="settings-whatsapp" label="WhatsApp dispatch number">
                             <input
+                              id="settings-whatsapp"
                               type="text"
+                              inputMode="tel"
                               value={settings.whatsapp}
                               onChange={(e) => setSettings({ ...settings, whatsapp: e.target.value })}
-                              className="w-full bg-[#f7f5f0] border border-[#edeae1] text-gray-800 pl-12 pr-4 py-3.5 rounded-xl focus:outline-none focus:border-[#d4951e] focus:ring-1 focus:ring-[#d4951e] transition-all text-sm font-semibold"
+                              className="field"
                               required
                             />
-                          </div>
+                          </Field>
                         </div>
-                      </div>
 
-                      <div className="space-y-2">
-                        <label className="text-gray-500 text-xs font-bold uppercase tracking-wider pl-1">Change Security Passcode</label>
-                        <div className="relative">
-                          <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+                        <Field id="settings-password" label="Password" hint="Enter the password to keep or a new one to change it.">
                           <input
+                            id="settings-password"
                             type="password"
                             value={settings.password}
                             onChange={(e) => setSettings({ ...settings, password: e.target.value })}
-                            className="w-full bg-[#f7f5f0] border border-[#edeae1] text-gray-800 pl-12 pr-4 py-3.5 rounded-xl focus:outline-none focus:border-[#d4951e] focus:ring-1 focus:ring-[#d4951e] transition-all text-sm font-mono tracking-widest font-bold"
+                            className="field"
                             placeholder="••••••••"
+                            autoComplete="new-password"
                             required
                           />
-                        </div>
-                      </div>
+                        </Field>
 
-                      <button
-                        type="submit"
-                        className="w-full bg-[#1a3c34] hover:bg-[#2d5a4e] text-white font-bold py-4 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer font-poppins text-sm uppercase tracking-wider"
-                      >
-                        Save Configuration Settings
-                      </button>
-                    </form>
-                  </div>
-
-                  {/* WhatsApp Bot Connection Manager Card */}
-                  <div className="bg-white rounded-3xl border border-[#edeae1] shadow-[0_8px_30px_rgb(0,0,0,0.06)] p-8 flex flex-col justify-between">
-                    <div>
-                      <h3 className="text-xl font-bold text-[#1a3c34] mb-6 pb-3 border-b border-[#edeae1] flex items-center gap-2 font-poppins">
-                        <span className="text-[#d4951e]">⚡</span> WhatsApp Notification Bot Status
-                      </h3>
-
-                      <div className="bg-[#f7f5f0] rounded-2xl p-5 border border-[#edeae1] flex items-center justify-between mb-6 shadow-sm">
-                        <div>
-                          <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Bot Status</p>
-                          <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${whatsappStatus.isConnected
-                            ? 'bg-emerald-100 text-emerald-700 border border-emerald-200'
-                            : 'bg-red-100 text-red-700 border border-red-200'
-                            }`}>
-                            <span className={`w-2 h-2 rounded-full ${whatsappStatus.isConnected ? 'bg-emerald-500 animate-pulse' : 'bg-red-500'}`}></span>
-                            {whatsappStatus.isConnected ? 'CONNECTED' : 'DISCONNECTED'}
-                          </span>
-                        </div>
-                        <div className="flex gap-2">
-                          {whatsappStatus.isConnected && (
-                            <>
-                              <button
-                                onClick={handleWhatsappTest}
-                                disabled={loadingWhatsapp}
-                                className="bg-[#1a3c34] hover:bg-[#2d5a4e] text-white border border-[#1a3c34] shadow-sm px-4 py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-50"
-                              >
-                                Test Message
-                              </button>
-                              <button
-                                onClick={handleWhatsappDisconnect}
-                                disabled={loadingWhatsapp}
-                                className="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 shadow-sm px-4 py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-50"
-                              >
-                                Disconnect
-                              </button>
-                            </>
-                          )}
-                          <button
-                            onClick={handleWhatsappReconnect}
-                            disabled={loadingWhatsapp}
-                            className="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 shadow-sm px-4 py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-50"
-                          >
-                            {loadingWhatsapp ? 'Processing...' : 'Reconnect Bot'}
+                        <div className="flex justify-end border-t border-sand-200 pt-5">
+                          <button type="submit" className="btn btn-dark w-full sm:w-auto">
+                            Save settings
                           </button>
                         </div>
+                      </form>
+                    )}
+                  </SectionCard>
+
+                  {/* WhatsApp bot */}
+                  <SectionCard
+                    title="WhatsApp alert bot"
+                    description="Sends booking and enquiry alerts to the admin number."
+                    icon={MessageCircle}
+                    action={
+                      <span
+                        className={`inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-bold ring-1 ring-inset ${
+                          whatsappStatus.isConnected
+                            ? 'bg-leaf-50 text-leaf-600 ring-leaf-500/30'
+                            : 'bg-red-50 text-red-700 ring-red-200'
+                        }`}
+                      >
+                        <span
+                          className={`h-1.5 w-1.5 rounded-full ${whatsappStatus.isConnected ? 'animate-pulse bg-leaf-500' : 'bg-red-500'}`}
+                          aria-hidden="true"
+                        />
+                        {whatsappStatus.isConnected ? 'Connected' : 'Disconnected'}
+                      </span>
+                    }
+                  >
+                    <div className="space-y-5">
+                      <div className="flex flex-wrap gap-2">
+                        {whatsappStatus.isConnected && (
+                          <>
+                            <button
+                              type="button"
+                              onClick={handleWhatsappTest}
+                              disabled={loadingWhatsapp}
+                              className="btn btn-whatsapp min-h-10 px-3.5 py-2 text-sm"
+                            >
+                              <Send className="h-4 w-4" aria-hidden="true" /> Test message
+                            </button>
+                            <button
+                              type="button"
+                              onClick={handleWhatsappDisconnect}
+                              disabled={loadingWhatsapp}
+                              className="btn min-h-10 border border-red-200 bg-white px-3.5 py-2 text-sm text-red-600 hover:bg-red-50"
+                            >
+                              <Unplug className="h-4 w-4" aria-hidden="true" /> Disconnect
+                            </button>
+                          </>
+                        )}
+                        <button
+                          type="button"
+                          onClick={handleWhatsappReconnect}
+                          disabled={loadingWhatsapp}
+                          className="btn btn-outline min-h-10 px-3.5 py-2 text-sm"
+                        >
+                          <RefreshCw className={`h-4 w-4 ${loadingWhatsapp ? 'animate-spin' : ''}`} aria-hidden="true" />
+                          {loadingWhatsapp ? 'Processing...' : 'Reconnect bot'}
+                        </button>
                       </div>
 
                       {!whatsappStatus.isConnected && (
-                        <div className="text-center p-6 bg-[#f7f5f0] border border-[#edeae1] rounded-2xl">
-                          <p className="text-sm text-gray-800 font-bold mb-4">Scan QR code using WhatsApp Link a Device:</p>
+                        <div className="rounded-[14px] border border-sand-200 bg-sand-50 p-5 text-center">
+                          <p className="flex items-center justify-center gap-2 text-sm font-bold text-ink-900">
+                            <QrCode className="h-4 w-4 text-gold-600" aria-hidden="true" />
+                            Scan with WhatsApp to link this device
+                          </p>
                           {whatsappStatus.qrCode ? (
-                            <div className="bg-white p-3 rounded-2xl inline-block shadow-md">
+                            <div className="mt-4 inline-block rounded-[14px] border border-sand-200 bg-white p-3 shadow-[var(--shadow-soft)]">
                               <img
                                 src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(whatsappStatus.qrCode)}`}
-                                alt="WhatsApp QR Code"
-                                className="w-48 h-48 block mx-auto"
+                                alt="WhatsApp QR code"
+                                className="mx-auto block h-48 w-48"
                               />
                             </div>
                           ) : (
-                            <div className="py-8 flex flex-col items-center justify-center text-gray-500">
-                              <div className="w-8 h-8 border-4 border-[#d4951e] border-t-transparent rounded-full animate-spin mb-3"></div>
-                              <p className="text-xs font-medium">Waiting for server to generate QR code...</p>
+                            <div className="flex flex-col items-center justify-center gap-2 py-8 text-xs font-medium text-ink-500" role="status">
+                              <Loader2 className="h-6 w-6 animate-spin text-gold-500" aria-hidden="true" />
+                              Waiting for server to generate QR code...
                             </div>
                           )}
-                          <p className="text-xs text-gray-500 mt-4 font-medium leading-relaxed">
-                            Open WhatsApp on your phone → Tap Menu or Settings → Linked Devices → Link a Device.
+                          <p className="mx-auto mt-4 max-w-sm text-xs leading-relaxed text-ink-500">
+                            Open WhatsApp on your phone → Menu or Settings → Linked devices → Link a device.
                           </p>
                         </div>
                       )}
 
                       {whatsappStatus.isConnected && (
-                        <div className="space-y-4">
-                          <div className="text-center p-6 bg-emerald-50 border border-emerald-100 rounded-2xl text-emerald-700">
-                            <p className="text-sm font-bold">Bot is active and ready to dispatch booking and contact alerts to admin.</p>
+                        <>
+                          <div className="flex items-start gap-3 rounded-[10px] border border-leaf-500/20 bg-leaf-50 p-4 text-sm font-medium text-leaf-600">
+                            <CheckCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+                            Bot is active and ready to dispatch booking and contact alerts to admin.
                           </div>
-                          
-                          {/* Send Custom Message UI */}
-                          <div className="bg-[#f7f5f0] border border-[#edeae1] rounded-2xl p-5 shadow-sm">
-                            <h4 className="text-sm font-bold text-[#1a3c34] mb-4 flex items-center gap-2">
-                              <MessageSquare className="w-4 h-4" /> Send Custom Message
-                            </h4>
-                            <div className="space-y-3">
-                              <div className="relative">
-                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-xs">WA</span>
+
+                          <div className="rounded-[14px] border border-sand-200 p-4 sm:p-5">
+                            <h3 className="mb-4 flex items-center gap-2 text-sm font-bold text-ink-900">
+                              <MessageSquare className="h-4 w-4 text-gold-600" aria-hidden="true" /> Send a custom message
+                            </h3>
+                            <div className="space-y-4">
+                              <Field id="wa-custom-phone" label="Recipient phone number">
                                 <input
+                                  id="wa-custom-phone"
                                   type="text"
+                                  inputMode="tel"
                                   value={customMsgPhone}
                                   onChange={(e) => setCustomMsgPhone(e.target.value)}
-                                  className="w-full bg-white border border-[#edeae1] text-gray-800 pl-10 pr-4 py-3 rounded-xl focus:outline-none focus:border-[#d4951e] focus:ring-1 focus:ring-[#d4951e] transition-all text-xs font-semibold"
-                                  placeholder="Recipient Phone Number (e.g. 6382513075)"
+                                  className="field"
+                                  placeholder="e.g. 6382513075"
                                 />
-                              </div>
-                              <textarea
-                                value={customMsgText}
-                                onChange={(e) => setCustomMsgText(e.target.value)}
-                                className="w-full bg-white border border-[#edeae1] text-gray-800 p-4 rounded-xl focus:outline-none focus:border-[#d4951e] focus:ring-1 focus:ring-[#d4951e] transition-all text-xs resize-none h-24 font-medium"
-                                placeholder="Type your custom message here..."
-                              ></textarea>
+                              </Field>
+                              <Field id="wa-custom-text" label="Message">
+                                <textarea
+                                  id="wa-custom-text"
+                                  value={customMsgText}
+                                  onChange={(e) => setCustomMsgText(e.target.value)}
+                                  className="field h-28 resize-none"
+                                  placeholder="Type your message..."
+                                />
+                              </Field>
                               <button
+                                type="button"
                                 onClick={handleSendCustomMessage}
                                 disabled={sendingCustomMsg || !customMsgPhone || !customMsgText}
-                                className="w-full bg-[#1a3c34] hover:bg-[#2d5a4e] text-white font-bold py-3 rounded-xl transition-all shadow-sm text-xs disabled:opacity-50 flex items-center justify-center gap-2"
+                                className="btn btn-dark w-full"
                               >
-                                {sendingCustomMsg ? 'Sending...' : 'Send Custom Message'}
+                                {sendingCustomMsg ? (
+                                  <>
+                                    <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> Sending...
+                                  </>
+                                ) : (
+                                  <>
+                                    <Send className="h-4 w-4" aria-hidden="true" /> Send message
+                                  </>
+                                )}
                               </button>
                             </div>
                           </div>
-                        </div>
+                        </>
                       )}
+
+                      <p className="text-xs text-ink-400">
+                        Session credentials are stored securely in SQLite and persist across restarts.
+                      </p>
                     </div>
+                  </SectionCard>
+                </motion.div>
+              )}
 
-                    <div className="mt-8 text-xs text-gray-400 font-medium">
-                      <p>Note: Session credentials are stored securely in SQLite and persist across restarts.</p>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-
-            {/* ADD ADMIN VIEW */}
-            {activeTab === 'add-admin' && (
-              <motion.div key="add-admin" initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -15 }}>
-                <div className="max-w-2xl bg-white rounded-3xl border border-[#edeae1] shadow-[0_8px_30px_rgb(0,0,0,0.06)] p-8">
-                  <h3 className="text-xl font-bold text-[#1a3c34] mb-6 pb-3 border-b border-[#edeae1] flex items-center gap-2 font-poppins">
-                    <UserPlus className="w-5 h-5 text-[#d4951e]" /> Create Administrator Account
-                  </h3>
-
-                  <form onSubmit={handleAddAdminSubmit} className="space-y-6">
-                    <div className="space-y-2">
-                      <label className="text-gray-500 text-xs font-bold uppercase tracking-wider pl-1">Account ID / Username</label>
-                      <div className="relative">
-                        <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+              {/* ADD ADMIN VIEW */}
+              {activeTab === 'add-admin' && (
+                <motion.div key="add-admin" {...viewMotion} className="max-w-2xl">
+                  <SectionCard
+                    title="New administrator account"
+                    description="The new admin can sign in with this username and password."
+                    icon={UserPlus}
+                  >
+                    <form onSubmit={handleAddAdminSubmit} className="space-y-5">
+                      <Field id="new-admin-name" label="Username">
                         <input
+                          id="new-admin-name"
                           type="text"
                           value={newAdmin.name}
                           onChange={(e) => setNewAdmin({ ...newAdmin, name: e.target.value })}
-                          className="w-full bg-[#f7f5f0] border border-[#edeae1] text-gray-800 pl-12 pr-4 py-3.5 rounded-xl focus:outline-none focus:border-[#d4951e] focus:ring-1 focus:ring-[#d4951e] transition-all text-sm font-semibold"
+                          className="field"
                           placeholder="e.g. Subadmin2"
+                          autoComplete="off"
                           required
                         />
-                      </div>
-                    </div>
+                      </Field>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <label className="text-gray-500 text-xs font-bold uppercase tracking-wider pl-1">Phone</label>
-                        <div className="relative">
-                          <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+                      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                        <Field id="new-admin-phone" label="Phone">
                           <input
+                            id="new-admin-phone"
                             type="text"
+                            inputMode="tel"
                             value={newAdmin.phone}
                             onChange={(e) => setNewAdmin({ ...newAdmin, phone: e.target.value })}
-                            className="w-full bg-[#f7f5f0] border border-[#edeae1] text-gray-800 pl-12 pr-4 py-3.5 rounded-xl focus:outline-none focus:border-[#d4951e] focus:ring-1 focus:ring-[#d4951e] transition-all text-sm font-semibold"
-                            placeholder="Enter phone number"
+                            className="field"
+                            placeholder="Phone number"
                           />
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <label className="text-gray-500 text-xs font-bold uppercase tracking-wider pl-1">WhatsApp Number</label>
-                        <div className="relative">
-                          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-sm">WA</span>
+                        </Field>
+                        <Field id="new-admin-whatsapp" label="WhatsApp number">
                           <input
+                            id="new-admin-whatsapp"
                             type="text"
+                            inputMode="tel"
                             value={newAdmin.whatsapp}
                             onChange={(e) => setNewAdmin({ ...newAdmin, whatsapp: e.target.value })}
-                            className="w-full bg-[#f7f5f0] border border-[#edeae1] text-gray-800 pl-12 pr-4 py-3.5 rounded-xl focus:outline-none focus:border-[#d4951e] focus:ring-1 focus:ring-[#d4951e] transition-all text-sm font-semibold"
-                            placeholder="Enter WhatsApp alert recipient number"
+                            className="field"
+                            placeholder="Alert recipient number"
                           />
-                        </div>
+                        </Field>
                       </div>
-                    </div>
 
-                    <div className="space-y-2">
-                      <label className="text-gray-500 text-xs font-bold uppercase tracking-wider pl-1">Security Passcode</label>
-                      <div className="relative">
-                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+                      <Field id="new-admin-password" label="Password">
                         <input
+                          id="new-admin-password"
                           type="password"
                           value={newAdmin.password}
                           onChange={(e) => setNewAdmin({ ...newAdmin, password: e.target.value })}
-                          className="w-full bg-[#f7f5f0] border border-[#edeae1] text-gray-800 pl-12 pr-4 py-3.5 rounded-xl focus:outline-none focus:border-[#d4951e] focus:ring-1 focus:ring-[#d4951e] transition-all text-sm font-semibold"
-                          placeholder="Create passcode"
+                          className="field"
+                          placeholder="Create a password"
+                          autoComplete="new-password"
                           required
                         />
-                      </div>
-                    </div>
+                      </Field>
 
-                    <button
-                      type="submit"
-                      className="w-full bg-[#1a3c34] hover:bg-[#2d5a4e] text-white font-bold py-4 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer font-poppins text-sm uppercase tracking-wider"
-                    >
-                      Register Admin Account
-                    </button>
-                  </form>
-                </div>
-              </motion.div>
-            )}
-
-          </AnimatePresence>
-
-          {/* VEHICLE MODAL */}
-          <AnimatePresence>
-            {carModal.isOpen && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-              >
-                <motion.div
-                  initial={{ scale: 0.95, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  exit={{ scale: 0.95, opacity: 0 }}
-                  className="bg-white rounded-3xl p-6 w-full max-w-2xl shadow-2xl max-h-[90vh] overflow-y-auto"
-                >
-                  <div className="flex justify-between items-center mb-6 border-b border-[#edeae1] pb-3">
-                    <h3 className="text-xl font-bold text-[#1a3c34] font-poppins">{carModal.isEdit ? 'Edit Vehicle' : 'Add New Vehicle'}</h3>
-                    <button onClick={() => setCarModal({ isOpen: false, isEdit: false, data: null })} className="text-gray-400 hover:text-gray-600"><X className="w-6 h-6" /></button>
-                  </div>
-                  <form onSubmit={handleCarSubmit} className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="text-xs font-bold text-gray-500 uppercase">Vehicle Name</label>
-                        <input type="text" value={carModal.data.name} onChange={e => setCarModal({ ...carModal, data: { ...carModal.data, name: e.target.value } })} className="w-full mt-1 bg-[#f7f5f0] border border-[#edeae1] p-3 rounded-xl focus:outline-none focus:border-[#d4951e]" required />
+                      <div className="flex justify-end border-t border-sand-200 pt-5">
+                        <button type="submit" className="btn btn-primary w-full sm:w-auto">
+                          <UserPlus className="h-4 w-4" aria-hidden="true" /> Create administrator
+                        </button>
                       </div>
-                      <div>
-                        <label className="text-xs font-bold text-gray-500 uppercase">Price String (e.g. ₹12/km)</label>
-                        <input type="text" value={carModal.data.price} onChange={e => setCarModal({ ...carModal, data: { ...carModal.data, price: e.target.value } })} className="w-full mt-1 bg-[#f7f5f0] border border-[#edeae1] p-3 rounded-xl focus:outline-none focus:border-[#d4951e]" required />
-                      </div>
-                      <div>
-                        <label className="text-xs font-bold text-gray-500 uppercase">Seats</label>
-                        <select value={carModal.data.seats} onChange={e => setCarModal({ ...carModal, data: { ...carModal.data, seats: e.target.value } })} className="w-full mt-1 bg-[#f7f5f0] border border-[#edeae1] p-3 rounded-xl focus:outline-none focus:border-[#d4951e]">
-                          <option>4 Seater</option><option>7 Seater</option><option>12 Seater</option><option>18 Seater</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="text-xs font-bold text-gray-500 uppercase">AC / Non-AC</label>
-                        <select value={carModal.data.ac} onChange={e => setCarModal({ ...carModal, data: { ...carModal.data, ac: e.target.value } })} className="w-full mt-1 bg-[#f7f5f0] border border-[#edeae1] p-3 rounded-xl focus:outline-none focus:border-[#d4951e]">
-                          <option>AC</option><option>Non-AC</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="text-xs font-bold text-gray-500 uppercase">Vehicle Image</label>
-                        <div className="mt-1 flex items-center gap-4">
-                          {carModal.data.image && (
-                            <img src={getVehicleImage(carModal.data.image)} alt="Preview" className="h-12 w-16 object-contain bg-white rounded-lg border border-gray-200 shadow-sm" />
-                          )}
-                          <label className="bg-[#1a3c34] hover:bg-[#2d5a4e] text-white px-4 py-2 rounded-xl cursor-pointer transition-all shadow-sm flex items-center gap-2">
-                            <Upload className="w-4 h-4" />
-                            <span className="text-sm font-bold">Upload Image</span>
-                            <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageUpload(e, setCarModal, 'image')} />
-                          </label>
-                        </div>
-                      </div>
-
-                    </div>
-                    <div className="pt-4 border-t border-[#edeae1]">
-                      <h4 className="text-sm font-bold text-[#1a3c34] mb-3 uppercase tracking-wider">Outstation Plan Details</h4>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div>
-                          <label className="text-[10px] font-bold text-gray-500 uppercase">Rate (e.g. ₹14/km)</label>
-                          <input type="text" value={carModal.data.outstationRate || ''} onChange={e => setCarModal({ ...carModal, data: { ...carModal.data, outstationRate: e.target.value } })} className="w-full mt-1 bg-[#f7f5f0] border border-[#edeae1] p-2.5 rounded-xl text-sm focus:outline-none focus:border-[#d4951e]" placeholder="Rate" />
-                        </div>
-                        <div>
-                          <label className="text-[10px] font-bold text-gray-500 uppercase">Min Distance</label>
-                          <input type="text" value={carModal.data.outstationMinKm || ''} onChange={e => setCarModal({ ...carModal, data: { ...carModal.data, outstationMinKm: e.target.value } })} className="w-full mt-1 bg-[#f7f5f0] border border-[#edeae1] p-2.5 rounded-xl text-sm focus:outline-none focus:border-[#d4951e]" placeholder="Above 250 km" />
-                        </div>
-                        <div>
-                          <label className="text-[10px] font-bold text-gray-500 uppercase">Driver Charge</label>
-                          <input type="text" value={carModal.data.outstationDriver || ''} onChange={e => setCarModal({ ...carModal, data: { ...carModal.data, outstationDriver: e.target.value } })} className="w-full mt-1 bg-[#f7f5f0] border border-[#edeae1] p-2.5 rounded-xl text-sm focus:outline-none focus:border-[#d4951e]" placeholder="₹300/day" />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="pt-4 border-t border-[#edeae1]">
-                      <h4 className="text-sm font-bold text-[#1a3c34] mb-3 uppercase tracking-wider">Day Rental Plan Details</h4>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div>
-                          <label className="text-[10px] font-bold text-gray-500 uppercase">Base Rent</label>
-                          <input type="text" value={carModal.data.dayBaseRent || ''} onChange={e => setCarModal({ ...carModal, data: { ...carModal.data, dayBaseRent: e.target.value } })} className="w-full mt-1 bg-[#f7f5f0] border border-[#edeae1] p-2.5 rounded-xl text-sm focus:outline-none focus:border-[#d4951e]" placeholder="Rs. 2700" />
-                        </div>
-                        <div>
-                          <label className="text-[10px] font-bold text-gray-500 uppercase">Per km Charge</label>
-                          <input type="text" value={carModal.data.dayPerKm || ''} onChange={e => setCarModal({ ...carModal, data: { ...carModal.data, dayPerKm: e.target.value } })} className="w-full mt-1 bg-[#f7f5f0] border border-[#edeae1] p-2.5 rounded-xl text-sm focus:outline-none focus:border-[#d4951e]" placeholder="Rs. 17/km" />
-                        </div>
-                        <div>
-                          <label className="text-[10px] font-bold text-gray-500 uppercase">Driver Charge</label>
-                          <input type="text" value={carModal.data.dayDriver || ''} onChange={e => setCarModal({ ...carModal, data: { ...carModal.data, dayDriver: e.target.value } })} className="w-full mt-1 bg-[#f7f5f0] border border-[#edeae1] p-2.5 rounded-xl text-sm focus:outline-none focus:border-[#d4951e]" placeholder="Rs. 400/day" />
-                        </div>
-                      </div>
-                    </div>
-                    <button type="submit" className="w-full bg-[#1a3c34] text-white font-bold py-3 rounded-xl mt-4 hover:bg-[#2d5a4e] transition-all">
-                      {carModal.isEdit ? 'Save Changes' : 'Add Vehicle'}
-                    </button>
-                  </form>
+                    </form>
+                  </SectionCard>
                 </motion.div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* PACKAGE MODAL */}
-          <AnimatePresence>
-            {pkgModal.isOpen && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-              >
-                <motion.div
-                  initial={{ scale: 0.95, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  exit={{ scale: 0.95, opacity: 0 }}
-                  className="bg-white rounded-3xl p-6 w-full max-w-2xl shadow-2xl max-h-[90vh] overflow-y-auto"
-                >
-                  <div className="flex justify-between items-center mb-6 border-b border-[#edeae1] pb-3">
-                    <h3 className="text-xl font-bold text-[#1a3c34] font-poppins">{pkgModal.isEdit ? 'Edit Package' : 'Add New Package'}</h3>
-                    <button onClick={() => setPkgModal({ isOpen: false, isEdit: false, data: null })} className="text-gray-400 hover:text-gray-600"><X className="w-6 h-6" /></button>
-                  </div>
-                  <form onSubmit={handlePkgSubmit} className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="text-xs font-bold text-gray-500 uppercase">Package Name</label>
-                        <input type="text" value={pkgModal.data.name} onChange={e => setPkgModal({ ...pkgModal, data: { ...pkgModal.data, name: e.target.value } })} className="w-full mt-1 bg-[#f7f5f0] border border-[#edeae1] p-3 rounded-xl focus:outline-none focus:border-[#d4951e]" required />
-                      </div>
-                      <div>
-                        <label className="text-xs font-bold text-gray-500 uppercase">Duration & Distance</label>
-                        <input type="text" value={pkgModal.data.duration} onChange={e => setPkgModal({ ...pkgModal, data: { ...pkgModal.data, duration: e.target.value } })} className="w-full mt-1 bg-[#f7f5f0] border border-[#edeae1] p-3 rounded-xl focus:outline-none focus:border-[#d4951e]" placeholder="e.g. 12 Hours / 300 KM" required />
-                      </div>
-                      <div>
-                        <label className="text-xs font-bold text-gray-500 uppercase">Price</label>
-                        <input type="text" value={pkgModal.data.price} onChange={e => setPkgModal({ ...pkgModal, data: { ...pkgModal.data, price: e.target.value } })} className="w-full mt-1 bg-[#f7f5f0] border border-[#edeae1] p-3 rounded-xl focus:outline-none focus:border-[#d4951e]" placeholder="e.g. ₹5000" required />
-                      </div>
-                      <div>
-                        <label className="text-xs font-bold text-gray-500 uppercase">Cover Image</label>
-                        <div className="mt-1 flex items-center gap-4">
-                          {pkgModal.data.image && (
-                            <img src={getPackageImage(pkgModal.data.image)} alt="Preview" className="h-12 w-16 object-cover bg-white rounded-lg border border-gray-200 shadow-sm" />
-                          )}
-                          <label className="bg-[#1a3c34] hover:bg-[#2d5a4e] text-white px-4 py-2 rounded-xl cursor-pointer transition-all shadow-sm flex items-center gap-2">
-                            <Upload className="w-4 h-4" />
-                            <span className="text-sm font-bold">Upload Image</span>
-                            <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageUpload(e, setPkgModal, 'image')} />
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                      <div>
-                        <label className="text-xs font-bold text-gray-500 uppercase">Rating</label>
-                        <input type="text" value={pkgModal.data.rating || ''} onChange={e => setPkgModal({ ...pkgModal, data: { ...pkgModal.data, rating: e.target.value } })} className="w-full mt-1 bg-[#f7f5f0] border border-[#edeae1] p-3 rounded-xl focus:outline-none focus:border-[#d4951e]" placeholder="e.g. 5.0" />
-                      </div>
-                      <div>
-                        <label className="text-xs font-bold text-gray-500 uppercase">Review Count</label>
-                        <input type="text" value={pkgModal.data.reviewCount || ''} onChange={e => setPkgModal({ ...pkgModal, data: { ...pkgModal.data, reviewCount: e.target.value } })} className="w-full mt-1 bg-[#f7f5f0] border border-[#edeae1] p-3 rounded-xl focus:outline-none focus:border-[#d4951e]" placeholder="e.g. 250+" />
-                      </div>
-                      <div>
-                        <label className="text-xs font-bold text-gray-500 uppercase">Location</label>
-                        <input type="text" value={pkgModal.data.location || ''} onChange={e => setPkgModal({ ...pkgModal, data: { ...pkgModal.data, location: e.target.value } })} className="w-full mt-1 bg-[#f7f5f0] border border-[#edeae1] p-3 rounded-xl focus:outline-none focus:border-[#d4951e]" placeholder="e.g. Madurai, Tamil Nadu" />
-                      </div>
-                    </div>
-                    <div className="mt-4">
-                      <label className="text-xs font-bold text-gray-500 uppercase">Places Covered (Description)</label>
-                      <textarea value={pkgModal.data.places} onChange={e => setPkgModal({ ...pkgModal, data: { ...pkgModal.data, places: e.target.value } })} className="w-full mt-1 bg-[#f7f5f0] border border-[#edeae1] p-3 rounded-xl focus:outline-none focus:border-[#d4951e] h-24" required></textarea>
-                    </div>
-                    <button type="submit" className="w-full bg-[#1a3c34] text-white font-bold py-3 rounded-xl mt-4 hover:bg-[#2d5a4e] transition-all">
-                      {pkgModal.isEdit ? 'Save Changes' : 'Add Package'}
-                    </button>
-                  </form>
-                </motion.div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
+              )}
+            </AnimatePresence>
+          </div>
         </main>
       </div>
 
+      {/* VEHICLE MODAL */}
+      <AnimatePresence>
+        {carModal.isOpen && (
+          <ModalShell
+            title={carModal.isEdit ? 'Edit vehicle' : 'Add new vehicle'}
+            description="Details shown on the public Fleet page."
+            onClose={closeCarModal}
+            onSubmit={handleCarSubmit}
+            submitLabel={carModal.isEdit ? 'Save changes' : 'Add vehicle'}
+          >
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field id="car-name" label="Vehicle name">
+                  <input id="car-name" type="text" value={carModal.data.name} onChange={setCarField('name')} className="field" required />
+                </Field>
+                <Field id="car-price" label="Price label" hint="e.g. ₹12/km">
+                  <input id="car-price" type="text" value={carModal.data.price} onChange={setCarField('price')} className="field" required />
+                </Field>
+                <Field id="car-seats" label="Seats">
+                  <select id="car-seats" value={carModal.data.seats} onChange={setCarField('seats')} className="field">
+                    <option>4 Seater</option>
+                    <option>7 Seater</option>
+                    <option>12 Seater</option>
+                    <option>18 Seater</option>
+                  </select>
+                </Field>
+                <Field id="car-ac" label="AC / Non-AC">
+                  <select id="car-ac" value={carModal.data.ac} onChange={setCarField('ac')} className="field">
+                    <option>AC</option>
+                    <option>Non-AC</option>
+                  </select>
+                </Field>
+                <div className="sm:col-span-2">
+                  <ImagePicker
+                    id="car-image"
+                    label="Vehicle image"
+                    previewSrc={carModal.data.image ? getVehicleImage(carModal.data.image) : null}
+                    contain
+                    onChange={(e) => handleImageUpload(e, setCarModal, 'image')}
+                  />
+                </div>
+              </div>
+
+              <div className="border-t border-sand-200 pt-5">
+                <FormGroupTitle>Outstation plan</FormGroupTitle>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                  <Field id="car-out-rate" label="Rate">
+                    <input id="car-out-rate" type="text" value={carModal.data.outstationRate || ''} onChange={setCarField('outstationRate')} className="field" placeholder="₹14/km" />
+                  </Field>
+                  <Field id="car-out-min" label="Min distance">
+                    <input id="car-out-min" type="text" value={carModal.data.outstationMinKm || ''} onChange={setCarField('outstationMinKm')} className="field" placeholder="Above 250 km" />
+                  </Field>
+                  <Field id="car-out-driver" label="Driver charge">
+                    <input id="car-out-driver" type="text" value={carModal.data.outstationDriver || ''} onChange={setCarField('outstationDriver')} className="field" placeholder="₹300/day" />
+                  </Field>
+                </div>
+              </div>
+
+              <div className="border-t border-sand-200 pt-5">
+                <FormGroupTitle>Day rental plan</FormGroupTitle>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                  <Field id="car-day-base" label="Base rent">
+                    <input id="car-day-base" type="text" value={carModal.data.dayBaseRent || ''} onChange={setCarField('dayBaseRent')} className="field" placeholder="Rs. 2700" />
+                  </Field>
+                  <Field id="car-day-km" label="Per km charge">
+                    <input id="car-day-km" type="text" value={carModal.data.dayPerKm || ''} onChange={setCarField('dayPerKm')} className="field" placeholder="Rs. 17/km" />
+                  </Field>
+                  <Field id="car-day-driver" label="Driver charge">
+                    <input id="car-day-driver" type="text" value={carModal.data.dayDriver || ''} onChange={setCarField('dayDriver')} className="field" placeholder="Rs. 400/day" />
+                  </Field>
+                </div>
+              </div>
+            </div>
+          </ModalShell>
+        )}
+      </AnimatePresence>
+
+      {/* PACKAGE MODAL */}
+      <AnimatePresence>
+        {pkgModal.isOpen && (
+          <ModalShell
+            title={pkgModal.isEdit ? 'Edit package' : 'Add new package'}
+            description="Details shown on the public Packages page."
+            onClose={closePkgModal}
+            onSubmit={handlePkgSubmit}
+            submitLabel={pkgModal.isEdit ? 'Save changes' : 'Add package'}
+          >
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field id="pkg-name" label="Package name">
+                  <input id="pkg-name" type="text" value={pkgModal.data.name} onChange={setPkgField('name')} className="field" required />
+                </Field>
+                <Field id="pkg-duration" label="Duration & distance">
+                  <input id="pkg-duration" type="text" value={pkgModal.data.duration} onChange={setPkgField('duration')} className="field" placeholder="e.g. 12 Hours / 300 KM" required />
+                </Field>
+                <Field id="pkg-price" label="Price">
+                  <input id="pkg-price" type="text" value={pkgModal.data.price} onChange={setPkgField('price')} className="field" placeholder="e.g. ₹5000" required />
+                </Field>
+                <Field id="pkg-location" label="Location">
+                  <input id="pkg-location" type="text" value={pkgModal.data.location || ''} onChange={setPkgField('location')} className="field" placeholder="e.g. Madurai, Tamil Nadu" />
+                </Field>
+                <Field id="pkg-rating" label="Rating">
+                  <input id="pkg-rating" type="text" value={pkgModal.data.rating || ''} onChange={setPkgField('rating')} className="field" placeholder="e.g. 5.0" />
+                </Field>
+                <Field id="pkg-reviews" label="Review count">
+                  <input id="pkg-reviews" type="text" value={pkgModal.data.reviewCount || ''} onChange={setPkgField('reviewCount')} className="field" placeholder="e.g. 250+" />
+                </Field>
+                <div className="sm:col-span-2">
+                  <ImagePicker
+                    id="pkg-image"
+                    label="Cover image"
+                    previewSrc={pkgModal.data.image ? getPackageImage(pkgModal.data.image) : null}
+                    onChange={(e) => handleImageUpload(e, setPkgModal, 'image')}
+                  />
+                </div>
+              </div>
+
+              <Field id="pkg-places" label="Places covered (description)">
+                <textarea id="pkg-places" value={pkgModal.data.places} onChange={setPkgField('places')} className="field h-28" required />
+              </Field>
+            </div>
+          </ModalShell>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
+
+/* ─── Small row/card sub-components ───────────────────────── */
+const BookingPhone = ({ phone }) => {
+  if (!phone) return null;
+  const wa = waLink(phone);
+  return (
+    <div className="mt-0.5 flex flex-wrap items-center gap-2 text-xs">
+      <a href={`tel:${phone}`} className="inline-flex items-center gap-1 font-medium text-ink-500 hover:text-ink-900">
+        <Phone className="h-3 w-3" aria-hidden="true" /> {phone}
+      </a>
+      {wa && (
+        <a
+          href={wa}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`WhatsApp ${phone}`}
+          className="inline-flex items-center gap-1 rounded px-1 font-semibold text-leaf-600 hover:bg-leaf-50"
+        >
+          <MessageCircle className="h-3 w-3" aria-hidden="true" /> WhatsApp
+        </a>
+      )}
+    </div>
+  );
+};
+
+const BookingRoute = ({ from, to }) => (
+  <div className="space-y-1 text-xs font-medium text-ink-700">
+    <div className="flex min-w-0 items-center gap-2" title={from}>
+      <span className="h-2 w-2 shrink-0 rounded-full border-2 border-ink-700" aria-hidden="true" />
+      <span className="sr-only">From:</span>
+      <span className="truncate">{from}</span>
+    </div>
+    <div className="flex min-w-0 items-center gap-2" title={to}>
+      <MapPin className="h-3 w-3 shrink-0 -translate-x-0.5 text-gold-600" aria-hidden="true" />
+      <span className="sr-only">To:</span>
+      <span className="truncate">{to}</span>
+    </div>
+  </div>
+);
+
+const BookingActions = ({ booking, onStatus, onDelete, stretch = false }) => (
+  <div className={`flex items-center gap-2 ${stretch ? '' : 'justify-end'}`}>
+    <select
+      value={booking.status || 'Pending'}
+      onChange={(e) => onStatus(booking.id, e.target.value)}
+      aria-label={`Update status for booking ${booking.id}`}
+      className={`field min-h-9 py-1.5 pl-3 text-sm ${stretch ? 'flex-1' : 'w-36'}`}
+    >
+      <option value="Pending">Pending</option>
+      <option value="Approved">Approved</option>
+      <option value="Completed">Completed</option>
+    </select>
+    <button
+      type="button"
+      onClick={() => onDelete(booking.id)}
+      aria-label={`Delete booking ${booking.id}`}
+      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] border border-sand-200 text-ink-400 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-600"
+    >
+      <Trash2 className="h-4 w-4" />
+    </button>
+  </div>
+);
+
+const CardActions = ({ name, onEdit, onDelete }) => (
+  <div className="mt-5 flex items-center gap-2 border-t border-sand-200 pt-4">
+    <button type="button" onClick={onEdit} className="btn btn-outline min-h-9 flex-1 px-3 py-1.5 text-sm" aria-label={`Edit ${name}`}>
+      <Edit className="h-4 w-4" aria-hidden="true" /> Edit
+    </button>
+    <button
+      type="button"
+      onClick={onDelete}
+      aria-label={`Delete ${name}`}
+      className="btn min-h-9 border border-sand-200 px-3 py-1.5 text-sm text-red-600 hover:border-red-200 hover:bg-red-50"
+    >
+      <Trash2 className="h-4 w-4" aria-hidden="true" /> Delete
+    </button>
+  </div>
+);
 
 export default AdminDashboard;

@@ -1,6 +1,5 @@
-import React from 'react';
 import SEOLandingPage from '../../components/SEOLandingPage';
-import HeroBg from '../../assets/madurai_aerial_bg.png';
+import HeroBg from '../../assets/opt/madurai-aerial.webp';
 
 const MaduraiAirportTaxi = () => {
   const sections = [
@@ -53,6 +52,7 @@ const MaduraiAirportTaxi = () => {
       heroBg={HeroBg}
       sections={sections}
       faqs={faqs}
+      bookingPreset={{ tripType: 'airport', toLocation: 'Madurai Airport (IXM)' }}
     />
   );
 };

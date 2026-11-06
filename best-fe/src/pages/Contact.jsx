@@ -1,245 +1,189 @@
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { motion } from 'framer-motion';
-import { Phone, Mail, MapPin, Send, MessageCircle, Clock, Headset, ShieldCheck, Calendar, Car as CarIcon, CheckCircle2, Sparkles } from 'lucide-react';
+import { useState } from 'react';
+import { Phone, Mail, MapPin, MessageCircle, Clock, Send, CheckCircle2, Loader2 } from 'lucide-react';
 import API_BASE_URL from '../apiConfig';
-import CinematicSouthIndiaBg from '../assets/cinematic_south_india.png';
+import Hero from '../assets/opt/rameswaram-sunset.webp';
+import { SITE } from '../data/site';
+import { PageHero } from '../components/ui';
+
+const EMPTY = { name: '', phone: '', email: '', subject: '', message: '' };
+
+const validate = (f) => {
+  const e = {};
+  if (f.name.trim().length < 2) e.name = 'Enter your name';
+  const digits = f.phone.replace(/\D/g, '');
+  if (digits.length < 10 || digits.length > 13) e.phone = 'Enter a valid mobile number';
+  if (f.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email)) e.email = 'Enter a valid email address';
+  if (f.message.trim().length < 5) e.message = 'Tell us a little about your trip';
+  return e;
+};
 
 const Contact = () => {
-  const { t } = useTranslation();
-  const [formData, setFormData] = useState({ name: '', phone: '', email: '', subject: '', message: '' });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [form, setForm] = useState(EMPTY);
+  const [errors, setErrors] = useState({});
+  const [status, setStatus] = useState('idle'); // idle | sending | sent | error
 
-  const handleInputChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const onChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+    if (errors[e.target.name]) setErrors({ ...errors, [e.target.name]: undefined });
+  };
 
-  const handleSubmit = async (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    const errs = validate(form);
+    setErrors(errs);
+    if (Object.keys(errs).length) return;
+    setStatus('sending');
     try {
       const res = await fetch(`${API_BASE_URL}/api/contacts`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...form,
+          // the contacts table has no subject column, so keep it with the message
+          message: form.subject.trim() ? `[${form.subject.trim()}] ${form.message.trim()}` : form.message.trim(),
+        }),
       });
-      if (res.ok) {
-        setIsSuccess(true);
-        setFormData({ name: '', phone: '', email: '', subject: '', message: '' });
-        setTimeout(() => setIsSuccess(false), 5000);
-      } else alert(t('Failed to send message. Please call us instead.'));
+      if (!res.ok) throw new Error('Failed');
+      setStatus('sent');
+      setForm(EMPTY);
     } catch {
-      alert(t('Connection error. Please try calling or WhatsApp.'));
-    } finally {
-      setIsSubmitting(false);
+      setStatus('error');
     }
   };
 
-  const inputCls = 'w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 transition-all text-slate-800 font-medium placeholder:text-slate-400 text-xs sm:text-sm';
+  const field = (name) => ({
+    id: `ct-${name}`,
+    name,
+    value: form[name],
+    onChange,
+    'aria-invalid': errors[name] ? 'true' : 'false',
+    'aria-describedby': errors[name] ? `ct-${name}-err` : undefined,
+  });
+  const err = (name) => (errors[name] ? <p id={`ct-${name}-err`} className="field-error" role="alert">{errors[name]}</p> : null);
+
+  const channels = [
+    { icon: Phone, label: 'Call us 24/7', value: SITE.phoneDisplay, href: SITE.phoneHref },
+    { icon: MessageCircle, label: 'WhatsApp', value: 'Chat with our desk', href: SITE.whatsappHref, external: true },
+    { icon: Mail, label: 'Email', value: SITE.email, href: `mailto:${SITE.email}` },
+  ];
 
   return (
-    <div className="bg-white text-slate-900 min-h-screen font-['Plus_Jakarta_Sans',sans-serif] text-left">
+    <>
+      <PageHero
+        eyebrow="Contact"
+        title="Talk to our booking desk"
+        intro="Quotes, custom itineraries or a ride in the next hour — call, WhatsApp or send us a message. We're open around the clock."
+        image={Hero}
+        crumbs={['Contact']}
+      />
 
-      {/* ── HERO ──────────────────────────────── */}
-      <section className="relative h-72 sm:h-80 pt-20 flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#DDF0FF] via-[#EDF6FF] to-white border-b border-slate-100">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="font-script text-4xl sm:text-5xl text-[#0B2545] font-semibold mb-1">
-              Contact Us
+      <section className="py-14 sm:py-20">
+        <div className="container-x grid lg:grid-cols-[380px_1fr] gap-8 lg:gap-12 items-start">
+          <div className="space-y-4">
+            {channels.map((c) => (
+              <a
+                key={c.label}
+                href={c.href}
+                {...(c.external ? { target: '_blank', rel: 'noreferrer' } : {})}
+                className="card card-hover p-5 flex items-center gap-4"
+              >
+                <span className="w-12 h-12 rounded-[12px] bg-gold-100 text-gold-700 grid place-items-center shrink-0"><c.icon className="w-5 h-5" aria-hidden /></span>
+                <span className="min-w-0">
+                  <span className="block text-xs font-semibold uppercase tracking-wider text-ink-500">{c.label}</span>
+                  <span className="block font-bold text-ink-900 break-all">{c.value}</span>
+                </span>
+              </a>
+            ))}
+            <div className="card p-5 flex gap-4">
+              <span className="w-12 h-12 rounded-[12px] bg-ink-50 text-ink-700 grid place-items-center shrink-0"><MapPin className="w-5 h-5" aria-hidden /></span>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-ink-500">Office</p>
+                <address className="not-italic text-ink-800 font-medium leading-relaxed mt-0.5">
+                  {SITE.addressLines.map((l) => <span key={l} className="block">{l}</span>)}
+                </address>
+              </div>
             </div>
-            <p className="text-sm sm:text-base text-slate-600 font-medium tracking-wide">
-              24/7 Booking Desk & Travel Inquiries • Palanganatham, Madurai
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ── OFFICIAL CONTACT SECTION ──────────────────────── */}
-      <section className="py-16 lg:py-24 bg-slate-50 border-b border-slate-200/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-5 gap-10 items-start">
-            
-            {/* Left: Contact Info Card */}
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="lg:col-span-2 bg-white rounded-3xl p-7 border border-slate-200 shadow-sm"
-            >
-              <div className="flex items-center gap-3.5 mb-8 pb-5 border-b border-slate-100">
-                <div className="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-700">
-                  <CarIcon className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="font-['Outfit'] font-black text-lg text-slate-900">Madurai Best Taxi</h3>
-                  <p className="text-blue-700 text-xs font-semibold">Registered Office • Palanganatham</p>
-                </div>
+            <div className="card p-5 flex gap-4">
+              <span className="w-12 h-12 rounded-[12px] bg-ink-50 text-ink-700 grid place-items-center shrink-0"><Clock className="w-5 h-5" aria-hidden /></span>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-ink-500">Hours</p>
+                <p className="text-ink-800 font-medium mt-0.5">Open 24 hours · 7 days a week</p>
               </div>
-              
-              <div className="space-y-6 text-xs sm:text-sm">
-                {/* Official Address */}
-                <div className="flex gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center flex-shrink-0 text-amber-500">
-                    <MapPin className="w-5 h-5" />
+            </div>
+          </div>
+
+          <div className="card p-6 sm:p-10">
+            {status === 'sent' ? (
+              <div className="py-10 text-center" role="status">
+                <CheckCircle2 className="w-14 h-14 text-leaf-500 mx-auto" aria-hidden />
+                <h2 className="h-display text-3xl text-ink-900 mt-5">Message received</h2>
+                <p className="text-ink-600 mt-3 max-w-md mx-auto">Thank you for contacting us. Our team will get back to you shortly on the number you shared.</p>
+                <button type="button" onClick={() => setStatus('idle')} className="btn btn-outline mt-8">Send another message</button>
+              </div>
+            ) : (
+              <>
+                <h2 className="h-display text-3xl text-ink-900">Request a quote</h2>
+                <p className="text-ink-600 mt-2">Share your dates, pickup point and group size — we'll reply with options and a clear fare.</p>
+                <form onSubmit={submit} noValidate className="mt-8 grid sm:grid-cols-2 gap-5">
+                  <div>
+                    <label htmlFor="ct-name" className="field-label">Your name <span className="text-gold-600">*</span></label>
+                    <input type="text" autoComplete="name" className="field" placeholder="Full name" {...field('name')} />
+                    {err('name')}
                   </div>
                   <div>
-                    <h4 className="font-bold text-slate-900 uppercase tracking-wider mb-1 text-xs">Official Address</h4>
-                    <p className="text-slate-600 leading-relaxed text-xs">
-                      No. 18, Kovalan Nagar Last,<br/>
-                      Muniyandi Street,<br/>
-                      Palanganatham, Madurai,<br/>
-                      Tamil Nadu, India.<br/>
-                      <strong className="text-slate-900">Pin Code: 625003</strong>
+                    <label htmlFor="ct-phone" className="field-label">Phone number <span className="text-gold-600">*</span></label>
+                    <input type="tel" inputMode="tel" autoComplete="tel" className="field" placeholder="10-digit mobile" {...field('phone')} />
+                    {err('phone')}
+                  </div>
+                  <div>
+                    <label htmlFor="ct-email" className="field-label">Email <span className="text-ink-400 font-medium">(optional)</span></label>
+                    <input type="email" autoComplete="email" className="field" placeholder="you@example.com" {...field('email')} />
+                    {err('email')}
+                  </div>
+                  <div>
+                    <label htmlFor="ct-subject" className="field-label">Destination / subject</label>
+                    <input type="text" className="field" placeholder="e.g. Madurai to Kodaikanal, 3 days" {...field('subject')} />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label htmlFor="ct-message" className="field-label">Trip details <span className="text-gold-600">*</span></label>
+                    <textarea rows={5} className="field resize-y" placeholder="Pickup date and place, number of travellers, preferred vehicle…" {...field('message')} />
+                    {err('message')}
+                  </div>
+                  {status === 'error' && (
+                    <p className="sm:col-span-2 rounded-[10px] border border-orange-200 bg-orange-50 p-3.5 text-sm text-orange-900" role="alert">
+                      We couldn't send your message. Please try again, or reach us on <a className="font-bold underline" href={SITE.whatsappHref} target="_blank" rel="noreferrer">WhatsApp</a> / <a className="font-bold underline" href={SITE.phoneHref}>{SITE.phoneDisplay}</a>.
                     </p>
+                  )}
+                  <div className="sm:col-span-2 flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
+                    <p className="text-xs text-ink-500">We use your details only to respond to this enquiry.</p>
+                    <button type="submit" disabled={status === 'sending'} className="btn btn-primary">
+                      {status === 'sending' ? <><Loader2 className="w-4 h-4 animate-spin" /> Sending…</> : <>Send message <Send className="w-4 h-4" /></>}
+                    </button>
                   </div>
-                </div>
-
-                {/* Direct Phone */}
-                <div className="flex gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center flex-shrink-0 text-blue-700">
-                    <Phone className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-slate-900 uppercase tracking-wider mb-1 text-xs">Hotline (24/7)</h4>
-                    <a href="tel:+916382513075" className="text-blue-700 font-bold text-sm hover:underline block">
-                      +91 63825 13075
-                    </a>
-                    <span className="text-slate-400 text-[11px]">Instant dispatch & inquiries</span>
-                  </div>
-                </div>
-
-                {/* WhatsApp */}
-                <div className="flex gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center flex-shrink-0 text-emerald-600">
-                    <MessageCircle className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-slate-900 uppercase tracking-wider mb-1 text-xs">WhatsApp Support</h4>
-                    <a href="https://wa.me/916382513075" target="_blank" rel="noreferrer" className="text-emerald-600 font-bold hover:underline">
-                      +91 63825 13075
-                    </a>
-                  </div>
-                </div>
-
-                {/* Email */}
-                <div className="flex gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center flex-shrink-0 text-blue-700">
-                    <Mail className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-slate-900 uppercase tracking-wider mb-1 text-xs">Email Desk</h4>
-                    <a href="mailto:maduraibesttoursandtravels01@gmail.com" className="text-slate-600 text-xs hover:text-blue-700 transition-colors break-all">
-                      maduraibesttoursandtravels01@gmail.com
-                    </a>
-                  </div>
-                </div>
-
-                {/* Operating Hours */}
-                <div className="flex gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center flex-shrink-0 text-slate-600">
-                    <Clock className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-slate-900 uppercase tracking-wider mb-1 text-xs">Availability</h4>
-                    <p className="text-slate-600 text-xs">Open 24 Hours • 7 Days a Week</p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Right: Message Form Card */}
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="lg:col-span-3 bg-white rounded-3xl p-7 sm:p-9 border border-slate-200 shadow-sm"
-            >
-              <div className="mb-6">
-                <h3 className="font-['Outfit'] text-2xl font-black text-slate-900">
-                  Request a Trip Quote or Inquiry
-                </h3>
-                <p className="text-slate-500 text-xs mt-1">Direct coordination with our South India tour specialists.</p>
-              </div>
-
-              {isSuccess ? (
-                <div className="py-12 text-center">
-                  <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <CheckCircle2 className="w-8 h-8" />
-                  </div>
-                  <h3 className="text-xl font-['Outfit'] font-bold text-slate-900 mb-2">Inquiry Received!</h3>
-                  <p className="text-slate-500 text-xs max-w-md mx-auto">
-                    Thank you for contacting Madurai Best Taxi Travels. Our dispatch coordinator will connect with you within 15 minutes.
-                  </p>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1.5">Your Name *</label>
-                      <input type="text" name="name" value={formData.name} onChange={handleInputChange}
-                        className={inputCls} placeholder="e.g. Anand Sharma" required />
-                    </div>
-                    <div>
-                      <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1.5">Phone Number *</label>
-                      <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange}
-                        className={inputCls} placeholder="e.g. +91 98765 43210" required />
-                    </div>
-                  </div>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1.5">Email Address</label>
-                      <input type="email" name="email" value={formData.email} onChange={handleInputChange}
-                        className={inputCls} placeholder="anand@example.com" />
-                    </div>
-                    <div>
-                      <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1.5">Destination / Subject</label>
-                      <input type="text" name="subject" value={formData.subject} onChange={handleInputChange}
-                        className={inputCls} placeholder="e.g. Madurai to Kodaikanal 3-Day Trip" />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1.5">Trip Details & Requirements *</label>
-                    <textarea name="message" value={formData.message} onChange={handleInputChange}
-                      rows="4" className={`${inputCls} resize-none`}
-                      placeholder="Share pickup date, pickup location, passenger count, preferred car type (Sedan, Innova, Tempo)..." required />
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full bg-[#FBBF24] hover:bg-[#F59E0B] text-slate-950 font-black py-3.5 rounded-full shadow-xs transition-all flex items-center justify-center gap-2 disabled:opacity-70 text-xs uppercase tracking-wider cursor-pointer"
-                  >
-                    {isSubmitting ? 'Sending Request...' : 'Send Inquiry Now'}
-                    <Send className="w-4 h-4 ml-1" />
-                  </button>
                 </form>
-              )}
-            </motion.div>
-
+              </>
+            )}
           </div>
         </div>
       </section>
 
-      {/* ── MAP EMBED ────────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        <div className="w-full h-[380px] rounded-3xl overflow-hidden relative border border-slate-200 shadow-sm">
-          <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15720.59736881774!2d78.0934!3d9.9056!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b00c582b1189633%3A0xdc955b7264f63933!2sPalanganatham%2C%20Madurai%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" 
-            width="100%" 
-            height="100%" 
-            style={{ border: 0 }} 
-            allowFullScreen="" 
-            loading="lazy" 
-            referrerPolicy="no-referrer-when-downgrade"
-            title="Madurai Best Taxi Travels Map"
-          />
+      <section className="pb-16 sm:pb-24">
+        <div className="container-x">
+          <div className="rounded-[16px] overflow-hidden border border-sand-200 h-[320px] sm:h-[420px]">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15720.59736881774!2d78.0934!3d9.9056!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b00c582b1189633%3A0xdc955b7264f63933!2sPalanganatham%2C%20Madurai%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Map showing our office in Palanganatham, Madurai"
+            />
+          </div>
         </div>
       </section>
-
-    </div>
+    </>
   );
 };
 

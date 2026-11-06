@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ShieldCheck, Lock, Eye, EyeOff, UserCircle2 } from 'lucide-react';
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { Lock, Eye, EyeOff, UserCircle2, AlertCircle, ArrowLeft, ShieldCheck, Loader2 } from 'lucide-react';
 import API_BASE_URL from '../../apiConfig.js';
+import logo from '../../assets/new_logo.jpg';
 
 const AdminLogin = () => {
   const [username, setUsername] = useState('');
@@ -40,112 +40,152 @@ const AdminLogin = () => {
     }
   };
 
-  const inputCls = 'w-full pl-5 pr-12 py-3.5 sm:py-4 rounded-xl bg-[#f7f5f0] border border-[#e4dfd5] text-gray-800 text-sm placeholder:text-gray-400 focus:ring-1 focus:ring-[#d4951e] focus:border-[#d4951e] outline-none transition-all font-outfit';
-
   return (
-    <div className="min-h-screen bg-[#f5f0e8] flex items-center justify-center relative overflow-hidden font-outfit px-4 sm:px-6">
-      
-      {/* Decorative background blur elements */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#d4951e]/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
-      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#1a3c34]/5 rounded-full blur-[120px] translate-y-1/3 -translate-x-1/4 pointer-events-none"></div>
-
-      <div className="w-full max-w-md relative z-10">
-        
-        {/* Brand Logo / Header */}
-        <div className="text-center mb-8">
-          <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-block bg-white p-3 rounded-2xl shadow-sm border border-[#edeae1] mb-4"
-          >
-            <img src="/logo.jpeg" alt="Madurai Best Tours" className="w-14 h-14 object-contain rounded-xl" />
-          </motion.div>
-          <motion.h1 
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-2xl sm:text-3xl font-poppins font-bold text-[#1a3c34]"
-          >
-            Admin <span className="text-[#d4951e]">Portal</span>
-          </motion.h1>
-          <motion.p 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="text-gray-500 text-sm mt-2 font-medium"
-          >
-            Sign in to manage bookings and dashboard settings
-          </motion.p>
+    <div className="min-h-screen bg-sand-50 font-sans text-ink-900 lg:grid lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
+      {/* Brand panel (desktop) */}
+      <aside className="relative hidden overflow-hidden bg-ink-900 text-white lg:flex lg:flex-col lg:justify-between lg:p-12 xl:p-16">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-[0.07]"
+          style={{
+            backgroundImage:
+              'radial-gradient(circle at 1px 1px, rgb(255 255 255) 1px, transparent 0)',
+            backgroundSize: '22px 22px',
+          }}
+        />
+        <div className="relative flex items-center gap-3">
+          <img src={logo} alt="" className="h-12 w-12 rounded-[10px] bg-white object-contain p-1" />
+          <div className="leading-tight">
+            <p className="text-sm font-bold">Madurai Best</p>
+            <p className="text-xs font-semibold text-gold-400">Tours &amp; Travels</p>
+          </div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-white rounded-3xl p-6 sm:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-[#edeae1]"
-        >
-          <form onSubmit={handleLogin} className="space-y-5">
-            {error && (
-              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="bg-red-50 text-red-600 border border-red-100 p-3.5 rounded-xl text-sm text-center font-medium">
-                {error}
-              </motion.div>
-            )}
+        <div className="relative max-w-md">
+          <p className="eyebrow text-gold-400">Admin console</p>
+          <h1 className="mt-4 font-display text-4xl font-semibold leading-tight tracking-tight xl:text-5xl">
+            Madurai Best Tours &amp; Travels
+          </h1>
+          <p className="mt-4 text-base leading-relaxed text-ink-300">
+            Manage bookings, fleet, tour packages and customer enquiries from one secure place.
+          </p>
+        </div>
 
-            <div className="space-y-1.5">
-              <label className="text-[#1a3c34] text-xs font-bold uppercase tracking-wider pl-1">Username</label>
-              <div className="relative">
-                <input
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className={inputCls}
-                  placeholder="Enter admin username"
-                  required
-                />
-                <UserCircle2 className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              </div>
+        <div className="relative flex items-center gap-2 text-sm text-ink-400">
+          <ShieldCheck className="h-4 w-4 text-gold-400" aria-hidden="true" />
+          Authorised staff only. Activity may be monitored.
+        </div>
+      </aside>
+
+      {/* Form column */}
+      <main className="flex min-h-screen flex-col px-4 py-8 sm:px-6 lg:min-h-0 lg:px-12">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3 lg:invisible">
+            <img src={logo} alt="" className="h-10 w-10 rounded-[10px] border border-sand-200 bg-white object-contain p-0.5" />
+            <span className="text-sm font-bold leading-tight text-ink-900">
+              Madurai Best
+              <span className="block text-xs font-semibold text-gold-600">Tours &amp; Travels</span>
+            </span>
+          </div>
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1.5 rounded-[10px] px-2 py-1.5 text-sm font-semibold text-ink-600 transition-colors hover:text-ink-900"
+          >
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+            Back to site
+          </Link>
+        </div>
+
+        <div className="flex flex-1 items-center justify-center py-10">
+          <div className="w-full max-w-[420px]">
+            <div className="mb-8">
+              <p className="eyebrow">Admin portal</p>
+              <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink-900 sm:text-4xl">
+                Sign in
+              </h2>
+              <p className="mt-2 text-sm text-ink-500">
+                Use your administrator credentials to access the dashboard.
+              </p>
             </div>
 
-            <div className="space-y-1.5">
-              <label className="text-[#1a3c34] text-xs font-bold uppercase tracking-wider pl-1">Password</label>
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className={inputCls}
-                  placeholder="••••••••"
-                  required
-                />
-                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#1a3c34] transition-colors">
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+            <div className="card p-6 sm:p-8">
+              <form onSubmit={handleLogin} className="space-y-5">
+                {error && (
+                  <div
+                    role="alert"
+                    className="flex items-start gap-2.5 rounded-[10px] border border-red-200 bg-red-50 px-3.5 py-3 text-sm font-medium text-red-700"
+                  >
+                    <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+                    <span>{error}</span>
+                  </div>
+                )}
+
+                <div>
+                  <label htmlFor="admin-username" className="field-label">Username</label>
+                  <div className="relative">
+                    <input
+                      id="admin-username"
+                      type="text"
+                      autoComplete="username"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      className="field pr-11"
+                      placeholder="Enter admin username"
+                      aria-invalid={error ? 'true' : undefined}
+                      required
+                    />
+                    <UserCircle2 className="pointer-events-none absolute right-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-ink-400" aria-hidden="true" />
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="admin-password" className="field-label">Password</label>
+                  <div className="relative">
+                    <input
+                      id="admin-password"
+                      type={showPassword ? 'text' : 'password'}
+                      autoComplete="current-password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="field pr-11"
+                      placeholder="Enter password"
+                      aria-invalid={error ? 'true' : undefined}
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                      aria-pressed={showPassword}
+                      className="absolute right-1.5 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg text-ink-400 transition-colors hover:bg-sand-100 hover:text-ink-900"
+                    >
+                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    </button>
+                  </div>
+                </div>
+
+                <button type="submit" disabled={isLoading} className="btn btn-primary w-full">
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                      Signing in...
+                    </>
+                  ) : (
+                    <>
+                      <Lock className="h-4 w-4" aria-hidden="true" />
+                      Sign in to dashboard
+                    </>
+                  )}
                 </button>
-              </div>
+              </form>
             </div>
 
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full mt-2 bg-[#1a3c34] hover:bg-[#2d5a4e] disabled:bg-[#1a3c34]/70 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2 font-poppins shadow-md hover:shadow-lg disabled:cursor-not-allowed group"
-            >
-              {isLoading ? (
-                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-              ) : (
-                <>
-                  <Lock className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                  Sign In to Dashboard
-                </>
-              )}
-            </button>
-          </form>
-
-          {/* Helper details removed for security */}
-        </motion.div>
-
-        <div className="text-center mt-8 text-sm text-gray-500">
-          &copy; {new Date().getFullYear()} Madurai Best Tours and Travels
+            <p className="mt-8 text-center text-xs text-ink-400">
+              &copy; {new Date().getFullYear()} Madurai Best Tours and Travels
+            </p>
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 };

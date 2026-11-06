@@ -1,6 +1,5 @@
-import React from 'react';
 import SEOLandingPage from '../../components/SEOLandingPage';
-import HeroBg from '../../assets/rameswaram_desktop.png';
+import HeroBg from '../../assets/opt/rameswaram-wide.webp';
 
 const MaduraiToRameswaramTaxi = () => {
   const sections = [
@@ -59,6 +58,7 @@ const MaduraiToRameswaramTaxi = () => {
       heroBg={HeroBg}
       sections={sections}
       faqs={faqs}
+      bookingPreset={{ fromLocation: 'Madurai', toLocation: 'Rameswaram' }}
     />
   );
 };
