@@ -109,10 +109,10 @@ const Packages = () => {
           )}
 
           {loading ? (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">{Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-[460px]" />)}</div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">{Array.from({ length: 8 }).map((_, i) => <Skeleton key={i} className="h-[280px]" />)}</div>
           ) : filtered.length > 0 ? (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filtered.map((p, i) => <Reveal key={p.id} delay={(i % 3) * 0.05}><PackageCard pkg={p} index={i} /></Reveal>)}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+              {filtered.map((p, i) => <Reveal key={p.id} delay={(i % 4) * 0.04}><PackageCard pkg={p} /></Reveal>)}
             </div>
           ) : (
             <div className="card p-10 text-center max-w-xl mx-auto">

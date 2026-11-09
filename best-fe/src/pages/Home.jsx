@@ -62,7 +62,7 @@ function BookingPortal() {
   const big = 'w-full bg-transparent outline-none text-lg sm:text-xl font-extrabold text-ink-950 placeholder:text-ink-300 placeholder:font-bold mt-0.5 appearance-none';
 
   return (
-    <form onSubmit={submit} className="relative bg-white rounded-[24px] shadow-[var(--shadow-panel)] pb-10" aria-label="Book a cab">
+    <form onSubmit={submit} className="relative bg-white rounded-[16px] shadow-[var(--shadow-panel)] pb-10" aria-label="Book a cab">
       <div className="flex overflow-x-auto no-scrollbar border-b border-sand-200 px-3 sm:px-5" role="tablist">
         {TABS.map(({ id, label, icon: Icon }) => (
           <button
@@ -73,7 +73,7 @@ function BookingPortal() {
             onClick={() => chooseTab(id)}
             className={`shrink-0 flex items-center gap-2.5 px-4 sm:px-5 py-4 text-sm font-semibold border-b-[3px] -mb-px cursor-pointer transition-colors ${tab === id ? 'border-forest-700 text-forest-700' : 'border-transparent text-ink-500 hover:text-forest-700'}`}
           >
-            <span className={`w-8 h-8 rounded-[10px] grid place-items-center ${tab === id ? 'bg-forest-700 text-white' : 'bg-forest-50 text-forest-700'}`}><Icon className="w-4 h-4" aria-hidden /></span>
+            <span className="w-8 h-8 rounded-[8px] grid place-items-center bg-forest-50 text-forest-700"><Icon className="w-4 h-4" aria-hidden /></span>
             {label}
           </button>
         ))}
@@ -136,7 +136,7 @@ function BookingPortal() {
       </div>
 
       <div className="absolute left-1/2 -bottom-7 -translate-x-1/2">
-        <button type="submit" className="btn btn-primary !min-h-14 !px-12 !text-base uppercase tracking-wider shadow-[0_14px_30px_-10px_rgb(139_168_74/0.9)]">
+        <button type="submit" className="btn btn-primary !rounded-full !min-h-14 !px-16 !text-lg !font-extrabold uppercase tracking-wide !bg-gradient-to-r from-gold-500 to-gold-400 shadow-[0_14px_30px_-10px_rgb(255_122_26/0.8)]">
           Search cabs
         </button>
       </div>
@@ -180,23 +180,22 @@ const Home = () => {
         <img src={HeroImg} alt="" aria-hidden className="absolute inset-0 -z-10 w-full h-full object-cover opacity-45 mix-blend-luminosity" fetchPriority="high" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-forest-900 via-forest-800/85 to-forest-700/20" />
         <div className="container-x pt-14 sm:pt-20">
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }} className="max-w-3xl">
-            <p className="eyebrow !text-gold-300">Madurai · since {SITE.since} · open 24/7</p>
-            <h1 className="h-display text-[2.5rem] sm:text-6xl lg:text-[4rem] mt-4">
-              Book outstation cabs &amp; <em className="text-gold-300">South India tours</em> from Madurai
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }} className="max-w-5xl">
+                        <h1 className="h-display text-[2.3rem] sm:text-5xl lg:text-[3.4rem]">
+              Book Outstation Cabs &amp;<br className="hidden sm:block" /> <em className="text-gold-300">South India Tours</em> from Madurai
             </h1>
-            <p className="mt-5 text-lg text-forest-100">Clear per-km fares · AC sedans, SUVs &amp; Tempo Travellers · 24/7 support</p>
+            <p className="mt-5 text-lg text-forest-100">Transparent per-km fares · AC Sedans, SUVs &amp; Tempo Travellers · 24/7 support</p>
             <div className="flex flex-wrap gap-2 mt-7">
-              <TrustPill>Nothing to pay online</TrustPill>
+              <TrustPill>No online payment</TrustPill>
               <TrustPill>Fare confirmed on call</TrustPill>
-              <TrustPill>Local Madurai drivers</TrustPill>
+              <TrustPill>Since {SITE.since}</TrustPill>
             </div>
           </motion.div>
         </div>
       </section>
 
       {/* ── BOOKING PORTAL ──────────────────────────────────── */}
-      <div className="container-x relative z-10 -mt-32 sm:-mt-28">
+      <div className="container-x relative z-10 -mt-36 sm:-mt-32">
         <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}>
           <BookingPortal />
         </motion.div>
@@ -206,11 +205,16 @@ const Home = () => {
       {(pkgLoading || packages.length > 0) && (
         <section className="pt-24 pb-16 sm:pt-28 sm:pb-20">
           <div className="container-x">
-            <SectionHeading eyebrow="Tour packages" title="Popular tour packages" intro="Fixed starting fares — days, stops and vehicle tailored to your group." action={<ArrowLink to="/packages">View all packages</ArrowLink>} />
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <SectionHeading title="Popular Tour Packages" action={<ArrowLink to="/packages">View all packages</ArrowLink>} />
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {pkgLoading
-                ? Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-[440px]" />)
-                : packages.slice(0, 6).map((p) => <PackageCard key={p.id} pkg={p} />)}
+                ? Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-[280px]" />)
+                : packages.slice(0, 4).map((p) => <PackageCard key={p.id} pkg={p} />)}
+            </div>
+            <div className="flex flex-wrap gap-x-8 gap-y-2 mt-7 text-sm font-semibold text-ink-600">
+              <span><b className="text-ink-900">24/7</b> booking desk</span>
+              <span><b className="text-ink-900">Local</b> Madurai drivers</span>
+              <span><b className="text-ink-900">Clear</b> per-km tariffs</span>
             </div>
           </div>
         </section>
@@ -268,7 +272,7 @@ const Home = () => {
                   <span className="block aspect-[4/3] overflow-hidden rounded-[16px]"><img src={d.image} alt={`${d.name}, ${d.region}`} loading="lazy" className="img-zoom w-full h-full object-cover" /></span>
                   <span className="flex items-center justify-between gap-2 px-2.5 pt-3 pb-1.5">
                     <span className="min-w-0">
-                      <span className="block font-display text-xl text-ink-950 truncate">{d.name}</span>
+                      <span className="block font-semibold text-lg text-ink-950 truncate">{d.name}</span>
                       <span className="block text-xs text-ink-500 truncate">{d.note}</span>
                     </span>
                     <ArrowUpRight className="w-5 h-5 shrink-0 text-forest-700" aria-hidden />

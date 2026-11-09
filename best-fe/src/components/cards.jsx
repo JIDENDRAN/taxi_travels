@@ -4,41 +4,25 @@ import { getPackageImage, getVehicleImage } from '../utils/imageImports';
 import { formatPrice, parseTariff } from '../utils/format';
 import { useBooking } from '../context/BookingContext';
 
-/** Tour package card: photo, name, duration, fare. */
+/** Tour package card: full-width photo, name, duration and starting fare. */
 export function PackageCard({ pkg }) {
-  const { openBooking } = useBooking();
   const price = formatPrice(pkg.price);
 
   return (
-    <article className="group card card-hover overflow-hidden flex flex-col h-full p-2.5">
-      <Link to={`/packages/${pkg.id}`} className="block relative aspect-[16/11] overflow-hidden rounded-[13px] bg-sand-100" aria-label={`View ${pkg.name}`}>
+    <Link to={`/packages/${pkg.id}`} className="group card card-hover overflow-hidden flex flex-col h-full !border-0">
+      <span className="block relative aspect-[61/30] overflow-hidden bg-sand-100">
         <img src={getPackageImage(pkg.image)} alt={pkg.name} loading="lazy" className="img-zoom w-full h-full object-cover" />
-        {pkg.duration && (
-          <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1 text-xs font-bold text-forest-800">
-            <Clock className="w-3.5 h-3.5" aria-hidden /> {pkg.duration}
+      </span>
+      <span className="px-4 pt-4 pb-4 flex flex-col flex-1">
+        <span className="font-semibold text-[1.05rem] text-ink-900 group-hover:text-forest-700">{pkg.name}</span>
+        <span className="mt-auto pt-1.5 flex items-center justify-between gap-3">
+          <span className="text-sm text-ink-500 flex items-center gap-1.5">
+            {pkg.duration ? <><Clock className="w-3.5 h-3.5" aria-hidden />{pkg.duration}</> : pkg.location && <><MapPin className="w-3.5 h-3.5" aria-hidden />{pkg.location}</>}
           </span>
-        )}
-      </Link>
-      <div className="px-2.5 pt-4 pb-2 flex flex-col flex-1">
-        <h3 className="h-display text-[1.4rem] text-ink-950">
-          <Link to={`/packages/${pkg.id}`} className="hover:text-forest-600">{pkg.name}</Link>
-        </h3>
-        {pkg.location && (
-          <p className="mt-1 flex items-center gap-1.5 text-sm text-ink-500"><MapPin className="w-3.5 h-3.5" aria-hidden /> {pkg.location}</p>
-        )}
-        {pkg.places && <p className="mt-2.5 text-sm text-ink-600 line-clamp-2">{pkg.places}</p>}
-        <div className="mt-auto pt-4 flex items-center justify-between gap-3">
-          {price ? (
-            <p className="text-sm text-ink-500">From <span className="block text-xl font-extrabold text-forest-700">{price}</span></p>
-          ) : (
-            <p className="text-sm font-semibold text-ink-500">Fare on request</p>
-          )}
-          <button type="button" onClick={() => openBooking({ packageType: pkg.name })} className="btn btn-dark !min-h-10 !px-4 !text-sm">
-            Book <ArrowRight className="w-4 h-4" aria-hidden />
-          </button>
-        </div>
-      </div>
-    </article>
+          <span className="font-extrabold text-lg text-forest-700 shrink-0">{price || 'On request'}</span>
+        </span>
+      </span>
+    </Link>
   );
 }
 

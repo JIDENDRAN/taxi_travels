@@ -16,7 +16,7 @@ const Footer = () => {
                 <img src={Logo} alt="" className="w-full h-full object-contain" loading="lazy" width="48" height="48" />
               </span>
               <span className="leading-tight">
-                <span className="block font-display text-2xl text-white">Madurai Best</span>
+                <span className="block font-bold text-2xl text-white">Madurai Best</span>
                 <span className="block text-[11px] font-bold tracking-[0.2em] text-gold-300">TAXI TRAVELS</span>
               </span>
             </Link>

@@ -39,12 +39,14 @@ export const SITE = {
 export const whatsappLink = (text) =>
   `${SITE.whatsappHref}${text ? `?text=${encodeURIComponent(text)}` : ''}`;
 
+// `header: false` links appear in the mobile menu and footer, not the desktop header.
 export const NAV_LINKS = [
-  { name: 'Home', path: '/' },
+  { name: 'Cabs', path: '/' },
   { name: 'Tour Packages', path: '/packages' },
+  { name: 'Airport Taxi', path: '/madurai-airport-taxi' },
   { name: 'Fleet', path: '/vehicles' },
   { name: 'Gallery', path: '/gallery' },
-  { name: 'About', path: '/about' },
+  { name: 'About', path: '/about', header: false },
   { name: 'Contact', path: '/contact' },
 ];
 

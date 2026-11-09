@@ -1,66 +1,66 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 
 @import "tailwindcss";
 
 /* ───────────────────────────────────────────────────────────
-   DESIGN SYSTEM — "Green Hills Portal"
-   Colours & type from the Green Hills direction (forest green, sage, cream,
-   Fraunces + Inter) on a booking-portal layout.
-   Token names (ink / gold / sand) are kept so every screen, admin included,
-   picks up the palette: ink = deep green-greys, gold = sage accent.
+   DESIGN SYSTEM — "Royal Blue Booking Portal"
+   Royal blue + orange call-to-action + yellow highlight on a cool light
+   background, set in Poppins. Token names (forest / ink / gold / sand) are
+   kept so every screen, admin included, picks up the palette:
+   forest = royal blue, gold = orange accent (gold-300 = yellow highlight).
    ─────────────────────────────────────────────────────────── */
 @theme {
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'Fraunces', Georgia, serif;
-  --font-mono: 'Inter', ui-sans-serif, sans-serif;
+  --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Poppins', ui-sans-serif, sans-serif;
 
-  /* Forest (primary) */
-  --color-forest-950: #0E2418;
-  --color-forest-900: #14301F;
-  --color-forest-800: #1A3E2C;
-  --color-forest-700: #1F4D3A;
-  --color-forest-600: #2A6149;
-  --color-forest-100: #DCE8DF;
-  --color-forest-50:  #EDF4EF;
+  /* Royal blue (primary) */
+  --color-forest-950: #0A1E4A;
+  --color-forest-900: #0E2F75;
+  --color-forest-800: #123B8F;
+  --color-forest-700: #1747A6;
+  --color-forest-600: #2557C4;
+  --color-forest-100: #DCE6FA;
+  --color-forest-50:  #EAF0FC;
 
-  /* Ink (text, green-tinted greys) */
-  --color-ink-950: #0F1F17;
-  --color-ink-900: #1C2B22;
-  --color-ink-800: #26372D;
-  --color-ink-700: #3C4E42;
-  --color-ink-600: #55665B;
-  --color-ink-500: #6B7D70;
-  --color-ink-400: #93A296;
-  --color-ink-300: #B9C4BB;
-  --color-ink-200: #DAE0D8;
-  --color-ink-100: #E9EDE6;
-  --color-ink-50:  #F4F6F2;
+  /* Ink (navy text greys) */
+  --color-ink-950: #0B1530;
+  --color-ink-900: #0F1E3D;
+  --color-ink-800: #1E2D4F;
+  --color-ink-700: #33415F;
+  --color-ink-600: #56637D;
+  --color-ink-500: #6E7A92;
+  --color-ink-400: #98A2B6;
+  --color-ink-300: #C0C8D6;
+  --color-ink-200: #DCE3EE;
+  --color-ink-100: #E9EEF6;
+  --color-ink-50:  #F4F7FB;
 
-  /* Sage (accent / call-to-action) */
-  --color-gold-700: #4F6623;
-  --color-gold-600: #6A8530;
-  --color-gold-500: #8BA84A;
-  --color-gold-400: #A0BB5E;
-  --color-gold-300: #C5D88F;
-  --color-gold-100: #E3ECCB;
-  --color-gold-50:  #F2F7E6;
+  /* Orange accent; 300 is the yellow highlight */
+  --color-gold-700: #B04A00;
+  --color-gold-600: #D95E05;
+  --color-gold-500: #FF7A1A;
+  --color-gold-400: #FF9A3D;
+  --color-gold-300: #FFC24B;
+  --color-gold-100: #FFE9D6;
+  --color-gold-50:  #FFF4EA;
 
-  /* Cream surfaces */
-  --color-sand-50:  #F6F3EC;
-  --color-sand-100: #EEE9DD;
-  --color-sand-200: #E0D9C8;
+  /* Light surfaces */
+  --color-sand-50:  #F2F5FB;
+  --color-sand-100: #E9EEF7;
+  --color-sand-200: #DCE3EE;
 
   --color-leaf-600: #17804A;
   --color-leaf-500: #1F9D5B;
   --color-leaf-50:  #EAF6EF;
   --color-signal-red: #C2410C;
 
-  --radius-card: 18px;
-  --radius-field: 12px;
+  --radius-card: 14px;
+  --radius-field: 10px;
 
-  --shadow-soft: 0 1px 2px rgb(15 31 23 / 0.05), 0 8px 24px -12px rgb(15 31 23 / 0.18);
-  --shadow-lift: 0 2px 6px rgb(15 31 23 / 0.06), 0 22px 44px -18px rgb(15 31 23 / 0.32);
-  --shadow-panel: 0 30px 70px -24px rgb(15 31 23 / 0.45);
+  --shadow-soft: 0 6px 18px -10px rgb(15 30 61 / 0.25);
+  --shadow-lift: 0 18px 40px -16px rgb(15 30 61 / 0.32);
+  --shadow-panel: 0 20px 50px -18px rgb(15 30 61 / 0.4);
 
   --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -109,10 +109,11 @@ p { text-wrap: pretty; }
 
   .h-display {
     font-family: var(--font-display);
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    line-height: 1.05;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    line-height: 1.12;
   }
+  .h-display em { font-style: normal; }
 
   /* Buttons — pill shaped */
   .btn {
@@ -122,7 +123,7 @@ p { text-wrap: pretty; }
     gap: 0.5rem;
     min-height: 2.875rem;
     padding: 0.625rem 1.4rem;
-    border-radius: 9999px;
+    border-radius: 10px;
     border: 1px solid transparent;
     font-weight: 700;
     font-size: 0.9375rem;
@@ -135,7 +136,7 @@ p { text-wrap: pretty; }
   .btn:active { transform: translateY(0) scale(0.99); }
   .btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
 
-  .btn-primary { background: var(--color-gold-500); color: var(--color-forest-900); box-shadow: 0 8px 20px -10px rgb(139 168 74 / 0.9); }
+  .btn-primary { background: var(--color-gold-500); color: #fff; box-shadow: 0 10px 20px -10px rgb(255 122 26 / 0.7); }
   .btn-primary:hover { background: var(--color-gold-400); }
 
   .btn-dark { background: var(--color-forest-700); color: #fff; }
@@ -167,10 +168,10 @@ p { text-wrap: pretty; }
   }
   .field::placeholder { color: var(--color-ink-400); font-weight: 400; }
   .field:hover { border-color: var(--color-ink-300); }
-  .field:focus { outline: none; border-color: var(--color-forest-700); box-shadow: 0 0 0 3px rgb(31 77 58 / 0.14); }
+  .field:focus { outline: none; border-color: var(--color-forest-700); box-shadow: 0 0 0 3px rgb(23 71 166 / 0.14); }
   .field[aria-invalid='true'] { border-color: var(--color-signal-red); box-shadow: 0 0 0 3px rgb(194 65 12 / 0.12); }
   select.field {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%236B7D70' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%236E7A92' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 0.8rem center;
     padding-right: 2.25rem;
@@ -186,7 +187,7 @@ p { text-wrap: pretty; }
   .group:hover .img-zoom { transform: scale(1.05); }
 
   .prose-site { color: var(--color-ink-700); font-size: 1.0625rem; line-height: 1.75; }
-  .prose-site h2 { font-family: var(--font-display); font-weight: 500; font-size: 1.6rem; letter-spacing: -0.01em; color: var(--color-ink-900); margin: 2rem 0 .75rem; }
+  .prose-site h2 { font-family: var(--font-display); font-weight: 700; font-size: 1.6rem; letter-spacing: -0.01em; color: var(--color-ink-900); margin: 2rem 0 .75rem; }
   .prose-site p { margin: 0 0 1rem; }
   .prose-site ul { list-style: none; padding-left: 0; margin: 0 0 1rem; }
   .prose-site li { position: relative; padding-left: 1.5rem; margin-bottom: .6rem; }

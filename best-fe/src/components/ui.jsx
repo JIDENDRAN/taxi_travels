@@ -27,7 +27,7 @@ export function SectionHeading({ eyebrow, title, intro, action, light = false, a
     <div className={`flex flex-col gap-5 mb-10 ${centered ? 'items-center text-center' : 'md:flex-row md:items-end md:justify-between'} ${className}`}>
       <div className="max-w-2xl">
         {eyebrow && <p className={`eyebrow ${light ? '!text-gold-300' : ''}`}>{eyebrow}</p>}
-        <h2 className={`h-display text-3xl sm:text-4xl lg:text-[2.6rem] mt-3 ${light ? 'text-white' : 'text-ink-950'}`}>{title}</h2>
+        <h2 className={`h-display !font-bold text-2xl sm:text-3xl lg:text-[2rem] mt-2 ${light ? 'text-white' : 'text-ink-950'}`}>{title}</h2>
         {intro && <p className={`mt-3 text-base sm:text-lg ${light ? 'text-forest-100' : 'text-ink-600'}`}>{intro}</p>}
       </div>
       {action && <div className="shrink-0">{action}</div>}

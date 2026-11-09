@@ -9,12 +9,12 @@ import { useBooking } from '../../context/BookingContext';
 function Brand() {
   return (
     <Link to="/" className="flex items-center gap-3 shrink-0" aria-label={`${SITE.name} — home`}>
-      <span className="w-11 h-11 rounded-[12px] overflow-hidden bg-white ring-1 ring-sand-200 shrink-0">
+      <span className="w-11 h-11 rounded-[8px] overflow-hidden bg-white shrink-0">
         <img src={Logo} alt="" className="w-full h-full object-contain" width="44" height="44" />
       </span>
       <span className="leading-tight">
-        <span className="block font-display font-semibold text-[1.25rem] text-forest-700">Madurai Best</span>
-        <span className="block text-[10.5px] font-bold tracking-[0.2em] text-gold-600">TAXI TRAVELS</span>
+        <span className="block font-bold text-[1.2rem] text-forest-700">Madurai Best</span>
+        <span className="block text-[10.5px] font-bold tracking-[0.2em] text-gold-500">TAXI TRAVELS</span>
       </span>
     </Link>
   );
@@ -44,13 +44,13 @@ const Navbar = () => {
           <Brand />
 
           <nav className="hidden lg:flex items-center gap-1" aria-label="Main">
-            {NAV_LINKS.map((link) => (
+            {NAV_LINKS.filter((l) => l.header !== false).map((link) => (
               <NavLink
                 key={link.path}
                 to={link.path}
                 end={link.path === '/'}
                 className={({ isActive }) =>
-                  `px-3.5 py-2 rounded-full text-[0.95rem] font-semibold transition-colors ${isActive ? 'bg-forest-50 text-forest-700' : 'text-ink-700 hover:text-forest-700'}`
+                  `px-3 py-2 text-[0.9rem] transition-colors ${isActive ? 'font-bold text-forest-700' : 'font-medium text-ink-900 hover:text-forest-700'}`
                 }
               >
                 {link.name}
@@ -59,14 +59,14 @@ const Navbar = () => {
           </nav>
 
           <div className="flex items-center gap-3">
-            <a href={SITE.phoneHref} className="hidden xl:inline-flex items-center gap-2 font-bold text-forest-700">
-              <span className="w-9 h-9 grid place-items-center rounded-full bg-forest-50"><Phone className="w-4 h-4" aria-hidden /></span>
+            <a href={SITE.phoneHref} className="hidden xl:inline-flex items-center gap-1.5 font-bold text-forest-700">
+              <Phone className="w-4 h-4" aria-hidden />
               {SITE.phoneDisplay}
             </a>
             <button type="button" onClick={() => openBooking()} className="btn btn-primary !min-h-11 hidden sm:inline-flex">Book Now</button>
             <button
               type="button"
-              className="lg:hidden w-11 h-11 grid place-items-center rounded-full bg-forest-50 text-forest-700 cursor-pointer"
+              className="lg:hidden w-11 h-11 grid place-items-center rounded-[10px] bg-forest-50 text-forest-700 cursor-pointer"
               onClick={() => setOpen(true)}
               aria-label="Open menu"
               aria-expanded={open}
