@@ -55,17 +55,18 @@ const Packages = () => {
     <>
       <PageHero
         eyebrow="Tour packages"
-        title="Tickets to Tamil Nadu & Kerala."
+        title="Tour packages across Tamil Nadu & Kerala"
         intro="Temple circuits, hill-station escapes and coastal getaways — each one adjustable to your dates, group size and pace."
         image={Hero}
+        pills={['Private AC vehicle', 'Local driver', 'Fully customisable']}
         crumbs={['Tour packages']}
       />
 
       {/* Filter rail */}
-      <div className="sticky top-[68px] lg:top-[76px] z-30 bg-sand-100 border-b-2 border-ink-900">
+      <div className="sticky top-[68px] lg:top-[74px] z-30 bg-white/95 backdrop-blur border-b border-sand-200">
         <div className="container-x py-3 flex flex-col lg:flex-row gap-3 lg:items-center">
           <div className="relative lg:w-80">
-            <Search className="w-4 h-4 text-ink-700 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" aria-hidden />
+            <Search className="w-4 h-4 text-ink-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" aria-hidden />
             <label htmlFor="pkg-search" className="sr-only">Search packages</label>
             <input id="pkg-search" type="search" value={q} onChange={(e) => update('q', e.target.value)} placeholder="Search a place or temple" className="field !pl-9 !min-h-11" />
           </div>
@@ -78,7 +79,7 @@ const Packages = () => {
                   type="button"
                   onClick={() => update('q', active ? '' : c.query)}
                   aria-pressed={active}
-                  className={`shrink-0 mono text-xs font-bold uppercase tracking-[0.08em] px-3 py-2 rounded-[4px] border-2 border-ink-900 cursor-pointer transition-colors ${active ? 'bg-ink-900 text-gold-400' : 'bg-white text-ink-900 hover:bg-gold-500'}`}
+                  className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold border cursor-pointer transition-colors ${active ? 'bg-forest-700 text-white border-forest-700' : 'bg-white text-ink-700 border-sand-200 hover:border-forest-700'}`}
                 >
                   {c.name}
                 </button>
@@ -96,11 +97,11 @@ const Packages = () => {
         <div className="container-x">
           {!loading && (
             <div className="flex flex-wrap items-center gap-4 mb-8" aria-live="polite">
-              <p className="mono text-xs font-bold uppercase tracking-[0.12em] text-ink-700">
+              <p className="text-sm font-semibold text-ink-600">
                 {filtered.length} {filtered.length === 1 ? 'package' : 'packages'}{q && <> · “{q}”</>}
               </p>
               {(q || dur) && (
-                <button type="button" onClick={() => setParams({}, { replace: true })} className="mono text-xs font-bold uppercase inline-flex items-center gap-1 border-b-2 border-ink-900 cursor-pointer">
+                <button type="button" onClick={() => setParams({}, { replace: true })} className="text-sm font-semibold inline-flex items-center gap-1 text-forest-700 hover:underline cursor-pointer">
                   <X className="w-3.5 h-3.5" aria-hidden /> Clear filters
                 </button>
               )}
@@ -108,15 +109,15 @@ const Packages = () => {
           )}
 
           {loading ? (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">{Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-[460px]" />)}</div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">{Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-[460px]" />)}</div>
           ) : filtered.length > 0 ? (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filtered.map((p, i) => <Reveal key={p.id} delay={(i % 3) * 0.05}><PackageCard pkg={p} index={i} /></Reveal>)}
             </div>
           ) : (
             <div className="card p-10 text-center max-w-xl mx-auto">
-              <Compass className="w-10 h-10 mx-auto" aria-hidden />
-              <h2 className="h-display text-3xl text-ink-950 mt-4">{error ? "Couldn't load packages right now" : 'No ticket for that yet'}</h2>
+              <Compass className="w-10 h-10 mx-auto text-gold-500" aria-hidden />
+              <h2 className="h-display text-3xl text-ink-950 mt-4">{error ? "Couldn't load packages right now" : 'No package for that yet'}</h2>
               <p className="text-ink-600 mt-3">We plan custom itineraries every day. Tell us where you'd like to go{q ? ` — ${q} included` : ''} and we'll build the trip around it.</p>
               <button type="button" onClick={() => openBooking({ toLocation: q })} className="btn btn-primary mt-6">Plan a custom trip</button>
             </div>

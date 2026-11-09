@@ -1,4 +1,4 @@
-import { Phone, MessageCircle, ArrowUpRight } from 'lucide-react';
+import { Phone, MessageCircle, CalendarCheck } from 'lucide-react';
 import { SITE } from '../data/site';
 import { useBooking } from '../context/BookingContext';
 
@@ -6,17 +6,11 @@ import { useBooking } from '../context/BookingContext';
 const MobileBottomNav = () => {
   const { openBooking } = useBooking();
   return (
-    <div className="lg:hidden fixed inset-x-0 bottom-0 z-40 bg-ink-900 px-3 pt-2.5 pb-[max(0.625rem,env(safe-area-inset-bottom))]">
-      <div className="grid grid-cols-[auto_auto_1fr] gap-2 max-w-lg mx-auto">
-        <a href={SITE.phoneHref} className="btn btn-outline !min-h-12 !px-4 !border-sand-50" aria-label={`Call ${SITE.phoneDisplay}`}>
-          <Phone className="w-5 h-5" aria-hidden />
-        </a>
-        <a href={SITE.whatsappHref} target="_blank" rel="noreferrer" className="btn btn-whatsapp !min-h-12 !px-4 !border-sand-50" aria-label="Chat on WhatsApp">
-          <MessageCircle className="w-5 h-5" aria-hidden />
-        </a>
-        <button type="button" onClick={() => openBooking()} className="btn btn-primary !min-h-12 !text-base !border-sand-50 !shadow-none">
-          Book a ride <ArrowUpRight className="w-5 h-5" aria-hidden />
-        </button>
+    <div className="lg:hidden fixed inset-x-0 bottom-0 z-40 bg-white/95 backdrop-blur-md border-t border-sand-200 px-3 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
+      <div className="grid grid-cols-[1fr_1fr_1.5fr] gap-2 max-w-lg mx-auto">
+        <a href={SITE.phoneHref} className="btn btn-outline !min-h-11 !px-2 !text-sm"><Phone className="w-4 h-4" aria-hidden /> Call</a>
+        <a href={SITE.whatsappHref} target="_blank" rel="noreferrer" className="btn btn-whatsapp !min-h-11 !px-2 !text-sm"><MessageCircle className="w-4 h-4" aria-hidden /> WhatsApp</a>
+        <button type="button" onClick={() => openBooking()} className="btn btn-primary !min-h-11 !px-2 !text-sm"><CalendarCheck className="w-4 h-4" aria-hidden /> Book Now</button>
       </div>
     </div>
   );

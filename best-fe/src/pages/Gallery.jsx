@@ -85,7 +85,7 @@ const Gallery = () => {
     <>
       <PageHero
         eyebrow="Gallery"
-        title="Postcards from the road."
+        title="Our gallery"
         intro="Scenes from across Tamil Nadu and Kerala — and photos our guests shared from their trips."
         image={Hero}
         crumbs={['Gallery']}
@@ -100,7 +100,7 @@ const Gallery = () => {
                 role="tab"
                 aria-selected={tab === t.id}
                 onClick={() => setTab(t.id)}
-                className={`shrink-0 mono text-xs font-bold uppercase tracking-[0.1em] px-4 py-2.5 rounded-[4px] border-2 border-ink-900 transition-colors cursor-pointer ${tab === t.id ? 'bg-ink-900 text-gold-400' : 'bg-white text-ink-900 hover:bg-gold-500'}`}
+                className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold border transition-colors cursor-pointer ${tab === t.id ? 'bg-forest-700 text-white border-forest-700' : 'bg-white text-ink-700 border-sand-200 hover:border-forest-700'}`}
               >
                 {t.label}
               </button>
@@ -117,12 +117,12 @@ const Gallery = () => {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4, delay: Math.min(i * 0.02, 0.3) }}
                 onClick={() => setIndex(i)}
-                className="group relative block w-full break-inside-avoid bg-white border-2 border-ink-900 p-2 pb-3 rounded-[4px] shadow-[4px_4px_0_0_var(--color-ink-900)] cursor-zoom-in text-left transition-transform hover:-translate-y-1"
+                className="group relative block w-full break-inside-avoid bg-white border border-sand-200 p-2 pb-3 rounded-[14px] shadow-[var(--shadow-soft)] cursor-zoom-in text-left transition-transform hover:-translate-y-1"
                 aria-label={`Open photo: ${item.title}`}
               >
-                <span className="block overflow-hidden border-2 border-ink-900"><img src={item.src} alt={item.title} loading="lazy" className="w-full h-auto img-zoom" /></span>
+                <span className="block overflow-hidden border border-sand-200"><img src={item.src} alt={item.title} loading="lazy" className="w-full h-auto img-zoom" /></span>
                 <span className="block px-1 pt-2">
-                  <span className="mono block text-[10px] font-bold uppercase tracking-[0.12em] text-ink-500">{item.place}</span>
+                  <span className="block text-xs font-semibold text-ink-500">{item.place}</span>
                   <span className="block text-sm font-bold text-ink-950 leading-snug line-clamp-2">{item.title}</span>
                 </span>
                 </motion.button>
@@ -154,14 +154,14 @@ const Gallery = () => {
                 alt={current.title}
                 initial={{ opacity: 0, scale: 0.98 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="max-h-full max-w-full object-contain border-2 border-gold-500"
+                className="max-h-full max-w-full object-contain rounded-[12px]"
                 onClick={(e) => e.stopPropagation()}
               />
-              <button onClick={(e) => { e.stopPropagation(); step(-1); }} className="absolute left-2 sm:left-4 w-12 h-12 grid place-items-center rounded-[6px] bg-gold-500 border-2 border-ink-900 text-ink-950 cursor-pointer" aria-label="Previous photo"><ChevronLeft className="w-6 h-6" /></button>
-              <button onClick={(e) => { e.stopPropagation(); step(1); }} className="absolute right-2 sm:right-4 w-12 h-12 grid place-items-center rounded-[6px] bg-gold-500 border-2 border-ink-900 text-ink-950 cursor-pointer" aria-label="Next photo"><ChevronRight className="w-6 h-6" /></button>
+              <button onClick={(e) => { e.stopPropagation(); step(-1); }} className="absolute left-2 sm:left-4 w-12 h-12 grid place-items-center rounded-full bg-white/15 hover:bg-white/25 text-white cursor-pointer" aria-label="Previous photo"><ChevronLeft className="w-6 h-6" /></button>
+              <button onClick={(e) => { e.stopPropagation(); step(1); }} className="absolute right-2 sm:right-4 w-12 h-12 grid place-items-center rounded-full bg-white/15 hover:bg-white/25 text-white cursor-pointer" aria-label="Next photo"><ChevronRight className="w-6 h-6" /></button>
             </div>
             <div className="p-4 sm:p-6 text-center text-white" onClick={(e) => e.stopPropagation()}>
-              <p className="mono text-xs font-bold uppercase tracking-[0.14em] text-gold-400">{current.place}</p>
+              <p className="text-xs font-bold uppercase tracking-[0.14em] text-gold-300">{current.place}</p>
               <p className="font-semibold mt-1">{current.title}</p>
             </div>
           </motion.div>

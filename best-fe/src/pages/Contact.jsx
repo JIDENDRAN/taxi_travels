@@ -62,29 +62,29 @@ const Contact = () => {
   const err = (name) => (errors[name] ? <p id={`ct-${name}-err`} className="field-error" role="alert">{errors[name]}</p> : null);
 
   const channels = [
-    { icon: Phone, label: 'Call 24/7', value: SITE.phoneDisplay, href: SITE.phoneHref, tone: 'bg-gold-500' },
+    { icon: Phone, label: 'Call 24/7', value: SITE.phoneDisplay, href: SITE.phoneHref, tone: 'bg-gold-100 text-forest-700' },
     { icon: MessageCircle, label: 'WhatsApp', value: 'Chat with the desk', href: SITE.whatsappHref, external: true, tone: 'bg-leaf-500 text-white' },
-    { icon: Mail, label: 'Email', value: SITE.email, href: `mailto:${SITE.email}`, tone: 'bg-white' },
+    { icon: Mail, label: 'Email', value: SITE.email, href: `mailto:${SITE.email}`, tone: 'bg-forest-50 text-forest-700' },
   ];
 
   return (
     <>
       <PageHero
         eyebrow="Contact"
-        title="Talk to the booking desk."
+        title="Talk to our booking desk"
         intro="Quotes, custom itineraries or a ride in the next hour — call, WhatsApp or send a message. We're open around the clock."
         image={Hero}
         crumbs={['Contact']}
       />
 
       {/* Channel strip */}
-      <section className="border-b-2 border-ink-900">
+      <section className="border-b border-ink-900">
         <div className="container-x grid md:grid-cols-3 gap-4 py-8">
           {channels.map((c) => (
             <a key={c.label} href={c.href} {...(c.external ? { target: '_blank', rel: 'noreferrer' } : {})} className="group card card-hover p-5 flex items-center gap-4">
-              <span className={`w-12 h-12 grid place-items-center border-2 border-ink-900 rounded-[6px] shrink-0 ${c.tone}`}><c.icon className="w-5 h-5" aria-hidden /></span>
+              <span className={`w-12 h-12 grid place-items-center border border-sand-200 rounded-[14px] shrink-0 ${c.tone}`}><c.icon className="w-5 h-5" aria-hidden /></span>
               <span className="min-w-0 flex-1">
-                <span className="mono block text-[10px] font-bold uppercase tracking-[0.14em] text-ink-500">{c.label}</span>
+                <span className="block text-xs font-semibold text-ink-500">{c.label}</span>
                 <span className="block font-bold text-ink-950 break-all">{c.value}</span>
               </span>
               <ArrowUpRight className="w-5 h-5 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
@@ -97,20 +97,20 @@ const Contact = () => {
         <div className="container-x grid lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-16 items-start">
           <div className="lg:sticky lg:top-28">
             <p className="eyebrow">Send a message</p>
-            <h2 className="h-display text-5xl text-ink-950 mt-4">Request a quote.</h2>
+            <h2 className="h-display text-4xl sm:text-5xl text-ink-950 mt-3">Request a quote</h2>
             <p className="text-lg text-ink-600 mt-5">Share your dates, pickup point and group size — we'll reply with options and a clear fare.</p>
-            <div className="mt-8 border-2 border-ink-900 rounded-[6px] bg-white divide-y-2 divide-ink-900">
+            <div className="mt-8 border border-sand-200 rounded-[14px] bg-white divide-y divide-sand-200">
               <div className="p-5 flex gap-4">
-                <MapPin className="w-5 h-5 mt-0.5 shrink-0" aria-hidden />
+                <MapPin className="w-5 h-5 mt-0.5 shrink-0 text-forest-700" aria-hidden />
                 <div>
-                  <p className="mono text-[10px] font-bold uppercase tracking-[0.14em] text-ink-500">Office</p>
+                  <p className="text-xs font-semibold text-ink-500">Office</p>
                   <address className="not-italic font-semibold text-ink-900 leading-relaxed mt-0.5">{SITE.addressLines.map((l) => <span key={l} className="block">{l}</span>)}</address>
                 </div>
               </div>
               <div className="p-5 flex gap-4">
-                <Clock className="w-5 h-5 mt-0.5 shrink-0" aria-hidden />
+                <Clock className="w-5 h-5 mt-0.5 shrink-0 text-forest-700" aria-hidden />
                 <div>
-                  <p className="mono text-[10px] font-bold uppercase tracking-[0.14em] text-ink-500">Hours</p>
+                  <p className="text-xs font-semibold text-ink-500">Hours</p>
                   <p className="font-semibold text-ink-900 mt-0.5">Open 24 hours · 7 days a week</p>
                 </div>
               </div>
@@ -118,12 +118,12 @@ const Contact = () => {
           </div>
 
           <div className="card overflow-hidden">
-            <div className="bg-ink-900 text-gold-400 px-6 py-3 mono text-[11px] font-bold uppercase tracking-[0.16em]">Enquiry form</div>
+            <div className="bg-forest-700 text-white px-6 py-3.5 text-sm font-semibold">Enquiry form · we reply quickly</div>
             <div className="p-6 sm:p-9">
               {status === 'sent' ? (
                 <div className="py-10 text-center" role="status">
                   <CheckCircle2 className="w-14 h-14 text-leaf-500 mx-auto" aria-hidden />
-                  <h2 className="h-display text-4xl text-ink-950 mt-5">Message received.</h2>
+                  <h2 className="h-display text-4xl text-ink-950 mt-5">Message received</h2>
                   <p className="text-ink-600 mt-3 max-w-md mx-auto">Thank you for contacting us. Our team will get back to you shortly on the number you shared.</p>
                   <button type="button" onClick={() => setStatus('idle')} className="btn btn-outline mt-8">Send another message</button>
                 </div>
@@ -154,7 +154,7 @@ const Contact = () => {
                     {err('message')}
                   </div>
                   {status === 'error' && (
-                    <p className="sm:col-span-2 rounded-[6px] border-2 border-signal-red bg-white p-3.5 text-sm text-ink-900" role="alert">
+                    <p className="sm:col-span-2 rounded-[14px] border border-orange-200 bg-orange-50 p-3.5 text-sm text-ink-900" role="alert">
                       We couldn't send your message. Please try again, or reach us on <a className="font-bold underline" href={SITE.whatsappHref} target="_blank" rel="noreferrer">WhatsApp</a> / <a className="font-bold underline" href={SITE.phoneHref}>{SITE.phoneDisplay}</a>.
                     </p>
                   )}
@@ -173,7 +173,7 @@ const Contact = () => {
 
       <section className="pb-16 sm:pb-24">
         <div className="container-x">
-          <div className="border-2 border-ink-900 rounded-[8px] overflow-hidden h-[320px] sm:h-[420px] shadow-[6px_6px_0_0_var(--color-ink-900)]">
+          <div className="border border-sand-200 rounded-[22px] overflow-hidden h-[320px] sm:h-[420px] shadow-[var(--shadow-soft)]">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15720.59736881774!2d78.0934!3d9.9056!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b00c582b1189633%3A0xdc955b7264f63933!2sPalanganatham%2C%20Madurai%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
               width="100%"

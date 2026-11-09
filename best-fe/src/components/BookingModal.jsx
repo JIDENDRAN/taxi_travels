@@ -233,7 +233,7 @@ export default function BookingModal({ isOpen, onClose, preset = {}, defaultVehi
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-ink-950/70"
+            className="absolute inset-0 bg-forest-950/60 backdrop-blur-[3px]"
           />
 
           <motion.div
@@ -242,32 +242,32 @@ export default function BookingModal({ isOpen, onClose, preset = {}, defaultVehi
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 40 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="relative z-10 w-full sm:max-w-4xl max-h-[94dvh] sm:max-h-[90vh] bg-sand-50 border-2 border-ink-900 rounded-t-[10px] sm:rounded-[8px] shadow-[var(--shadow-panel)] overflow-hidden flex flex-col md:flex-row"
+            className="relative z-10 w-full sm:max-w-4xl max-h-[94dvh] sm:max-h-[90vh] bg-white rounded-t-[24px] sm:rounded-[24px] shadow-[var(--shadow-panel)] overflow-hidden flex flex-col md:flex-row"
           >
             {/* Summary rail (desktop) */}
-            <aside className="hidden md:flex md:w-[300px] shrink-0 flex-col bg-gold-500 text-ink-950 p-7 border-r-2 border-dashed border-ink-900">
-              <p className="mono text-[11px] font-bold uppercase tracking-[0.16em] bg-ink-900 text-gold-400 self-start px-2 py-1">Ride ticket</p>
-              <h2 className="h-display text-3xl mt-4 mb-6">Your trip</h2>
+            <aside className="hidden md:flex md:w-[300px] shrink-0 flex-col bg-forest-700 text-white p-7">
+              <p className="eyebrow !text-gold-300">Your trip</p>
+              <h2 className="h-display text-3xl mt-3 mb-6">Booking summary</h2>
               <dl className="space-y-4 text-sm flex-1">
                 {summary.map(({ icon: Icon, label, value }) => (
                   <div key={label} className="flex gap-3">
-                    <Icon className="w-4 h-4 mt-0.5 text-ink-900 shrink-0" aria-hidden />
+                    <Icon className="w-4 h-4 mt-0.5 text-gold-300 shrink-0" aria-hidden />
                     <div className="min-w-0">
-                      <dt className="mono text-[10px] uppercase tracking-[0.12em] text-ink-700 font-bold">{label}</dt>
-                      <dd className={`font-semibold break-words ${value ? 'text-ink-950' : 'text-ink-700 font-normal'}`}>{value || '—'}</dd>
+                      <dt className="text-[11px] uppercase tracking-wider text-forest-100/80 font-semibold">{label}</dt>
+                      <dd className={`font-semibold break-words ${value ? 'text-white' : 'text-forest-100/60 font-normal'}`}>{value || '—'}</dd>
                     </div>
                   </div>
                 ))}
               </dl>
-              <div className="mt-6 pt-5 border-t-2 border-dashed border-ink-900 text-xs text-ink-900 font-medium leading-relaxed">
-                <ShieldCheck className="w-4 h-4 text-ink-900 inline mr-1.5 -mt-0.5" aria-hidden />
+              <div className="mt-6 pt-5 border-t border-white/15 text-xs text-forest-100 leading-relaxed">
+                <ShieldCheck className="w-4 h-4 text-gold-300 inline mr-1.5 -mt-0.5" aria-hidden />
                 No payment now. We call you to confirm the vehicle and final fare.
               </div>
             </aside>
 
             {/* Main */}
             <div className="flex-1 min-w-0 flex flex-col min-h-0">
-              <header className="flex items-start justify-between gap-4 px-5 sm:px-7 pt-5 sm:pt-6 pb-4 border-b-2 border-ink-900">
+              <header className="flex items-start justify-between gap-4 px-5 sm:px-7 pt-5 sm:pt-6 pb-4 border-b border-sand-200">
                 <div>
                   <h2 id="booking-title" className="h-display text-xl sm:text-2xl text-ink-900">
                     {step === 3 ? 'Request received' : 'Book your ride'}
@@ -297,9 +297,9 @@ export default function BookingModal({ isOpen, onClose, preset = {}, defaultVehi
                   <form id="bk-step1" onSubmit={next} noValidate className="space-y-4">
                     <fieldset>
                       <legend className="field-label">Trip type</legend>
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 p-1 border-2 border-ink-900 bg-white rounded-[6px]">
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 p-1 bg-forest-50 rounded-full">
                         {TRIP_TYPES.map((tt) => (
-                          <label key={tt.id} className={`text-center text-sm font-semibold py-2 rounded-[3px] cursor-pointer transition-colors ${form.tripType === tt.id ? 'bg-ink-900 text-gold-400' : 'text-ink-600 hover:text-ink-900'}`}>
+                          <label key={tt.id} className={`text-center text-sm font-semibold py-2 rounded-full cursor-pointer transition-colors ${form.tripType === tt.id ? 'bg-forest-700 text-white' : 'text-ink-600 hover:text-ink-900'}`}>
                             <input type="radio" name="tripType" value={tt.id} checked={form.tripType === tt.id} onChange={onChange} className="sr-only" />
                             {tt.label}
                           </label>
@@ -342,7 +342,7 @@ export default function BookingModal({ isOpen, onClose, preset = {}, defaultVehi
                     <div className="grid sm:grid-cols-[auto_1fr] gap-4">
                       <div>
                         <span className="field-label" id="pax-label">Passengers</span>
-                        <div className="flex items-center h-[2.875rem] border-2 border-ink-900 rounded-[6px] bg-white" role="group" aria-labelledby="pax-label">
+                        <div className="flex items-center h-[2.875rem] border border-ink-200 rounded-[12px] bg-white" role="group" aria-labelledby="pax-label">
                           <button type="button" onClick={() => set('passengers', Math.max(1, form.passengers - 1))} className="w-11 h-full grid place-items-center text-ink-600 hover:text-ink-900 cursor-pointer disabled:opacity-40" disabled={form.passengers <= 1} aria-label="Fewer passengers">
                             <Minus className="w-4 h-4" />
                           </button>
@@ -381,7 +381,7 @@ export default function BookingModal({ isOpen, onClose, preset = {}, defaultVehi
                 {step === 2 && (
                   <form id="bk-step2" onSubmit={submit} noValidate className="space-y-4">
                     {/* Mobile summary */}
-                    <div className="md:hidden rounded-[6px] bg-gold-500 border-2 border-ink-900 p-4 text-sm">
+                    <div className="md:hidden rounded-[14px] bg-forest-50 p-4 text-sm">
                       <div className="flex items-center justify-between mb-2">
                         <span className="font-bold text-ink-900">{tripLabel(form.tripType)} trip</span>
                         <button type="button" onClick={() => setStep(1)} className="text-xs font-bold text-gold-700 underline underline-offset-2 cursor-pointer">Edit</button>
@@ -416,7 +416,7 @@ export default function BookingModal({ isOpen, onClose, preset = {}, defaultVehi
                     </ul>
 
                     {submitError && (
-                      <div className="rounded-[6px] border-2 border-signal-red bg-white p-3.5 text-sm text-orange-900" role="alert">
+                      <div className="rounded-[12px] border border-orange-200 bg-orange-50 p-3.5 text-sm text-orange-900" role="alert">
                         <p>{submitError}</p>
                         <div className="flex flex-wrap gap-2 mt-3">
                           <a href={whatsappLink(buildWhatsAppText())} target="_blank" rel="noreferrer" className="btn btn-whatsapp !min-h-9 !text-sm">
@@ -444,7 +444,7 @@ export default function BookingModal({ isOpen, onClose, preset = {}, defaultVehi
                       </div>
                     </div>
 
-                    <dl className="md:hidden mt-5 grid grid-cols-2 gap-3 text-sm rounded-[6px] bg-gold-500 border-2 border-ink-900 p-4">
+                    <dl className="md:hidden mt-5 grid grid-cols-2 gap-3 text-sm rounded-[14px] bg-forest-50 p-4">
                       {summary.map(({ label, value }) => (
                         <div key={label} className="min-w-0">
                           <dt className="text-[11px] uppercase tracking-wider text-ink-500 font-semibold">{label}</dt>
@@ -453,7 +453,7 @@ export default function BookingModal({ isOpen, onClose, preset = {}, defaultVehi
                       ))}
                     </dl>
 
-                    <div className="mt-6 rounded-[6px] border-2 border-ink-900 bg-white p-4">
+                    <div className="mt-6 rounded-[14px] border border-sand-200 p-4">
                       <p className="text-sm font-semibold text-ink-900">Want a faster reply?</p>
                       <p className="text-sm text-ink-600 mt-0.5">Send these details on WhatsApp and we'll respond right away.</p>
                       <div className="flex flex-col sm:flex-row gap-2 mt-3">
@@ -467,7 +467,7 @@ export default function BookingModal({ isOpen, onClose, preset = {}, defaultVehi
                 )}
               </div>
 
-              <footer className="px-5 sm:px-7 py-4 border-t-2 border-ink-900 bg-sand-100 flex items-center justify-between gap-3">
+              <footer className="px-5 sm:px-7 py-4 border-t border-sand-200 bg-sand-50 flex items-center justify-between gap-3">
                 {step === 1 && (
                   <>
                     <p className="hidden sm:block text-xs text-ink-500">Step 1 of 2 · takes under a minute</p>
