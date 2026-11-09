@@ -109,15 +109,12 @@ const Gallery = () => {
 
           <div className="columns-2 md:columns-3 lg:columns-4 gap-3 sm:gap-4 [&>*]:mb-3 sm:[&>*]:mb-4">
             {items.map((item, i) => (
-              <motion.button
+              <button
                 key={`${tab}-${i}`}
                 type="button"
-                layout
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.4, delay: Math.min(i * 0.02, 0.3) }}
                 onClick={() => setIndex(i)}
-                className="group relative block w-full break-inside-avoid bg-white border border-sand-200 p-2 pb-3 rounded-[14px] shadow-[var(--shadow-soft)] cursor-zoom-in text-left transition-transform hover:-translate-y-1"
+                style={{ animationDelay: `${Math.min(i * 0.03, 0.4)}s` }}
+                className="anim-fade-up group relative block w-full break-inside-avoid bg-white border border-sand-200 p-2 pb-3 rounded-[14px] shadow-[var(--shadow-soft)] cursor-zoom-in text-left transition-transform hover:-translate-y-1"
                 aria-label={`Open photo: ${item.title}`}
               >
                 <span className="block overflow-hidden border border-sand-200"><img src={item.src} alt={item.title} loading="lazy" className="w-full h-auto img-zoom" /></span>
@@ -125,7 +122,7 @@ const Gallery = () => {
                   <span className="block text-xs font-semibold text-ink-500">{item.place}</span>
                   <span className="block text-sm font-bold text-ink-950 leading-snug line-clamp-2">{item.title}</span>
                 </span>
-                </motion.button>
+                </button>
             ))}
           </div>
         </div>

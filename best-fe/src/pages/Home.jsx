@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import {
   ArrowRight, ArrowUpRight, Car, Plane, Clock, Map, Headphones, ShieldCheck, Sparkles,
   ReceiptText, Star, PhoneCall, Route, CarFront,
@@ -180,7 +179,7 @@ const Home = () => {
         <img src={HeroImg} alt="" aria-hidden className="absolute inset-0 -z-10 w-full h-full object-cover opacity-45 mix-blend-luminosity" fetchPriority="high" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-forest-900 via-forest-800/85 to-forest-700/20" />
         <div className="container-x pt-14 sm:pt-20">
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }} className="max-w-5xl">
+          <div className="max-w-5xl anim-fade-up">
                         <h1 className="h-display text-[2.3rem] sm:text-5xl lg:text-[3.4rem]">
               Book Outstation Cabs &amp;<br className="hidden sm:block" /> <em className="text-gold-300">South India Tours</em> from Madurai
             </h1>
@@ -190,15 +189,15 @@ const Home = () => {
               <TrustPill>Fare confirmed on call</TrustPill>
               <TrustPill>Since {SITE.since}</TrustPill>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* ── BOOKING PORTAL ──────────────────────────────────── */}
       <div className="container-x relative z-10 -mt-36 sm:-mt-32">
-        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}>
+        <div className="anim-fade-up anim-delay-1">
           <BookingPortal />
-        </motion.div>
+        </div>
       </div>
 
       {/* ── POPULAR PACKAGES ────────────────────────────────── */}

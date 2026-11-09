@@ -1,23 +1,41 @@
-import { motion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Phone, MessageCircle, ArrowRight, ChevronRight, Check } from 'lucide-react';
 import { SITE } from '../data/site';
 import { useBooking } from '../context/BookingContext';
 
-/** Fade-up on scroll. */
-export function Reveal({ as = 'div', delay = 0, className = '', children, ...rest }) {
-  const M = motion[as] || motion.div;
+/**
+ * Fade-up on scroll. Content is visible in the server HTML and without JavaScript;
+ * only elements that start below the fold are hidden on mount and revealed when seen.
+ */
+export function Reveal({ as: Tag = 'div', delay = 0, className = '', style, children, ...rest }) {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return undefined;
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return undefined;
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) return undefined; // already on screen: leave visible
+
+    el.classList.add('reveal-armed');
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add('reveal-in');
+          io.disconnect();
+        }
+      },
+      { rootMargin: '0px 0px -40px 0px' }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <M
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
-      className={className}
-      {...rest}
-    >
+    <Tag ref={ref} className={className} style={{ ...style, '--reveal-delay': `${delay}s` }} {...rest}>
       {children}
-    </M>
+    </Tag>
   );
 }
 
@@ -64,13 +82,13 @@ export function PageHero({ eyebrow, title, intro, image, crumbs = [], children, 
             </ol>
           </nav>
         )}
-        <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }} className="max-w-3xl">
+        <div className="max-w-3xl anim-fade-up">
           {eyebrow && <p className="eyebrow !text-gold-300">{eyebrow}</p>}
           <h1 className={`h-display mt-3 ${compact ? 'text-4xl sm:text-5xl' : 'text-4xl sm:text-5xl lg:text-6xl'}`}>{title}</h1>
           {intro && <p className="mt-4 text-lg text-forest-100 max-w-2xl">{intro}</p>}
           {pills && <div className="flex flex-wrap gap-2 mt-6">{pills.map((p) => <TrustPill key={p}>{p}</TrustPill>)}</div>}
           {children}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
