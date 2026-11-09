@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { X, ChevronLeft, ChevronRight, Expand } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import Hero from '../assets/opt/thirumalai-wide.webp';
 import G1 from '../assets/opt/gallery-1.webp';
 import G2 from '../assets/opt/gallery-2.webp';
@@ -85,7 +85,7 @@ const Gallery = () => {
     <>
       <PageHero
         eyebrow="Gallery"
-        title="Places we drive to, people we drive with"
+        title="Postcards from the road."
         intro="Scenes from across Tamil Nadu and Kerala — and photos our guests shared from their trips."
         image={Hero}
         crumbs={['Gallery']}
@@ -100,7 +100,7 @@ const Gallery = () => {
                 role="tab"
                 aria-selected={tab === t.id}
                 onClick={() => setTab(t.id)}
-                className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold border transition-colors cursor-pointer ${tab === t.id ? 'bg-ink-900 text-white border-ink-900' : 'bg-white text-ink-700 border-sand-200 hover:border-ink-300'}`}
+                className={`shrink-0 mono text-xs font-bold uppercase tracking-[0.1em] px-4 py-2.5 rounded-[4px] border-2 border-ink-900 transition-colors cursor-pointer ${tab === t.id ? 'bg-ink-900 text-gold-400' : 'bg-white text-ink-900 hover:bg-gold-500'}`}
               >
                 {t.label}
               </button>
@@ -117,17 +117,15 @@ const Gallery = () => {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4, delay: Math.min(i * 0.02, 0.3) }}
                 onClick={() => setIndex(i)}
-                className="group relative block w-full break-inside-avoid overflow-hidden rounded-[12px] bg-sand-100 cursor-zoom-in text-left"
+                className="group relative block w-full break-inside-avoid bg-white border-2 border-ink-900 p-2 pb-3 rounded-[4px] shadow-[4px_4px_0_0_var(--color-ink-900)] cursor-zoom-in text-left transition-transform hover:-translate-y-1"
                 aria-label={`Open photo: ${item.title}`}
               >
-                <img src={item.src} alt={item.title} loading="lazy" className="w-full h-auto img-zoom" />
-                <span className="absolute inset-0 bg-gradient-to-t from-ink-950/75 via-transparent to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity" />
-                <span className="absolute inset-x-0 bottom-0 p-3 text-white translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all">
-                  <span className="block text-[11px] font-semibold uppercase tracking-wider text-gold-300">{item.place}</span>
-                  <span className="block text-sm font-semibold leading-snug line-clamp-2">{item.title}</span>
+                <span className="block overflow-hidden border-2 border-ink-900"><img src={item.src} alt={item.title} loading="lazy" className="w-full h-auto img-zoom" /></span>
+                <span className="block px-1 pt-2">
+                  <span className="mono block text-[10px] font-bold uppercase tracking-[0.12em] text-ink-500">{item.place}</span>
+                  <span className="block text-sm font-bold text-ink-950 leading-snug line-clamp-2">{item.title}</span>
                 </span>
-                <Expand className="absolute top-3 right-3 w-4 h-4 text-white opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden />
-              </motion.button>
+                </motion.button>
             ))}
           </div>
         </div>
@@ -139,7 +137,7 @@ const Gallery = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-ink-950/95 flex flex-col"
+            className="fixed inset-0 z-[100] bg-ink-950 flex flex-col"
             role="dialog"
             aria-modal="true"
             aria-label={current.title}
@@ -156,14 +154,14 @@ const Gallery = () => {
                 alt={current.title}
                 initial={{ opacity: 0, scale: 0.98 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="max-h-full max-w-full object-contain rounded-[8px]"
+                className="max-h-full max-w-full object-contain border-2 border-gold-500"
                 onClick={(e) => e.stopPropagation()}
               />
-              <button onClick={(e) => { e.stopPropagation(); step(-1); }} className="absolute left-2 sm:left-4 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white cursor-pointer" aria-label="Previous photo"><ChevronLeft className="w-6 h-6" /></button>
-              <button onClick={(e) => { e.stopPropagation(); step(1); }} className="absolute right-2 sm:right-4 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white cursor-pointer" aria-label="Next photo"><ChevronRight className="w-6 h-6" /></button>
+              <button onClick={(e) => { e.stopPropagation(); step(-1); }} className="absolute left-2 sm:left-4 w-12 h-12 grid place-items-center rounded-[6px] bg-gold-500 border-2 border-ink-900 text-ink-950 cursor-pointer" aria-label="Previous photo"><ChevronLeft className="w-6 h-6" /></button>
+              <button onClick={(e) => { e.stopPropagation(); step(1); }} className="absolute right-2 sm:right-4 w-12 h-12 grid place-items-center rounded-[6px] bg-gold-500 border-2 border-ink-900 text-ink-950 cursor-pointer" aria-label="Next photo"><ChevronRight className="w-6 h-6" /></button>
             </div>
             <div className="p-4 sm:p-6 text-center text-white" onClick={(e) => e.stopPropagation()}>
-              <p className="text-xs font-semibold uppercase tracking-wider text-gold-300">{current.place}</p>
+              <p className="mono text-xs font-bold uppercase tracking-[0.14em] text-gold-400">{current.place}</p>
               <p className="font-semibold mt-1">{current.title}</p>
             </div>
           </motion.div>

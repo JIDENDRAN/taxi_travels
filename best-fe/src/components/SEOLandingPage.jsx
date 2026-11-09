@@ -36,7 +36,7 @@ const SEOLandingPage = ({ title, heroSubtitle, heroBg, sections, faqs, bookingPr
           <button type="button" onClick={() => openBooking(bookingPreset)} className="btn btn-primary">
             Book online <ArrowRight className="w-4 h-4" />
           </button>
-          <a href={SITE.phoneHref} className="btn btn-ghost-light"><Phone className="w-4 h-4" /> {SITE.phoneDisplay}</a>
+          <a href={SITE.phoneHref} className="btn btn-outline"><Phone className="w-4 h-4" /> {SITE.phoneDisplay}</a>
         </div>
       </PageHero>
 
@@ -44,21 +44,21 @@ const SEOLandingPage = ({ title, heroSubtitle, heroBg, sections, faqs, bookingPr
         <div className="container-x grid lg:grid-cols-[1fr_340px] gap-10 lg:gap-16 items-start">
           <article className="max-w-3xl">
             {sections.map((section, idx) => (
-              <Reveal key={idx} className={idx > 0 ? 'mt-12 pt-12 border-t border-sand-200' : ''}>
-                <h2 className="h-display text-2xl sm:text-3xl text-ink-900 mb-5">{section.heading}</h2>
+              <Reveal key={idx} className={idx > 0 ? 'mt-12 pt-12 border-t-2 border-ink-900' : ''}>
+                <h2 className="h-display text-3xl sm:text-4xl text-ink-950 mb-5">{section.heading}</h2>
                 <div className="prose-site" dangerouslySetInnerHTML={{ __html: section.content }} />
               </Reveal>
             ))}
 
             {faqs && faqs.length > 0 && (
-              <div className="mt-14 pt-12 border-t border-sand-200">
-                <h2 className="h-display text-2xl sm:text-3xl text-ink-900 mb-6">Frequently asked questions</h2>
-                <div className="divide-y divide-sand-200 border-y border-sand-200">
+              <div className="mt-14 pt-12 border-t-2 border-ink-900">
+                <h2 className="h-display text-3xl sm:text-4xl text-ink-950 mb-6">Frequently asked questions</h2>
+                <div className="divide-y-2 divide-ink-900 border-y-2 border-ink-900">
                   {faqs.map((faq, idx) => (
                     <details key={idx} className="group py-1">
                       <summary className="flex items-center justify-between gap-4 py-4 cursor-pointer list-none font-bold text-ink-900 [&::-webkit-details-marker]:hidden">
                         {faq.q}
-                        <ChevronDown className="w-5 h-5 text-ink-400 transition-transform group-open:rotate-180 shrink-0" aria-hidden />
+                        <ChevronDown className="w-5 h-5 text-ink-900 transition-transform group-open:rotate-180 shrink-0" aria-hidden />
                       </summary>
                       <p className="pb-5 text-ink-700 leading-relaxed">{faq.a}</p>
                     </details>
@@ -69,8 +69,8 @@ const SEOLandingPage = ({ title, heroSubtitle, heroBg, sections, faqs, bookingPr
           </article>
 
           <aside className="lg:sticky lg:top-24 space-y-5">
-            <div className="rounded-[16px] bg-ink-900 text-white p-6">
-              <h3 className="font-display text-xl font-semibold">Book this trip</h3>
+            <div className="card !bg-ink-900 text-sand-50 p-6">
+              <h3 className="h-display text-3xl">Book this trip</h3>
               <p className="text-ink-200 text-sm mt-1.5">Available 24/7. No payment needed to request a booking.</p>
               <button type="button" onClick={() => openBooking(bookingPreset)} className="btn btn-primary w-full mt-5">Get a quote <ArrowRight className="w-4 h-4" /></button>
               <a href={SITE.whatsappHref} target="_blank" rel="noreferrer" className="btn btn-whatsapp w-full mt-2.5"><MessageCircle className="w-4 h-4" /> WhatsApp us</a>
@@ -88,7 +88,7 @@ const SEOLandingPage = ({ title, heroSubtitle, heroBg, sections, faqs, bookingPr
               <ul className="mt-3 space-y-1">
                 {POPULAR_ROUTES.map((r) => (
                   <li key={r.path}>
-                    <Link to={r.path} className="flex items-center justify-between py-1.5 text-sm text-ink-700 hover:text-gold-700">
+                    <Link to={r.path} className="flex items-center justify-between py-1.5 text-sm text-ink-700 hover:bg-gold-500">
                       {r.label} <ArrowRight className="w-3.5 h-3.5" aria-hidden />
                     </Link>
                   </li>

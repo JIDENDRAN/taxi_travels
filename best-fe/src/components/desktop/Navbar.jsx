@@ -1,10 +1,19 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Phone, Menu, X, ArrowRight, MessageCircle } from 'lucide-react';
+import { Phone, Menu, X, ArrowUpRight, MessageCircle, Clock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Logo from '../../assets/new_logo.jpg';
 import { NAV_LINKS, SITE } from '../../data/site';
 import { useBooking } from '../../context/BookingContext';
+
+function Wordmark() {
+  return (
+    <span className="leading-none">
+      <span className="block h-display text-[1.35rem] sm:text-[1.5rem] tracking-[-0.04em] text-ink-950">MADURAI BEST</span>
+      <span className="mono block text-[10px] font-bold tracking-[0.28em] mt-1 text-ink-600">TAXI · TRAVELS</span>
+    </span>
+  );
+}
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -12,7 +21,7 @@ const Navbar = () => {
   const { openBooking } = useBooking();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -23,29 +32,29 @@ const Navbar = () => {
     return () => { document.body.style.overflow = ''; };
   }, [open]);
 
-  // Every public page opens with a dark photo hero, so the header is transparent until scrolled.
-  const solid = scrolled;
-
   return (
     <>
-      <header
-        className={`fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,padding] duration-300 ${
-          solid ? 'bg-white/95 backdrop-blur-md shadow-[0_1px_0_var(--color-sand-200),0_8px_24px_-16px_rgb(12_27_43/0.25)] py-2.5' : 'bg-transparent py-4'
-        }`}
-      >
-        <div className="container-x flex items-center justify-between gap-4">
+      {/* Utility strip */}
+      <div className="hidden md:block bg-ink-900 text-sand-100">
+        <div className="container-x flex items-center justify-between h-9 mono text-[11px] font-bold uppercase tracking-[0.12em]">
+          <span className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-leaf-500 animate-[blink_1.6s_ease-in-out_infinite]" aria-hidden />
+            Desk open 24/7 · Palanganatham, Madurai
+          </span>
+          <span className="flex items-center gap-6">
+            <a href={SITE.whatsappHref} target="_blank" rel="noreferrer" className="hover:text-gold-400 flex items-center gap-1.5"><MessageCircle className="w-3.5 h-3.5" aria-hidden /> WhatsApp</a>
+            <a href={SITE.phoneHref} className="hover:text-gold-400 flex items-center gap-1.5"><Phone className="w-3.5 h-3.5" aria-hidden /> {SITE.phoneDisplay}</a>
+          </span>
+        </div>
+      </div>
+
+      <header className={`sticky top-0 z-50 bg-sand-50 border-b-2 border-ink-900 transition-shadow ${scrolled ? 'shadow-[0_4px_0_0_rgb(23_22_18/0.08)]' : ''}`}>
+        <div className="container-x flex items-center justify-between gap-4 h-[68px] lg:h-[76px]">
           <Link to="/" className="flex items-center gap-3 shrink-0" aria-label={`${SITE.name} — home`}>
-            <span className="w-10 h-10 sm:w-11 sm:h-11 rounded-[10px] overflow-hidden bg-white ring-1 ring-black/5 shrink-0">
-              <img src={Logo} alt="" className="w-full h-full object-contain" width="44" height="44" />
+            <span className="w-11 h-11 lg:w-12 lg:h-12 bg-gold-500 border-2 border-ink-900 rounded-[6px] p-0.5 shrink-0 shadow-[3px_3px_0_0_var(--color-ink-900)]">
+              <img src={Logo} alt="" className="w-full h-full object-contain rounded-[3px] bg-white" width="48" height="48" />
             </span>
-            <span className="leading-tight">
-              <span className={`block font-display font-semibold text-[1.05rem] sm:text-lg tracking-tight ${solid ? 'text-ink-900' : 'text-white'}`}>
-                Madurai Best
-              </span>
-              <span className={`block text-[11px] font-semibold tracking-[0.12em] uppercase ${solid ? 'text-gold-600' : 'text-gold-300'}`}>
-                Taxi Travels
-              </span>
-            </span>
+            <Wordmark />
           </Link>
 
           <nav className="hidden lg:flex items-center gap-1" aria-label="Main">
@@ -54,9 +63,9 @@ const Navbar = () => {
                 key={link.path}
                 to={link.path}
                 className={({ isActive }) =>
-                  `relative px-3.5 py-2 text-[0.9375rem] font-semibold transition-colors after:absolute after:left-3.5 after:right-3.5 after:-bottom-0.5 after:h-0.5 after:rounded-full after:transition-transform after:origin-left ${
-                    isActive ? 'after:scale-x-100' : 'after:scale-x-0 hover:after:scale-x-100'
-                  } ${solid ? 'text-ink-800 hover:text-ink-950 after:bg-gold-500' : 'text-white/90 hover:text-white after:bg-gold-400'}`
+                  `px-3.5 py-2 rounded-[6px] text-[0.95rem] font-bold border-2 transition-colors ${
+                    isActive ? 'bg-gold-500 border-ink-900 text-ink-950' : 'border-transparent text-ink-800 hover:border-ink-900'
+                  }`
                 }
               >
                 {link.name}
@@ -64,26 +73,19 @@ const Navbar = () => {
             ))}
           </nav>
 
-          <div className="flex items-center gap-2 sm:gap-3">
-            <a
-              href={SITE.phoneHref}
-              className={`hidden md:inline-flex items-center gap-2 text-sm font-bold px-2 ${solid ? 'text-ink-900' : 'text-white'}`}
-            >
-              <Phone className="w-4 h-4 text-gold-500" aria-hidden />
-              {SITE.phoneDisplay}
-            </a>
-            <button type="button" onClick={() => openBooking()} className="btn btn-primary !min-h-10 !px-4 hidden sm:inline-flex">
-              Book a ride
+          <div className="flex items-center gap-2">
+            <button type="button" onClick={() => openBooking()} className="btn btn-dark !min-h-11 hidden sm:inline-flex">
+              Book a ride <ArrowUpRight className="w-4 h-4" />
             </button>
             <button
               type="button"
-              className={`lg:hidden p-2 rounded-[10px] cursor-pointer ${solid ? 'text-ink-900 hover:bg-ink-50' : 'text-white hover:bg-white/10'}`}
+              className="lg:hidden w-11 h-11 grid place-items-center border-2 border-ink-900 rounded-[6px] bg-gold-500 cursor-pointer"
               onClick={() => setOpen(true)}
               aria-label="Open menu"
               aria-expanded={open}
               aria-controls="mobile-menu"
             >
-              <Menu className="w-6 h-6" />
+              <Menu className="w-5 h-5" />
             </button>
           </div>
         </div>
@@ -91,60 +93,55 @@ const Navbar = () => {
 
       <AnimatePresence>
         {open && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[60] bg-ink-950/50 backdrop-blur-[2px] lg:hidden"
-              onClick={() => setOpen(false)}
-            />
-            <motion.aside
-              id="mobile-menu"
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'tween', duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="fixed inset-y-0 right-0 z-[70] w-[min(88vw,380px)] bg-white flex flex-col lg:hidden"
-              role="dialog"
-              aria-modal="true"
-              aria-label="Menu"
-            >
-              <div className="flex items-center justify-between px-5 py-4 border-b border-sand-200">
-                <span className="font-display font-semibold text-lg text-ink-900">Menu</span>
-                <button onClick={() => setOpen(false)} className="p-2 -mr-2 rounded-[10px] text-ink-600 hover:bg-ink-50 cursor-pointer" aria-label="Close menu">
-                  <X className="w-5 h-5" />
-                </button>
+          <motion.div
+            id="mobile-menu"
+            initial={{ clipPath: 'inset(0 0 100% 0)' }}
+            animate={{ clipPath: 'inset(0 0 0% 0)' }}
+            exit={{ clipPath: 'inset(0 0 100% 0)' }}
+            transition={{ duration: 0.45, ease: [0.7, 0, 0.2, 1] }}
+            className="fixed inset-0 z-[70] bg-gold-500 flex flex-col lg:hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu"
+          >
+            <div className="container-x flex items-center justify-between h-[68px] border-b-2 border-ink-900 shrink-0">
+              <Wordmark />
+              <button onClick={() => setOpen(false)} className="w-11 h-11 grid place-items-center border-2 border-ink-900 rounded-[6px] bg-sand-50 cursor-pointer" aria-label="Close menu">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <nav className="container-x flex-1 overflow-y-auto py-4" aria-label="Mobile">
+              {NAV_LINKS.map((link, i) => (
+                <motion.div key={link.path} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.04 }}>
+                  <NavLink
+                    to={link.path}
+                    end={link.path === '/'}
+                    onClick={() => setOpen(false)}
+                    className="flex items-baseline gap-4 py-2.5 border-b-2 border-ink-900/15 text-ink-950"
+                  >
+                    {({ isActive }) => (
+                      <>
+                        <span className="mono text-xs font-bold w-6">{String(i + 1).padStart(2, '0')}</span>
+                        <span className={`h-display text-[2.4rem] ${isActive ? 'underline decoration-4 underline-offset-[6px]' : ''}`}>{link.name}</span>
+                      </>
+                    )}
+                  </NavLink>
+                </motion.div>
+              ))}
+            </nav>
+            <div className="container-x pb-8 pt-4 space-y-3 shrink-0">
+              <button type="button" onClick={() => { setOpen(false); openBooking(); }} className="btn btn-dark w-full !min-h-14">
+                Book a ride <ArrowUpRight className="w-4 h-4" />
+              </button>
+              <div className="grid grid-cols-2 gap-3">
+                <a href={SITE.phoneHref} className="btn btn-outline"><Phone className="w-4 h-4" /> Call</a>
+                <a href={SITE.whatsappHref} target="_blank" rel="noreferrer" className="btn btn-outline"><MessageCircle className="w-4 h-4" /> WhatsApp</a>
               </div>
-              <nav className="flex-1 overflow-y-auto px-3 py-4" aria-label="Mobile">
-                {NAV_LINKS.map((link, i) => (
-                  <motion.div key={link.path} initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.05 + i * 0.03 }}>
-                    <NavLink
-                      to={link.path}
-                      end={link.path === '/'}
-                      onClick={() => setOpen(false)}
-                      className={({ isActive }) =>
-                        `flex items-center justify-between px-3 py-3.5 rounded-[10px] text-lg font-semibold ${isActive ? 'bg-sand-100 text-ink-950' : 'text-ink-700 hover:bg-sand-50'}`
-                      }
-                    >
-                      {link.name}
-                      <ArrowRight className="w-4 h-4 text-ink-300" aria-hidden />
-                    </NavLink>
-                  </motion.div>
-                ))}
-              </nav>
-              <div className="p-5 border-t border-sand-200 space-y-2.5 bg-sand-50">
-                <button type="button" onClick={() => { setOpen(false); openBooking(); }} className="btn btn-primary w-full">
-                  Book a ride <ArrowRight className="w-4 h-4" />
-                </button>
-                <div className="grid grid-cols-2 gap-2.5">
-                  <a href={SITE.phoneHref} className="btn btn-outline"><Phone className="w-4 h-4" /> Call</a>
-                  <a href={SITE.whatsappHref} target="_blank" rel="noreferrer" className="btn btn-whatsapp"><MessageCircle className="w-4 h-4" /> WhatsApp</a>
-                </div>
-                <p className="text-xs text-ink-500 text-center pt-1">Palanganatham, Madurai · Open 24/7</p>
-              </div>
-            </motion.aside>
-          </>
+              <p className="mono text-[11px] font-bold uppercase tracking-[0.12em] text-ink-800 flex items-center gap-2 justify-center pt-1">
+                <Clock className="w-3.5 h-3.5" aria-hidden /> Open 24/7 · {SITE.phoneDisplay}
+              </p>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </>

@@ -16,7 +16,6 @@ const DURATIONS = [
   { id: '4+', label: '4+ days' },
 ];
 
-
 const Packages = () => {
   const { data: packages, loading, error } = usePackages();
   const { openBooking } = useBooking();
@@ -47,7 +46,6 @@ const Packages = () => {
     });
   }, [packages, q, dur]);
 
-  // Only offer destination chips that match at least one package
   const chips = useMemo(
     () => DESTINATIONS.filter((d) => packages.some((p) => `${p.name} ${p.places || ''} ${p.location || ''}`.toLowerCase().includes(d.query.toLowerCase()))),
     [packages]
@@ -57,28 +55,21 @@ const Packages = () => {
     <>
       <PageHero
         eyebrow="Tour packages"
-        title="Tours across Tamil Nadu & Kerala"
+        title="Tickets to Tamil Nadu & Kerala."
         intro="Temple circuits, hill-station escapes and coastal getaways — each one adjustable to your dates, group size and pace."
         image={Hero}
         crumbs={['Tour packages']}
       />
 
-      {/* Filter bar */}
-      <div className="sticky top-[60px] sm:top-[64px] z-30 bg-sand-50/95 backdrop-blur border-b border-sand-200">
+      {/* Filter rail */}
+      <div className="sticky top-[68px] lg:top-[76px] z-30 bg-sand-100 border-b-2 border-ink-900">
         <div className="container-x py-3 flex flex-col lg:flex-row gap-3 lg:items-center">
           <div className="relative lg:w-80">
-            <Search className="w-4 h-4 text-ink-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" aria-hidden />
+            <Search className="w-4 h-4 text-ink-700 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" aria-hidden />
             <label htmlFor="pkg-search" className="sr-only">Search packages</label>
-            <input
-              id="pkg-search"
-              type="search"
-              value={q}
-              onChange={(e) => update('q', e.target.value)}
-              placeholder="Search a place or temple"
-              className="field !pl-9 !min-h-11"
-            />
+            <input id="pkg-search" type="search" value={q} onChange={(e) => update('q', e.target.value)} placeholder="Search a place or temple" className="field !pl-9 !min-h-11" />
           </div>
-          <div className="flex gap-2 overflow-x-auto no-scrollbar -mx-4 px-4 lg:mx-0 lg:px-0 lg:flex-1" role="group" aria-label="Filter by destination">
+          <div className="flex gap-2 overflow-x-auto no-scrollbar -mx-4 px-4 lg:mx-0 lg:px-0 lg:flex-1 py-1" role="group" aria-label="Filter by destination">
             {chips.map((c) => {
               const active = q.toLowerCase() === c.query.toLowerCase();
               return (
@@ -87,54 +78,46 @@ const Packages = () => {
                   type="button"
                   onClick={() => update('q', active ? '' : c.query)}
                   aria-pressed={active}
-                  className={`shrink-0 px-3.5 py-2 rounded-full text-sm font-semibold border transition-colors cursor-pointer ${active ? 'bg-ink-900 text-white border-ink-900' : 'bg-white text-ink-700 border-sand-200 hover:border-ink-300'}`}
+                  className={`shrink-0 mono text-xs font-bold uppercase tracking-[0.08em] px-3 py-2 rounded-[4px] border-2 border-ink-900 cursor-pointer transition-colors ${active ? 'bg-ink-900 text-gold-400' : 'bg-white text-ink-900 hover:bg-gold-500'}`}
                 >
                   {c.name}
                 </button>
               );
             })}
           </div>
-          <div className="flex items-center gap-2">
-            <label htmlFor="pkg-days" className="sr-only">Trip length</label>
-            <select id="pkg-days" value={dur} onChange={(e) => update('days', e.target.value)} className="field !min-h-11 lg:w-40">
-              {DURATIONS.map((d) => <option key={d.id} value={d.id}>{d.label}</option>)}
-            </select>
-          </div>
+          <label htmlFor="pkg-days" className="sr-only">Trip length</label>
+          <select id="pkg-days" value={dur} onChange={(e) => update('days', e.target.value)} className="field !min-h-11 lg:w-44">
+            {DURATIONS.map((d) => <option key={d.id} value={d.id}>{d.label}</option>)}
+          </select>
         </div>
       </div>
 
       <section className="py-12 sm:py-16">
         <div className="container-x">
           {!loading && (
-            <p className="text-sm text-ink-600 mb-6" aria-live="polite">
-              {filtered.length} {filtered.length === 1 ? 'package' : 'packages'}{q && <> matching “<strong className="text-ink-900">{q}</strong>”</>}
+            <div className="flex flex-wrap items-center gap-4 mb-8" aria-live="polite">
+              <p className="mono text-xs font-bold uppercase tracking-[0.12em] text-ink-700">
+                {filtered.length} {filtered.length === 1 ? 'package' : 'packages'}{q && <> · “{q}”</>}
+              </p>
               {(q || dur) && (
-                <button type="button" onClick={() => setParams({}, { replace: true })} className="ml-3 inline-flex items-center gap-1 font-semibold text-gold-700 hover:underline cursor-pointer">
+                <button type="button" onClick={() => setParams({}, { replace: true })} className="mono text-xs font-bold uppercase inline-flex items-center gap-1 border-b-2 border-ink-900 cursor-pointer">
                   <X className="w-3.5 h-3.5" aria-hidden /> Clear filters
                 </button>
               )}
-            </p>
+            </div>
           )}
 
           {loading ? (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-[420px]" />)}
-            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">{Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-[460px]" />)}</div>
           ) : filtered.length > 0 ? (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filtered.map((p, i) => (
-                <Reveal key={p.id} delay={(i % 3) * 0.05}><PackageCard pkg={p} /></Reveal>
-              ))}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filtered.map((p, i) => <Reveal key={p.id} delay={(i % 3) * 0.05}><PackageCard pkg={p} index={i} /></Reveal>)}
             </div>
           ) : (
             <div className="card p-10 text-center max-w-xl mx-auto">
-              <Compass className="w-10 h-10 text-gold-500 mx-auto" aria-hidden />
-              <h2 className="font-display text-2xl font-semibold text-ink-900 mt-4">
-                {error ? "We couldn't load packages right now" : 'No package matches yet'}
-              </h2>
-              <p className="text-ink-600 mt-2">
-                We plan custom itineraries every day. Tell us where you'd like to go{q ? ` — ${q} included` : ''} and we'll build a trip around it.
-              </p>
+              <Compass className="w-10 h-10 mx-auto" aria-hidden />
+              <h2 className="h-display text-3xl text-ink-950 mt-4">{error ? "Couldn't load packages right now" : 'No ticket for that yet'}</h2>
+              <p className="text-ink-600 mt-3">We plan custom itineraries every day. Tell us where you'd like to go{q ? ` — ${q} included` : ''} and we'll build the trip around it.</p>
               <button type="button" onClick={() => openBooking({ toLocation: q })} className="btn btn-primary mt-6">Plan a custom trip</button>
             </div>
           )}

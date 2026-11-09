@@ -1,18 +1,18 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ChevronRight, Phone, MessageCircle, ArrowRight } from 'lucide-react';
+import { Phone, MessageCircle, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { SITE } from '../data/site';
 import { useBooking } from '../context/BookingContext';
 
-/** Fade-up on scroll. Renders a plain element during SSR so content is never hidden for crawlers. */
+/** Fade-up on scroll. */
 export function Reveal({ as = 'div', delay = 0, className = '', children, ...rest }) {
   const M = motion[as] || motion.div;
   return (
     <M
-      initial={{ opacity: 0, y: 18 }}
+      initial={{ opacity: 0, y: 22 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.55, delay, ease: [0.2, 0.9, 0.2, 1] }}
       className={className}
       {...rest}
     >
@@ -21,92 +21,126 @@ export function Reveal({ as = 'div', delay = 0, className = '', children, ...res
   );
 }
 
-export function SectionHeading({ eyebrow, title, intro, align = 'left', action, light = false, className = '' }) {
+/** Numbered section heading: "02 — Tour packages" + big grotesque title. */
+export function SectionHeading({ index, eyebrow, title, intro, action, light = false, align = 'left', className = '' }) {
   const centered = align === 'center';
   return (
-    <div className={`flex flex-col gap-5 ${centered ? 'items-center text-center' : 'md:flex-row md:items-end md:justify-between'} mb-10 lg:mb-12 ${className}`}>
-      <div className={centered ? 'max-w-2xl' : 'max-w-2xl'}>
-        {eyebrow && <p className={`eyebrow ${light ? '!text-gold-300' : ''}`}>{eyebrow}</p>}
-        <h2 className={`h-display text-3xl sm:text-4xl lg:text-[2.75rem] mt-3 ${light ? 'text-white' : 'text-ink-900'}`}>{title}</h2>
-        {intro && <p className={`mt-4 text-base sm:text-lg ${light ? 'text-ink-200' : 'text-ink-600'}`}>{intro}</p>}
+    <div className={`mb-10 lg:mb-14 ${className}`}>
+      <div className={`flex items-center gap-4 pb-4 mb-6 border-b-2 ${light ? 'border-sand-50/25' : 'border-ink-900'} ${centered ? 'justify-center' : ''}`}>
+        {index && <span className={`mono text-xs font-bold ${light ? 'text-gold-400' : 'text-ink-900'}`}>{index}</span>}
+        {eyebrow && <span className={`mono text-xs font-bold uppercase tracking-[0.14em] ${light ? 'text-sand-100' : 'text-ink-600'}`}>{eyebrow}</span>}
       </div>
-      {action && <div className="shrink-0">{action}</div>}
+      <div className={`flex flex-col gap-6 ${centered ? 'items-center text-center' : 'lg:flex-row lg:items-end lg:justify-between'}`}>
+        <div className="max-w-3xl">
+          <h2 className={`h-display text-[2.4rem] sm:text-5xl lg:text-[3.6rem] ${light ? 'text-sand-50' : 'text-ink-950'}`}>{title}</h2>
+          {intro && <p className={`mt-5 text-lg max-w-2xl ${light ? 'text-ink-200' : 'text-ink-600'}`}>{intro}</p>}
+        </div>
+        {action && <div className="shrink-0">{action}</div>}
+      </div>
     </div>
   );
 }
 
-/** Inner-page hero with photo background and breadcrumb. */
+/** Inner-page hero: big type on paper + framed photo with a yellow offset block. */
 export function PageHero({ eyebrow, title, intro, image, crumbs = [], children, compact = false }) {
   return (
-    <section className={`relative isolate overflow-hidden bg-ink-900 text-white ${compact ? 'pt-28 pb-14 sm:pt-32 sm:pb-16' : 'pt-32 pb-20 sm:pt-40 sm:pb-24'}`}>
-      {image && (
-        <>
-          <img src={image} alt="" aria-hidden className="absolute inset-0 -z-10 w-full h-full object-cover opacity-55" fetchPriority="high" />
-          <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink-950/90 via-ink-950/60 to-ink-950/20" />
-        </>
-      )}
-      <div className="container-x">
-        {crumbs.length > 0 && (
-          <nav aria-label="Breadcrumb" className="mb-5">
-            <ol className="flex flex-wrap items-center gap-1.5 text-sm text-ink-200">
-              <li><Link to="/" className="hover:text-white">Home</Link></li>
-              {crumbs.map((c) => (
-                <li key={c} className="flex items-center gap-1.5">
-                  <ChevronRight className="w-3.5 h-3.5 text-ink-400" aria-hidden />
-                  <span className="text-white font-semibold" aria-current="page">{c}</span>
-                </li>
-              ))}
-            </ol>
-          </nav>
-        )}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-3xl"
-        >
-          {eyebrow && <p className="eyebrow !text-gold-300">{eyebrow}</p>}
-          <h1 className="h-display text-4xl sm:text-5xl lg:text-6xl mt-3">{title}</h1>
-          {intro && <p className="mt-5 text-base sm:text-lg text-ink-100 max-w-2xl">{intro}</p>}
+    <section className="relative border-b-2 border-ink-900 overflow-hidden">
+      <div className={`container-x grid gap-10 lg:gap-14 items-center ${image ? 'lg:grid-cols-[1.15fr_1fr]' : ''} ${compact ? 'py-12 sm:py-16' : 'py-12 sm:py-16 lg:py-20'}`}>
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.2, 0.9, 0.2, 1] }}>
+          {crumbs.length > 0 && (
+            <nav aria-label="Breadcrumb" className="mb-6">
+              <ol className="flex flex-wrap items-center gap-2 mono text-[11px] font-bold uppercase tracking-[0.12em] text-ink-500">
+                <li><Link to="/" className="hover:text-ink-900">Home</Link></li>
+                {crumbs.map((c) => (
+                  <li key={c} className="flex items-center gap-2">
+                    <span aria-hidden>/</span>
+                    <span className="text-ink-900" aria-current="page">{c}</span>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          )}
+          {eyebrow && <p className="eyebrow">{eyebrow}</p>}
+          <h1 className={`h-display mt-4 text-ink-950 ${compact ? 'text-4xl sm:text-5xl' : 'text-[2.8rem] sm:text-6xl lg:text-[4.6rem]'}`}>{title}</h1>
+          {intro && <p className="mt-6 text-lg sm:text-xl text-ink-600 max-w-xl">{intro}</p>}
           {children}
         </motion.div>
+        {image && (
+          <motion.div
+            initial={{ opacity: 0, rotate: 0, y: 20 }}
+            animate={{ opacity: 1, rotate: -1.5, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.2, 0.9, 0.2, 1] }}
+            className={`relative ${compact ? 'hidden lg:block' : ''}`}
+          >
+            <div className="absolute inset-0 translate-x-4 translate-y-4 bg-gold-500 border-2 border-ink-900 rounded-[8px]" aria-hidden />
+            <div className={`relative border-2 border-ink-900 rounded-[8px] overflow-hidden bg-ink-900 ${compact ? 'aspect-[16/9]' : 'aspect-[4/3]'}`}>
+              <img src={image} alt="" aria-hidden className="w-full h-full object-cover" fetchPriority="high" />
+            </div>
+          </motion.div>
+        )}
       </div>
     </section>
   );
 }
 
-/** Closing call-to-action band used at the bottom of pages. */
-export function CtaBand({ title = 'Ready when you are — day or night.', text = 'Tell us where you want to go. We confirm the vehicle and fare on a quick call, no online payment needed.', preset }) {
+/** Infinite scrolling ticker. */
+export function Marquee({ items, className = '' }) {
+  const row = [...items, ...items];
+  return (
+    <div className={`overflow-hidden border-y-2 border-ink-900 bg-ink-900 text-sand-50 ${className}`} aria-hidden>
+      <div className="marquee-track py-3.5">
+        {row.map((t, i) => (
+          <span key={i} className="flex items-center gap-6 pr-6 h-display text-2xl sm:text-3xl whitespace-nowrap">
+            {t}
+            <span className="w-3 h-3 bg-gold-500 rotate-45 shrink-0" />
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** Closing call-to-action band. */
+export function CtaBand({
+  title = 'Need a cab? We pick up 24/7.',
+  text = 'Tell us where you want to go. We confirm the vehicle and fare on a quick call — nothing to pay online.',
+  preset,
+}) {
   const { openBooking } = useBooking();
   return (
-    <section className="py-16 sm:py-20">
-      <div className="container-x">
-        <div className="relative overflow-hidden rounded-[20px] bg-ink-900 px-6 py-10 sm:px-12 sm:py-14 text-white">
-          <div className="absolute -right-24 -top-24 w-72 h-72 rounded-full border border-white/10" aria-hidden />
-          <div className="absolute -right-10 -top-10 w-44 h-44 rounded-full border border-gold-400/30" aria-hidden />
-          <div className="relative grid lg:grid-cols-[1fr_auto] gap-8 items-center">
-            <div className="max-w-2xl">
-              <h2 className="h-display text-3xl sm:text-4xl">{title}</h2>
-              <p className="mt-3 text-ink-200">{text}</p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <button type="button" onClick={() => openBooking(preset)} className="btn btn-primary">
-                Book a ride <ArrowRight className="w-4 h-4" />
-              </button>
-              <a href={SITE.whatsappHref} target="_blank" rel="noreferrer" className="btn btn-ghost-light">
-                <MessageCircle className="w-4 h-4" /> WhatsApp
-              </a>
-              <a href={SITE.phoneHref} className="btn btn-ghost-light">
-                <Phone className="w-4 h-4" /> {SITE.phoneDisplay}
-              </a>
-            </div>
-          </div>
+    <section className="bg-gold-500 border-y-2 border-ink-900">
+      <div className="container-x py-16 sm:py-20 grid lg:grid-cols-[1.3fr_1fr] gap-10 items-end">
+        <div>
+          <p className="mono text-xs font-bold uppercase tracking-[0.14em] text-ink-900">Book in under a minute</p>
+          <h2 className="h-display text-[2.6rem] sm:text-6xl text-ink-950 mt-3">{title}</h2>
+          <p className="mt-5 text-lg text-ink-800 max-w-xl">{text}</p>
+        </div>
+        <div className="grid sm:grid-cols-2 gap-3">
+          <button type="button" onClick={() => openBooking(preset)} className="btn btn-dark sm:col-span-2 !min-h-14 !text-base">
+            Book a ride <ArrowRight className="w-5 h-5" />
+          </button>
+          <a href={SITE.whatsappHref} target="_blank" rel="noreferrer" className="btn btn-outline">
+            <MessageCircle className="w-4 h-4" /> WhatsApp
+          </a>
+          <a href={SITE.phoneHref} className="btn btn-outline">
+            <Phone className="w-4 h-4" /> Call 24/7
+          </a>
         </div>
       </div>
     </section>
   );
 }
 
+/** Small arrow link used in section headers. */
+export function ArrowLink({ to, children }) {
+  return (
+    <Link to={to} className="group inline-flex items-center gap-2 font-bold text-ink-900 border-b-2 border-ink-900 pb-1 hover:border-gold-500">
+      {children}
+      <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
+    </Link>
+  );
+}
+
 export function Skeleton({ className = '' }) {
-  return <div className={`animate-pulse bg-sand-200/70 rounded-[10px] ${className}`} />;
+  return <div className={`animate-pulse bg-sand-200 border-2 border-sand-200 rounded-[6px] ${className}`} />;
 }
