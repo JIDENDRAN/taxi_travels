@@ -250,7 +250,7 @@ function ReviewsGrid() {
 }
 
 /* ── Auto-scroll horizontal row for side-by-side items ───────── */
-function AutoScrollRow({ children, cardWidth = 340, intervalMs = 3500 }) {
+function AutoScrollRow({ children, cardWidth = 340, intervalMs = 2000 }) {
   const containerRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
 
