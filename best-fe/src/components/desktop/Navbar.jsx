@@ -8,13 +8,13 @@ import { useBooking } from '../../context/BookingContext';
 
 function Brand() {
   return (
-    <Link to="/" className="flex items-center gap-3 shrink-0" aria-label={`${SITE.name} — home`}>
-      <span className="w-11 h-11 rounded-[8px] overflow-hidden bg-white shrink-0">
-        <img src={Logo} alt="" className="w-full h-full object-contain" width="44" height="44" />
+    <Link to="/" className="flex items-center gap-3.5 shrink-0" aria-label={`${SITE.name} — home`}>
+      <span className="w-14 h-14 sm:w-16 sm:h-16 lg:w-[68px] lg:h-[68px] rounded-[10px] overflow-hidden bg-white shrink-0 shadow-xs border border-sand-200/80 p-0.5">
+        <img src={Logo} alt="" className="w-full h-full object-contain" width="68" height="68" />
       </span>
       <span className="leading-tight">
-        <span className="block font-bold text-[1.2rem] text-forest-700">Madurai Best</span>
-        <span className="block text-[10.5px] font-bold tracking-[0.2em] text-gold-500">TAXI TRAVELS</span>
+        <span className="block font-bold text-[1.3rem] sm:text-[1.45rem] text-forest-700">Madurai Best</span>
+        <span className="block text-[11px] sm:text-xs font-bold tracking-[0.2em] text-gold-500">TAXI TRAVELS</span>
       </span>
     </Link>
   );
@@ -40,7 +40,7 @@ const Navbar = () => {
   return (
     <>
       <header className={`sticky top-0 z-50 bg-white transition-shadow ${scrolled ? 'shadow-[0_6px_20px_-12px_rgb(15_31_23/0.35)]' : 'shadow-[0_1px_0_var(--color-sand-200)]'}`}>
-        <div className="container-x flex items-center justify-between gap-4 h-[68px] lg:h-[74px]">
+        <div className="container-x flex items-center justify-between gap-4 h-[76px] lg:h-[84px]">
           <Brand />
 
           <nav className="hidden lg:flex items-center gap-1" aria-label="Main">
@@ -93,7 +93,7 @@ const Navbar = () => {
               aria-modal="true"
               aria-label="Menu"
             >
-              <div className="flex items-center justify-between px-5 h-[68px] border-b border-sand-200">
+              <div className="flex items-center justify-between px-5 h-[76px] border-b border-sand-200">
                 <Brand />
                 <button onClick={() => setOpen(false)} className="w-10 h-10 grid place-items-center rounded-full bg-forest-50 text-forest-700 cursor-pointer" aria-label="Close menu"><X className="w-5 h-5" /></button>
               </div>
