@@ -48,6 +48,7 @@ export const NAV_LINKS = [
   { name: 'Gallery', path: '/gallery' },
   { name: 'About', path: '/about', header: false },
   { name: 'Contact', path: '/contact' },
+  { name: 'Admin Portal', path: '/admin/dashboard', header: false },
 ];
 
 export const TRIP_TYPES = [

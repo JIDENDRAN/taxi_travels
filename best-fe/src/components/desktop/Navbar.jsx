@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Phone, Menu, X, ArrowRight, MessageCircle } from 'lucide-react';
+import { Phone, Menu, X, ArrowRight, MessageCircle, ShieldCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Logo from '../../assets/new_logo.jpg';
 import { NAV_LINKS, SITE } from '../../data/site';
@@ -64,6 +64,14 @@ const Navbar = () => {
               {SITE.phoneDisplay}
             </a>
             <button type="button" onClick={() => openBooking()} className="btn btn-primary !min-h-11 hidden sm:inline-flex">Book Now</button>
+            <Link
+              to="/admin/dashboard"
+              className="w-10 h-10 hidden sm:grid place-items-center rounded-[10px] text-ink-400 hover:text-forest-700 hover:bg-sand-100 transition-colors"
+              title="Admin Portal"
+              aria-label="Admin Portal"
+            >
+              <ShieldCheck className="w-5 h-5" />
+            </Link>
             <button
               type="button"
               className="lg:hidden w-11 h-11 grid place-items-center rounded-[10px] bg-forest-50 text-forest-700 cursor-pointer"
@@ -97,8 +105,8 @@ const Navbar = () => {
                 <Brand />
                 <button onClick={() => setOpen(false)} className="w-10 h-10 grid place-items-center rounded-full bg-forest-50 text-forest-700 cursor-pointer" aria-label="Close menu"><X className="w-5 h-5" /></button>
               </div>
-              <nav className="flex-1 overflow-y-auto px-3 py-4" aria-label="Mobile">
-                {NAV_LINKS.map((link) => (
+              <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1" aria-label="Mobile">
+                {NAV_LINKS.filter((l) => l.path !== '/admin/dashboard').map((link) => (
                   <NavLink
                     key={link.path}
                     to={link.path}
@@ -109,6 +117,26 @@ const Navbar = () => {
                     {link.name} <ArrowRight className="w-4 h-4 opacity-40" aria-hidden />
                   </NavLink>
                 ))}
+
+                <div className="pt-3 mt-3 border-t border-sand-200">
+                  <NavLink
+                    to="/admin/dashboard"
+                    onClick={() => setOpen(false)}
+                    className={({ isActive }) =>
+                      `flex items-center justify-between px-4 py-3 rounded-[14px] text-base font-bold transition-colors ${
+                        isActive
+                          ? 'bg-forest-700 text-white'
+                          : 'bg-sand-100 text-forest-800 hover:bg-sand-200'
+                      }`
+                    }
+                  >
+                    <span className="flex items-center gap-2.5">
+                      <ShieldCheck className="w-5 h-5 text-gold-500" />
+                      <span>Admin Portal</span>
+                    </span>
+                    <ArrowRight className="w-4 h-4 opacity-50" aria-hidden />
+                  </NavLink>
+                </div>
               </nav>
               <div className="p-5 border-t border-sand-200 space-y-2.5 bg-sand-50">
                 <button type="button" onClick={() => { setOpen(false); openBooking(); }} className="btn btn-primary w-full">Book Now <ArrowRight className="w-4 h-4" /></button>
