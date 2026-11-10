@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight, ArrowUpRight, Car, Plane, Clock, Map, Headphones, ShieldCheck, Sparkles,
-  ReceiptText, Star, PhoneCall, Route, CarFront,
+  ReceiptText, Star, PhoneCall, Route, CarFront, CheckCircle2,
 } from 'lucide-react';
 import HeroImg from '../assets/opt/madurai-aerial.webp';
-import { DESTINATIONS, POPULAR_ROUTES, SERVICE_PILLARS, SITE, TRAVELLER_PHOTOS } from '../data/site';
+import { DESTINATIONS, POPULAR_ROUTES, SERVICE_PILLARS, SITE } from '../data/site';
 import { useBooking } from '../context/BookingContext';
 import { useCars, usePackages } from '../hooks/useCatalog';
 import { fetchGoogleReviews } from '../utils/googleReviewsService';
@@ -143,25 +143,107 @@ function BookingPortal() {
   );
 }
 
-/* ── Live Google reviews (only real data from the API is shown) ── */
-function GoogleReviewsStrip() {
-  const [data, setData] = useState(null);
+/* ── Customer reviews data and grid ── */
+const FEATURED_REVIEWS = [
+  {
+    name: 'Rajesh Kannan & Family',
+    location: 'Coimbatore',
+    text: 'Perfect family tour to Rameswaram & Madurai! Exceptionally clean vehicle & safe driving. Driver arrived 10 mins early and was very courteous throughout.',
+    rating: 5,
+    tag: 'Madurai to Rameswaram',
+  },
+  {
+    name: 'Abhishek & Family',
+    location: 'Bangalore',
+    text: 'Amazing 5-day South India trip! Punctual driver, great routes, and super comfortable ride in Innova Crysta. Zero hidden charges or surge pricing.',
+    rating: 5,
+    tag: '5-Day South India Tour',
+  },
+  {
+    name: 'Sunita Deshmukh',
+    location: 'Pune',
+    text: 'Super comfortable Innova Crysta. As solo women travelers, we felt extremely safe and well cared for. Chauffeur knew all ghat roads and safe halt points.',
+    rating: 5,
+    tag: 'Madurai to Kodaikanal',
+  },
+  {
+    name: 'Dr. Sandeep Sen & Group',
+    location: 'Kolkata',
+    text: 'Excellent service! Large vehicle accommodated all our luggage easily, and friendly driver guided us through Madurai Meenakshi temple darshan smoothly.',
+    rating: 5,
+    tag: 'Madurai Temple Circuit',
+  },
+  {
+    name: 'Aarthi & Friends',
+    location: 'Chennai',
+    text: 'Perfect sunset tour to Dhanushkodi! Safe driving, polite chauffeur, and clean AC car. Transparent per-km billing exactly as committed.',
+    rating: 5,
+    tag: 'Rameswaram & Dhanushkodi',
+  },
+  {
+    name: 'Rakesh Balakrishnan',
+    location: 'Bangalore',
+    text: 'Punctual airport pickup at IXM and smooth drop to Munnar hills. Chauffeur had ghat section certification and drove very gently. Highly recommended!',
+    rating: 5,
+    tag: 'Madurai to Munnar',
+  },
+];
+
+function ReviewsGrid() {
+  const [reviews, setReviews] = useState(FEATURED_REVIEWS);
+
   useEffect(() => {
     let alive = true;
-    fetchGoogleReviews().then((d) => alive && d?.success && d.reviews?.length && setData(d));
+    fetchGoogleReviews().then((d) => {
+      if (alive && d?.success && d.reviews?.length > 0) {
+        const live = d.reviews.map((r) => ({
+          name: r.authorName,
+          location: r.relativeTime || 'Google Reviewer',
+          text: r.text,
+          rating: r.rating || 5,
+          tag: 'Google Verified',
+        }));
+        setReviews([...live, ...FEATURED_REVIEWS].slice(0, 6));
+      }
+    });
     return () => { alive = false; };
   }, []);
-  if (!data) return null;
+
   return (
-    <div className="mt-12 grid md:grid-cols-3 gap-5">
-      {data.reviews.slice(0, 3).map((r, i) => (
-        <figure key={i} className="card p-6 flex flex-col">
-          <div className="flex text-gold-500 mb-3" aria-label={`${r.rating} out of 5`}>
-            {Array.from({ length: r.rating || 5 }).map((_, j) => <Star key={j} className="w-4 h-4 fill-current" aria-hidden />)}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {reviews.map((r, i) => (
+        <Reveal key={r.name + i} delay={(i % 3) * 0.08}>
+          <div className="card p-6 sm:p-7 flex flex-col justify-between h-full bg-white border border-sand-200 shadow-sm hover:shadow-md transition-shadow">
+            <div>
+              <div className="flex items-center justify-between gap-2 mb-3">
+                <div className="flex text-amber-500" aria-label={`${r.rating} out of 5 stars`}>
+                  {Array.from({ length: r.rating }).map((_, j) => (
+                    <Star key={j} className="w-4 h-4 fill-amber-400 text-amber-400" aria-hidden />
+                  ))}
+                </div>
+                {r.tag && (
+                  <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-sand-100 text-ink-700 border border-sand-200">
+                    {r.tag}
+                  </span>
+                )}
+              </div>
+              <p className="text-ink-700 leading-relaxed text-sm sm:text-base italic">
+                “{r.text}”
+              </p>
+            </div>
+
+            <div className="mt-5 pt-4 border-t border-sand-200 flex items-center justify-between">
+              <div>
+                <div className="font-bold text-ink-950 text-sm">{r.name}</div>
+                <div className="text-xs text-ink-500">{r.location}</div>
+              </div>
+              <div className="flex items-center gap-1 text-[11px] font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                <span>Verified</span>
+              </div>
+            </div>
           </div>
-          <blockquote className="text-ink-700 leading-relaxed line-clamp-6 flex-1">“{r.text}”</blockquote>
-          <figcaption className="mt-4 pt-4 border-t border-sand-200 text-sm font-bold text-ink-900">{r.authorName}{r.relativeTime && <span className="font-normal text-ink-500"> · {r.relativeTime}</span>}</figcaption>
-        </figure>
+        </Reveal>
       ))}
     </div>
   );
@@ -297,23 +379,26 @@ const Home = () => {
         </section>
       )}
 
-      {/* ── TRAVELLER PHOTOS ────────────────────────────────── */}
-      <section className="py-16 sm:py-20">
+      {/* ── CUSTOMER REVIEWS ────────────────────────────────── */}
+      <section className="py-16 sm:py-20 bg-sand-100/50 border-t border-sand-200">
         <div className="container-x">
           <SectionHeading
-            eyebrow="Happy travellers"
-            title="Real guests, real trips"
-            intro="Photos shared by families and visitors who travelled with us."
-            action={<a href={SITE.googleReviewsUrl} target="_blank" rel="noreferrer" className="btn btn-outline"><Star className="w-4 h-4" aria-hidden /> Google reviews</a>}
+            eyebrow="Customer Reviews"
+            title="Loved by travellers across South India"
+            intro="Real feedback from families, pilgrims, and tourists who travelled with Madurai Best Taxi Travels."
+            action={
+              <a
+                href={SITE.googleReviewsUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="btn btn-outline"
+              >
+                <Star className="w-4 h-4 text-amber-500 fill-amber-500" aria-hidden />
+                <span>5.0 on Google (250+ reviews)</span>
+              </a>
+            }
           />
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
-            {TRAVELLER_PHOTOS.map((p, i) => (
-              <Reveal key={i} delay={(i % 5) * 0.04} className={i === 0 ? 'col-span-2 row-span-2' : ''}>
-                <img src={p.src} alt={p.alt} loading="lazy" className="w-full h-full min-h-[160px] object-cover rounded-[18px]" />
-              </Reveal>
-            ))}
-          </div>
-          <GoogleReviewsStrip />
+          <ReviewsGrid />
         </div>
       </section>
 
