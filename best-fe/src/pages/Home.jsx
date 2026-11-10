@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight, ArrowUpRight, Car, Plane, Clock, Map, Headphones, ShieldCheck, Sparkles,
-  ReceiptText, Star, PhoneCall, Route, CarFront, CheckCircle2,
+  ReceiptText, Star, PhoneCall, Route, CarFront, CheckCircle2, ChevronLeft, ChevronRight,
 } from 'lucide-react';
 import HeroImg from '../assets/opt/madurai-aerial.webp';
 import { DESTINATIONS, POPULAR_ROUTES, SERVICE_PILLARS, SITE } from '../data/site';
@@ -249,6 +249,71 @@ function ReviewsGrid() {
   );
 }
 
+/* ── Auto-scroll horizontal row for side-by-side items ───────── */
+function AutoScrollRow({ children, cardWidth = 340, intervalMs = 3500 }) {
+  const containerRef = useRef(null);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const timer = setInterval(() => {
+      if (isPaused) return;
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      if (el.scrollLeft >= maxScroll - 15) {
+        el.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        el.scrollBy({ left: cardWidth, behavior: 'smooth' });
+      }
+    }, intervalMs);
+
+    return () => clearInterval(timer);
+  }, [isPaused, cardWidth, intervalMs]);
+
+  const scroll = (dir) => {
+    const el = containerRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir === 'left' ? -cardWidth : cardWidth, behavior: 'smooth' });
+  };
+
+  return (
+    <div
+      className="relative group -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={() => setIsPaused(true)}
+      onTouchEnd={() => setIsPaused(false)}
+    >
+      <button
+        type="button"
+        onClick={() => scroll('left')}
+        className="hidden md:flex absolute -left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/95 border border-sand-300 text-ink-900 shadow-md items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-forest-700 hover:text-white transition-all cursor-pointer"
+        aria-label="Previous"
+      >
+        <ChevronLeft className="w-5 h-5" />
+      </button>
+
+      <button
+        type="button"
+        onClick={() => scroll('right')}
+        className="hidden md:flex absolute -right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/95 border border-sand-300 text-ink-900 shadow-md items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-forest-700 hover:text-white transition-all cursor-pointer"
+        aria-label="Next"
+      >
+        <ChevronRight className="w-5 h-5" />
+      </button>
+
+      <div
+        ref={containerRef}
+        className="flex flex-nowrap gap-5 sm:gap-6 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory pb-3 pt-1"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
 const Home = () => {
   const { openBooking } = useBooking();
   const { data: packages, loading: pkgLoading } = usePackages();
@@ -287,11 +352,19 @@ const Home = () => {
         <section className="pt-24 pb-16 sm:pt-28 sm:pb-20">
           <div className="container-x">
             <SectionHeading title="Popular Tour Packages" action={<ArrowLink to="/packages">View all packages</ArrowLink>} />
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <AutoScrollRow cardWidth={320}>
               {pkgLoading
-                ? Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-[280px]" />)
-                : packages.slice(0, 4).map((p) => <PackageCard key={p.id} pkg={p} />)}
-            </div>
+                ? Array.from({ length: 4 }).map((_, i) => (
+                    <div key={i} className="snap-start shrink-0 w-[280px] sm:w-[320px] lg:w-[340px]">
+                      <Skeleton className="h-[280px] w-full rounded-[18px]" />
+                    </div>
+                  ))
+                : packages.map((p) => (
+                    <div key={p.id} className="snap-start shrink-0 w-[280px] sm:w-[320px] lg:w-[340px]">
+                      <PackageCard pkg={p} />
+                    </div>
+                  ))}
+            </AutoScrollRow>
             <div className="flex flex-wrap gap-x-8 gap-y-2 mt-7 text-sm font-semibold text-ink-600">
               <span><b className="text-ink-900">24/7</b> booking desk</span>
               <span><b className="text-ink-900">Local</b> Madurai drivers</span>
@@ -370,11 +443,19 @@ const Home = () => {
         <section className="py-16 sm:py-20 bg-white border-y border-sand-200">
           <div className="container-x">
             <SectionHeading eyebrow="Our fleet" title="Choose your cab" intro="Clean AC vehicles with clear per-km and day-rental tariffs." action={<ArrowLink to="/vehicles">See all vehicles</ArrowLink>} />
-            <div className="flex lg:grid lg:grid-cols-3 gap-6 overflow-x-auto lg:overflow-visible snap-x snap-mandatory no-scrollbar -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0 pb-2">
+            <AutoScrollRow cardWidth={360}>
               {carsLoading
-                ? Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-[480px] min-w-[82%] sm:min-w-[46%] lg:min-w-0" />)
-                : cars.slice(0, 3).map((c) => <div key={c.id} className="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-auto"><VehicleCard car={c} /></div>)}
-            </div>
+                ? Array.from({ length: 3 }).map((_, i) => (
+                    <div key={i} className="snap-start shrink-0 w-[290px] sm:w-[340px] lg:w-[360px]">
+                      <Skeleton className="h-[480px] w-full rounded-[18px]" />
+                    </div>
+                  ))
+                : cars.map((c) => (
+                    <div key={c.id} className="snap-start shrink-0 w-[290px] sm:w-[340px] lg:w-[360px]">
+                      <VehicleCard car={c} />
+                    </div>
+                  ))}
+            </AutoScrollRow>
           </div>
         </section>
       )}
