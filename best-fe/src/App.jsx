@@ -62,7 +62,7 @@ const AppContent = () => {
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[200] btn btn-dark">
         Skip to content
       </a>
-      <div className="min-h-screen flex flex-col bg-sand-50 text-ink-900 pb-[72px] lg:pb-0">
+      <div className="min-h-screen flex flex-col bg-sand-50 text-ink-900 pb-0">
         <DesktopLayout />
         <FloatingButtons />
         <MobileBottomNav />
