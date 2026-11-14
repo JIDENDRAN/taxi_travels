@@ -1411,7 +1411,7 @@ Driver Charge: ${data.dayDriver || ''}`;
                                   value={customMsgPhone}
                                   onChange={(e) => setCustomMsgPhone(e.target.value)}
                                   className="field"
-                                  placeholder="e.g. 6382513075"
+                                  placeholder="e.g. 6380707938"
                                 />
                               </Field>
                               <Field id="wa-custom-text" label="Message">

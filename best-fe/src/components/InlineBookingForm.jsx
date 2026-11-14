@@ -117,7 +117,7 @@ export default function InlineBookingForm({ defaultVehicle, defaultPackage }) {
       setIsSuccess(true);
       const text = `*New Booking Request*\n\nFrom: ${formData.fromLocation}\nTo: ${formData.toLocation}\nDate: ${formData.date}\nTime: ${formData.time}\nVehicle: ${formData.vehicle}\nPackage: ${formData.packageType}\n\n*Customer Details:*\nName: ${formData.name}\nPhone: ${formData.phone}`;
       setTimeout(() => {
-        window.open(`https://wa.me/916382513075?text=${encodeURIComponent(text)}`, '_blank');
+        window.open(`https://wa.me/916380707938?text=${encodeURIComponent(text)}`, '_blank');
         setIsSuccess(false);
         setFormData({ fromLocation: '', toLocation: '', date: '', time: '', name: '', phone: '', vehicle: 'Select Vehicle', packageType: 'Custom Trip' });
       }, 3000);
