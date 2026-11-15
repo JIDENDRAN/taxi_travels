@@ -1,25 +1,33 @@
 import { useEffect, useState } from 'react';
 import API_BASE_URL from '../apiConfig';
 
-// Tiny shared cache so the fleet / package lists are fetched once per page load,
-// no matter how many components ask for them.
 const cache = new Map();
+const CACHE_TTL = 10000; // 10 seconds for multi-component mount deduplication
+
+export function invalidateCatalogCache() {
+  cache.clear();
+}
 
 function load(path) {
-  if (!cache.has(path)) {
-    const p = fetch(`${API_BASE_URL}${path}`)
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
-      .then((data) => (Array.isArray(data) ? data : []))
-      .catch((err) => {
-        cache.delete(path); // allow a retry on next mount
-        throw err;
-      });
-    cache.set(path, p);
+  const entry = cache.get(path);
+  const now = Date.now();
+  if (entry && now - entry.time < CACHE_TTL) {
+    return entry.promise;
   }
-  return cache.get(path);
+
+  const p = fetch(`${API_BASE_URL}${path}`, { cache: 'no-cache' })
+    .then((res) => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    })
+    .then((data) => (Array.isArray(data) ? data : []))
+    .catch((err) => {
+      cache.delete(path);
+      throw err;
+    });
+
+  cache.set(path, { time: now, promise: p });
+  return p;
 }
 
 function useCollection(path) {

@@ -36,6 +36,7 @@ import {
   MapPin,
 } from 'lucide-react';
 import { getVehicleImage, getPackageImage } from '../../utils/imageImports';
+import { invalidateCatalogCache } from '../../hooks/useCatalog';
 import { useNavigate, Link } from 'react-router-dom';
 import API_BASE_URL from '../../apiConfig.js';
 import logo from '../../assets/new_logo.jpg';
@@ -684,6 +685,7 @@ Driver Charge: ${data.dayDriver || ''}`;
         body: JSON.stringify(submissionData)
       });
       if (response.ok) {
+        invalidateCatalogCache();
         showToast(isEdit ? 'Vehicle updated successfully.' : 'Vehicle added successfully.');
         setCarModal({ isOpen: false, isEdit: false, data: null });
         fetchCars();
@@ -703,6 +705,7 @@ Driver Charge: ${data.dayDriver || ''}`;
         method: 'DELETE'
       });
       if (response.ok) {
+        invalidateCatalogCache();
         setCars(cars.filter(c => c.id !== id));
         showToast('Vehicle removed from fleet.');
       } else {
@@ -736,6 +739,7 @@ Driver Charge: ${data.dayDriver || ''}`;
         body: JSON.stringify(data)
       });
       if (response.ok) {
+        invalidateCatalogCache();
         showToast(isEdit ? 'Package updated successfully.' : 'Package added successfully.');
         setPkgModal({ isOpen: false, isEdit: false, data: null });
         fetchPackages();
@@ -755,6 +759,7 @@ Driver Charge: ${data.dayDriver || ''}`;
         method: 'DELETE'
       });
       if (response.ok) {
+        invalidateCatalogCache();
         setPackages(packages.filter(p => p.id !== id));
         showToast('Package deleted successfully.');
       } else {
