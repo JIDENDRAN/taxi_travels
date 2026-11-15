@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Menu, X, ChevronDown, Car, ShieldCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
-import Logo from '../assets/logo.jpeg';
+import Logo from '../assets/brand_logo.png';
 
 
 const Navbar = () => {

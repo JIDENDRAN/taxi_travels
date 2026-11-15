@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Lock, Eye, EyeOff, UserCircle2, AlertCircle, ArrowLeft, ShieldCheck, Loader2 } from 'lucide-react';
 import API_BASE_URL from '../../apiConfig.js';
-import logo from '../../assets/new_logo.jpg';
+import logo from '../../assets/brand_logo.png';
 
 const AdminLogin = () => {
   const [username, setUsername] = useState('');
@@ -54,7 +54,7 @@ const AdminLogin = () => {
           }}
         />
         <div className="relative flex items-center gap-3">
-          <img src={logo} alt="" className="h-12 w-12 rounded-[10px] bg-white object-contain p-1" />
+          <img src={logo} alt="" className="h-14 w-14 object-contain drop-shadow-md" />
           <div className="leading-tight">
             <p className="text-sm font-bold">Madurai Best</p>
             <p className="text-xs font-semibold text-gold-400">Taxi Travels</p>
@@ -81,7 +81,7 @@ const AdminLogin = () => {
       <main className="flex min-h-screen flex-col px-4 py-8 sm:px-6 lg:min-h-0 lg:px-12">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3 lg:invisible">
-            <img src={logo} alt="" className="h-10 w-10 rounded-[10px] border border-sand-200 bg-white object-contain p-0.5" />
+            <img src={logo} alt="" className="h-12 w-12 object-contain drop-shadow-sm" />
             <span className="text-sm font-bold leading-tight text-ink-900">
               Madurai Best
               <span className="block text-xs font-semibold text-gold-600">Taxi Travels</span>

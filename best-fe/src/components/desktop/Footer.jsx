@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin, MessageCircle, Clock, Camera } from 'lucide-react';
-import Logo from '../../assets/new_logo.jpg';
+import Logo from '../../assets/brand_logo.png';
 import { NAV_LINKS, POPULAR_ROUTES, SITE } from '../../data/site';
 
 const Footer = () => {
@@ -11,10 +11,15 @@ const Footer = () => {
       <div className="container-x pt-16 pb-8">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-4">
-            <Link to="/" className="flex items-center gap-3.5">
-              <span className="w-16 h-16 sm:w-18 sm:h-18 rounded-[12px] overflow-hidden bg-white shrink-0 p-1 shadow-sm">
-                <img src={Logo} alt="" className="w-full h-full object-contain" loading="lazy" width="72" height="72" />
-              </span>
+            <Link to="/" className="flex items-center gap-3.5 group">
+              <img
+                src={Logo}
+                alt={SITE.name}
+                className="h-16 w-16 sm:h-20 sm:w-20 object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.35)] group-hover:scale-105 transition-transform duration-200"
+                loading="lazy"
+                width="80"
+                height="80"
+              />
               <span className="leading-tight">
                 <span className="block font-bold text-2xl sm:text-[1.7rem] text-white">Madurai Best</span>
                 <span className="block text-xs font-bold tracking-[0.2em] text-gold-300">TAXI TRAVELS</span>

@@ -2,16 +2,20 @@ import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { Phone, Menu, X, ArrowRight, MessageCircle, ShieldCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Logo from '../../assets/new_logo.jpg';
+import Logo from '../../assets/brand_logo.png';
 import { NAV_LINKS, SITE } from '../../data/site';
 import { useBooking } from '../../context/BookingContext';
 
 function Brand() {
   return (
-    <Link to="/" className="flex items-center gap-3.5 shrink-0" aria-label={`${SITE.name} — home`}>
-      <span className="w-14 h-14 sm:w-16 sm:h-16 lg:w-[68px] lg:h-[68px] rounded-[10px] overflow-hidden bg-white shrink-0 shadow-xs border border-sand-200/80 p-0.5">
-        <img src={Logo} alt="" className="w-full h-full object-contain" width="68" height="68" />
-      </span>
+    <Link to="/" className="flex items-center gap-3 shrink-0 group" aria-label={`${SITE.name} — home`}>
+      <img
+        src={Logo}
+        alt={SITE.name}
+        className="h-12 w-12 sm:h-14 sm:w-14 lg:h-[62px] lg:w-[62px] object-contain drop-shadow-sm group-hover:scale-105 transition-transform duration-200"
+        width="62"
+        height="62"
+      />
       <span className="leading-tight">
         <span className="block font-bold text-[1.3rem] sm:text-[1.45rem] text-forest-700">Madurai Best</span>
         <span className="block text-[11px] sm:text-xs font-bold tracking-[0.2em] text-gold-500">TAXI TRAVELS</span>
