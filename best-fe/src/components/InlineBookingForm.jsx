@@ -107,20 +107,19 @@ export default function InlineBookingForm({ defaultVehicle, defaultPackage }) {
     }
     setIsSubmitting(true);
     try {
-      const res = await fetch(`${API_BASE_URL}/api/bookings`, {
+      fetch(`${API_BASE_URL}/api/bookings`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
-      });
-      if (!res.ok) throw new Error('Failed to save booking');
+      }).catch(err => console.error('Failed to save booking to backend:', err));
 
-      setIsSuccess(true);
       const text = `*New Booking Request*\n\nFrom: ${formData.fromLocation}\nTo: ${formData.toLocation}\nDate: ${formData.date}\nTime: ${formData.time}\nVehicle: ${formData.vehicle}\nPackage: ${formData.packageType}\n\n*Customer Details:*\nName: ${formData.name}\nPhone: ${formData.phone}`;
-      setTimeout(() => {
-        window.open(`https://wa.me/916380707938?text=${encodeURIComponent(text)}`, '_blank');
-        setIsSuccess(false);
-        setFormData({ fromLocation: '', toLocation: '', date: '', time: '', name: '', phone: '', vehicle: 'Select Vehicle', packageType: 'Custom Trip' });
-      }, 3000);
+      const url = `https://wa.me/916380707938?text=${encodeURIComponent(text)}`;
+      const win = window.open(url, '_blank');
+      if (!win || win.closed || typeof win.closed === 'undefined') {
+        window.location.href = url;
+      }
+      setFormData({ fromLocation: '', toLocation: '', date: '', time: '', name: '', phone: '', vehicle: 'Select Vehicle', packageType: 'Custom Trip' });
     } catch {
       alert(t('There was an error. Please try WhatsApp directly.'));
     } finally {

@@ -150,8 +150,8 @@ export default function BookingModal({ isOpen, onClose, preset = {}, defaultVehi
       `Trip: ${tripLabel(form.tripType)}`,
       `From: ${form.fromLocation}`,
       `To: ${form.toLocation}`,
-      `Date: ${form.date}`,
-      `Time: ${form.time}`,
+      `Date: ${formatDate(form.date) || form.date}`,
+      `Time: ${formatTime(form.time) || form.time}`,
       `Passengers: ${form.passengers}`,
       `Vehicle: ${form.vehicle}`,
       `Package: ${form.packageType}`,
@@ -178,18 +178,36 @@ export default function BookingModal({ isOpen, onClose, preset = {}, defaultVehi
         vehicle: form.vehicle,
         packageType: form.packageType,
       };
-      const res = await fetch(`${API_BASE_URL}/api/bookings`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) throw new Error('Failed to save booking');
-      const data = await res.json().catch(() => ({}));
-      setResult({ id: data?.booking?.id });
-      setStep(3);
+      let bookingId;
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/bookings`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (res.ok) {
+          const data = await res.json().catch(() => ({}));
+          bookingId = data?.booking?.id;
+        }
+      } catch (err) {
+        console.error('Failed to save booking to backend:', err);
+      }
+
+      const text = buildWhatsAppText(bookingId);
+      const url = whatsappLink(text);
+      const win = window.open(url, '_blank');
+      if (!win || win.closed || typeof win.closed === 'undefined') {
+        window.location.href = url;
+      }
+      onClose();
     } catch (err) {
       console.error('Error submitting booking:', err);
-      setSubmitError('We could not submit your request right now. Please send it on WhatsApp or call us — we answer 24/7.');
+      const url = whatsappLink(buildWhatsAppText());
+      const win = window.open(url, '_blank');
+      if (!win || win.closed || typeof win.closed === 'undefined') {
+        window.location.href = url;
+      }
+      onClose();
     } finally {
       setSubmitting(false);
     }

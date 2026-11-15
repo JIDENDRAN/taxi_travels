@@ -5,7 +5,7 @@ import {
   ReceiptText, Star, PhoneCall, Route, CarFront, CheckCircle2, ChevronLeft, ChevronRight,
 } from 'lucide-react';
 import HeroImg from '../assets/opt/madurai-aerial.webp';
-import { DESTINATIONS, POPULAR_ROUTES, SERVICE_PILLARS, SITE } from '../data/site';
+import { DESTINATIONS, POPULAR_ROUTES, SERVICE_PILLARS, SITE, whatsappLink } from '../data/site';
 import { useBooking } from '../context/BookingContext';
 import { useCars, usePackages } from '../hooks/useCatalog';
 import { fetchGoogleReviews } from '../utils/googleReviewsService';
@@ -27,9 +27,24 @@ const todayISO = () => {
   return d.toISOString().slice(0, 10);
 };
 
+const formatDate = (iso) => {
+  if (!iso) return '';
+  const [y, m, d] = iso.split('-').map(Number);
+  if (!y || !m || !d) return iso;
+  return new Date(y, m - 1, d).toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+};
+
+const formatTime = (t) => {
+  if (!t) return '';
+  const [h, m] = t.split(':').map(Number);
+  if (isNaN(h) || isNaN(m)) return t;
+  const d = new Date();
+  d.setHours(h, m);
+  return d.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' });
+};
+
 /* ── Tabbed booking portal ─────────────────────────────────────── */
 function BookingPortal() {
-  const { openBooking } = useBooking();
   const { data: cars } = useCars();
   const { data: packages } = usePackages();
   const [tab, setTab] = useState('outstation');
@@ -45,15 +60,37 @@ function BookingPortal() {
   const submit = (e) => {
     e.preventDefault();
     const pkg = packages.find((p) => p.name === q.packageType);
-    openBooking({
-      tripType: tab === 'outstation' ? way : tab === 'package' ? 'roundtrip' : tab,
-      fromLocation: q.fromLocation,
-      toLocation: tab === 'package' ? (pkg?.location || '') : q.toLocation,
-      packageType: tab === 'package' ? q.packageType : undefined,
-      date: q.date,
-      time: q.time,
-      vehicle: q.vehicle !== 'Select Vehicle' ? q.vehicle : undefined,
-    });
+    const destination = tab === 'package' ? (pkg?.location || pkg?.name || q.packageType) : q.toLocation;
+
+    const tripTypeLabel =
+      tab === 'outstation'
+        ? `Outstation (${way === 'roundtrip' ? 'Round Trip' : 'One Way'})`
+        : tab === 'airport'
+        ? 'Airport Taxi'
+        : tab === 'local'
+        ? 'Hourly Rental / Local'
+        : `Tour Package${q.packageType && q.packageType !== 'Custom Trip' ? `: ${q.packageType}` : ''}`;
+
+    const lines = [
+      '*New Cab Booking Request*',
+      '',
+      `*Trip:* ${tripTypeLabel}`,
+      `*From:* ${q.fromLocation || 'Madurai'}`,
+      ...(destination ? [`*To:* ${destination}`] : []),
+      ...(q.date ? [`*Pickup Date:* ${formatDate(q.date)}`] : []),
+      ...(q.time ? [`*Pickup Time:* ${formatTime(q.time)}`] : []),
+      ...(q.vehicle && q.vehicle !== 'Select Vehicle' ? [`*Cab Type:* ${q.vehicle}`] : []),
+      '',
+      `Booked via ${SITE.name} website.`,
+      'Please confirm availability and share fare quote.',
+    ];
+
+    const text = lines.join('\n');
+    const url = whatsappLink(text);
+    const win = window.open(url, '_blank');
+    if (!win || win.closed || typeof win.closed === 'undefined') {
+      window.location.href = url;
+    }
   };
 
   const cell = 'relative bg-white px-4 sm:px-5 py-3.5';
