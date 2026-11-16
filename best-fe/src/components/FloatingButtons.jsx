@@ -33,7 +33,7 @@ const FloatingButtons = () => {
           ─────────────────────────────────────────────────────────── */}
       <aside
         aria-label="Quick booking"
-        className="fixed bottom-8 left-4 sm:bottom-10 sm:left-6 lg:bottom-12 z-50 pointer-events-none"
+        className="fixed bottom-16 left-4 sm:bottom-20 sm:left-6 lg:bottom-24 z-50 pointer-events-none"
       >
         <div className="group relative flex items-center pointer-events-auto">
           <button
@@ -54,7 +54,7 @@ const FloatingButtons = () => {
           ─────────────────────────────────────────────────────────── */}
       <aside
         aria-label="Quick contact actions"
-        className="fixed bottom-8 right-4 sm:bottom-10 sm:right-6 lg:bottom-12 z-50 flex flex-col items-end gap-6 sm:gap-7 pointer-events-none"
+        className="fixed bottom-16 right-4 sm:bottom-20 sm:right-6 lg:bottom-24 z-50 flex flex-col items-end gap-6 sm:gap-7 pointer-events-none"
       >
         {/* 1. Call Button (Large Circular + Intense Glowing Pulse) */}
         <div className="group relative flex items-center pointer-events-auto">
