@@ -34,9 +34,9 @@ const Footer = () => {
                 <Phone className="w-4 h-4 text-yellow-500" />
                 +91 63807 07938
               </a>
-              <a href="mailto:maduraibesttoursandtravels01@gmail.com" className="flex items-center gap-2 text-sm hover:text-yellow-500 transition-colors">
+              <a href="mailto:maduraibesttaxitravels@gmail.com" className="flex items-center gap-2 text-sm hover:text-yellow-500 transition-colors">
                 <Mail className="w-4 h-4 text-yellow-500" />
-                maduraibesttoursandtravels01@gmail.com
+                maduraibesttaxitravels@gmail.com
               </a>
             </div>
             <div className="flex space-x-4">
@@ -86,7 +86,7 @@ const Footer = () => {
               </li>
               <li className="flex items-start gap-3">
                 <Mail className="w-5 h-5 text-yellow-500 shrink-0 mt-0.5" />
-                <span className="text-sm">maduraibesttoursandtravels01@gmail.com</span>
+                <span className="text-sm">maduraibesttaxitravels@gmail.com</span>
               </li>
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-yellow-500 shrink-0 mt-0.5" />

@@ -38,7 +38,7 @@ export default function PrivacyPolicy() {
         <section>
           <h2>5. Contact Us</h2>
           <p>If you have any questions about this Privacy Policy, please contact us at:</p>
-          <p>maduraibesttoursandtravels01@gmail.com</p>
+          <p><a href="mailto:maduraibesttaxitravels@gmail.com" className="text-forest-700 underline font-semibold">maduraibesttaxitravels@gmail.com</a></p>
         </section>
       
           </div>

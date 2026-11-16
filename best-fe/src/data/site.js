@@ -28,7 +28,7 @@ export const SITE = {
   phoneHref: 'tel:+916380707938',
   whatsappNumber: '916380707938',
   whatsappHref: 'https://wa.me/916380707938',
-  email: 'maduraibesttoursandtravels01@gmail.com',
+  email: 'maduraibesttaxitravels@gmail.com',
   addressLines: ['No. 18, Kovalan Nagar Last', 'Muniyandi Street, Palanganatham', 'Madurai, Tamil Nadu 625003'],
   since: 2015,
   googleReviewsUrl: 'https://search.google.com/local/reviews?placeid=ChIJyXG_6UZaADsR0Lq9mO32ZYo',
