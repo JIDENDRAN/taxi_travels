@@ -74,7 +74,7 @@ const Sidebar = ({ activeTab, onSelect, onLogout, onClose }) => (
   <div className="flex h-full flex-col bg-ink-900 text-white">
     <div className="flex items-center justify-between gap-3 border-b border-white/10 px-5 py-5">
       <div className="flex min-w-0 items-center gap-3">
-        <img src={logo} alt="" className="h-11 w-11 shrink-0 object-contain drop-shadow-sm" />
+        <img src={logo} alt="" className="h-9 w-auto shrink-0 object-contain drop-shadow-sm bg-white/95 rounded-lg p-1" />
         <div className="min-w-0 leading-tight">
           <p className="truncate text-sm font-bold">Madurai Best</p>
           <p className="truncate text-xs font-semibold text-gold-400">Admin console</p>
@@ -938,7 +938,7 @@ Driver Charge: ${data.dayDriver || ''}`;
         {/* Mobile top bar */}
         <div className="sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-ink-800 bg-ink-900 px-4 py-3 text-white lg:hidden">
           <div className="flex min-w-0 items-center gap-2.5">
-            <img src={logo} alt="" className="h-9 w-9 shrink-0 object-contain drop-shadow-sm" />
+            <img src={logo} alt="" className="h-8 w-auto shrink-0 object-contain drop-shadow-sm bg-white/95 rounded-md p-1" />
             <div className="min-w-0 leading-tight">
               <p className="truncate text-sm font-bold">Madurai Best</p>
               <p className="truncate text-[11px] font-semibold text-gold-400">{currentNav.label}</p>

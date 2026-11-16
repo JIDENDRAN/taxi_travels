@@ -54,7 +54,7 @@ const AdminLogin = () => {
           }}
         />
         <div className="relative flex items-center gap-3">
-          <img src={logo} alt="" className="h-14 w-14 object-contain drop-shadow-md" />
+          <img src={logo} alt="" className="h-12 w-auto object-contain drop-shadow-md bg-white/95 rounded-xl p-1.5" />
           <div className="leading-tight">
             <p className="text-sm font-bold">Madurai Best</p>
             <p className="text-xs font-semibold text-gold-400">Taxi Travels</p>
@@ -81,7 +81,7 @@ const AdminLogin = () => {
       <main className="flex min-h-screen flex-col px-4 py-8 sm:px-6 lg:min-h-0 lg:px-12">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3 lg:invisible">
-            <img src={logo} alt="" className="h-12 w-12 object-contain drop-shadow-sm" />
+            <img src={logo} alt="" className="h-10 w-auto object-contain drop-shadow-sm" />
             <span className="text-sm font-bold leading-tight text-ink-900">
               Madurai Best
               <span className="block text-xs font-semibold text-gold-600">Taxi Travels</span>

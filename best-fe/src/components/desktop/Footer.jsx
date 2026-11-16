@@ -12,14 +12,14 @@ const Footer = () => {
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-4">
             <Link to="/" className="flex items-center gap-3.5 group">
-              <img
-                src={Logo}
-                alt={SITE.name}
-                className="h-16 w-16 sm:h-20 sm:w-20 object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.35)] group-hover:scale-105 transition-transform duration-200"
-                loading="lazy"
-                width="80"
-                height="80"
-              />
+              <div className="bg-white/95 p-1.5 sm:p-2 rounded-xl shadow-md border border-white/20 flex items-center justify-center shrink-0">
+                <img
+                  src={Logo}
+                  alt={SITE.name}
+                  className="h-11 sm:h-13 w-auto object-contain group-hover:scale-105 transition-transform duration-200"
+                  loading="lazy"
+                />
+              </div>
               <span className="leading-tight">
                 <span className="block font-bold text-2xl sm:text-[1.7rem] text-white">Madurai Best</span>
                 <span className="block text-xs font-bold tracking-[0.2em] text-gold-300">TAXI TRAVELS</span>

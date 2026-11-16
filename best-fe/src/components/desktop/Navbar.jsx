@@ -12,9 +12,7 @@ function Brand() {
       <img
         src={Logo}
         alt={SITE.name}
-        className="h-12 w-12 sm:h-14 sm:w-14 lg:h-[62px] lg:w-[62px] object-contain drop-shadow-sm group-hover:scale-105 transition-transform duration-200"
-        width="62"
-        height="62"
+        className="h-12 sm:h-14 lg:h-16 w-auto object-contain drop-shadow-sm group-hover:scale-105 transition-transform duration-200"
       />
       <span className="leading-tight">
         <span className="block font-bold text-[1.3rem] sm:text-[1.45rem] text-forest-700">Madurai Best</span>
