@@ -1,77 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://www.maduraibesttoursandtravels.in/</loc>
+    <loc>https://www.maduraibesttravels.in/</loc>
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
-    <changefreq>weekly</changefreq>
-    <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-      <image:loc>https://www.maduraibesttoursandtravels.in/logo.jpeg</image:loc>
-      <image:title>Madurai Best Tours and Travels</image:title>
+    <image:image>
+      <image:loc>https://www.maduraibesttravels.in/logo.jpeg</image:loc>
+      <image:title>Madurai Best Taxi Travels - Outstation Cabs &amp; Tour Packages</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://www.maduraibesttoursandtravels.in/about</loc>
-    <priority>0.8</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://www.maduraibesttoursandtravels.in/vehicles</loc>
-    <priority>0.9</priority>
+    <loc>https://www.maduraibesttravels.in/madurai-taxi-service</loc>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://www.maduraibesttoursandtravels.in/packages</loc>
     <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.maduraibesttravels.in/madurai-airport-taxi</loc>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.maduraibesttoursandtravels.in/gallery</loc>
+    <loc>https://www.maduraibesttravels.in/madurai-tour-packages</loc>
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.maduraibesttravels.in/madurai-to-rameswaram-taxi</loc>
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.maduraibesttravels.in/madurai-to-kodaikanal-taxi</loc>
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.maduraibesttravels.in/tempo-traveller-rental-madurai</loc>
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.maduraibesttravels.in/packages</loc>
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.maduraibesttravels.in/vehicles</loc>
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-    <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://www.maduraibesttoursandtravels.in/contact</loc>
+    <loc>https://www.maduraibesttravels.in/about</loc>
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-    <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://www.maduraibesttoursandtravels.in/privacy-policy</loc>
+    <loc>https://www.maduraibesttravels.in/gallery</loc>
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.maduraibesttravels.in/contact</loc>
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.maduraibesttravels.in/privacy-policy</loc>
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>yearly</changefreq>
     <priority>0.5</priority>
-    <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://www.maduraibesttoursandtravels.in/terms-and-conditions</loc>
+    <loc>https://www.maduraibesttravels.in/terms-and-conditions</loc>
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>yearly</changefreq>
     <priority>0.5</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://www.maduraibesttoursandtravels.in/madurai-taxi-service</loc>
-    <priority>0.9</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://www.maduraibesttoursandtravels.in/madurai-airport-taxi</loc>
-    <priority>0.9</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://www.maduraibesttoursandtravels.in/madurai-tour-packages</loc>
-    <priority>0.9</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://www.maduraibesttoursandtravels.in/madurai-to-rameswaram-taxi</loc>
-    <priority>0.9</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://www.maduraibesttoursandtravels.in/madurai-to-kodaikanal-taxi</loc>
-    <priority>0.9</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://www.maduraibesttoursandtravels.in/tempo-traveller-rental-madurai</loc>
-    <priority>0.9</priority>
-    <changefreq>weekly</changefreq>
   </url>
 </urlset>

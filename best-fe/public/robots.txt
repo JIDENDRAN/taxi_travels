@@ -1,4 +1,7 @@
+# robots.txt for https://www.maduraibesttravels.in/
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /api/
 
-Sitemap: https://www.maduraibesttoursandtravels.in/sitemap.xml
+Sitemap: https://www.maduraibesttravels.in/sitemap.xml
