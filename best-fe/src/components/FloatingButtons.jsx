@@ -39,11 +39,11 @@ const FloatingButtons = () => {
           <button
             type="button"
             onClick={() => openBooking()}
-            className="flex items-center gap-2.5 px-4 py-3 sm:px-5 sm:py-3.5 rounded-full bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-600 hover:to-amber-500 text-slate-950 font-bold text-sm sm:text-base border border-amber-300/80 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"
+            className="flex items-center gap-2.5 px-5 py-3.5 sm:px-6 sm:py-4 rounded-full bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-600 hover:to-amber-500 text-slate-950 font-bold text-sm sm:text-base border border-amber-300/80 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"
             aria-label="Book Cab Online"
             title="Book Now"
           >
-            <CalendarCheck className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.3]" />
+            <CalendarCheck className="w-5.5 h-5.5 sm:w-6 sm:h-6 stroke-[2.3]" />
             <span className="tracking-wide font-extrabold">Book Now</span>
           </button>
         </div>
@@ -65,11 +65,11 @@ const FloatingButtons = () => {
           </span>
           <a
             href={SITE.phoneHref}
-            className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-[#0A192F] hover:bg-[#1E3A8A] text-[#FBBF24] flex items-center justify-center border border-slate-700/60 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"
+            className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#0A192F] hover:bg-[#1E3A8A] text-[#FBBF24] flex items-center justify-center border border-slate-700/60 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"
             aria-label={`Call us at ${SITE.phoneDisplay}`}
             title="Call 24/7"
           >
-            <Phone className="w-6 h-6 sm:w-7 sm:h-7 fill-current" />
+            <Phone className="w-6.5 h-6.5 sm:w-7.5 sm:h-7.5 fill-current" />
           </a>
         </div>
 
@@ -84,11 +84,11 @@ const FloatingButtons = () => {
             href={SITE.whatsappHref}
             target="_blank"
             rel="noreferrer"
-            className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-[#25D366] hover:bg-[#20BD5A] text-white flex items-center justify-center border border-emerald-400/40 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"
+            className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#25D366] hover:bg-[#20BD5A] text-white flex items-center justify-center border border-emerald-400/40 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"
             aria-label="Chat with us on WhatsApp"
             title="WhatsApp"
           >
-            <WhatsAppLogo className="w-7 h-7 sm:w-8 sm:h-8" />
+            <WhatsAppLogo className="w-8 h-8 sm:w-9 sm:h-9" />
           </a>
         </div>
       </aside>
