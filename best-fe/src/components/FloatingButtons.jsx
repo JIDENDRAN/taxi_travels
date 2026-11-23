@@ -20,8 +20,8 @@ const WhatsAppLogo = ({ className = "w-8 h-8 sm:w-9 sm:h-9" }) => (
 
 /**
  * Floating Action Buttons:
- * 1. Bottom-Left corner: Luminous Booking Button with "Book Now" label & icon.
- * 2. Bottom-Right corner: Large circular Call and WhatsApp buttons with intense glowing pulses.
+ * 1. Bottom-Left corner: Quick Booking Button with "Book Now" label & icon.
+ * 2. Bottom-Right corner: Clean circular Call and WhatsApp buttons.
  */
 const FloatingButtons = () => {
   const { openBooking } = useBooking();
@@ -29,7 +29,7 @@ const FloatingButtons = () => {
   return (
     <>
       {/* ───────────────────────────────────────────────────────────
-          LEFT BOTTOM CORNER: Quick Booking Button (with Intense Glowing Effect)
+          LEFT BOTTOM CORNER: Quick Booking Button
           ─────────────────────────────────────────────────────────── */}
       <aside
         aria-label="Quick booking"
@@ -39,7 +39,7 @@ const FloatingButtons = () => {
           <button
             type="button"
             onClick={() => openBooking()}
-            className="flex items-center gap-2.5 px-4 py-3.5 sm:px-6 sm:py-4 rounded-full bg-gradient-to-tr from-amber-500 to-amber-400 hover:from-amber-600 hover:to-amber-500 text-slate-950 font-bold text-sm sm:text-base border border-amber-300 glow-btn-booking hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer shadow-2xl"
+            className="flex items-center gap-2.5 px-4 py-3 sm:px-5 sm:py-3.5 rounded-full bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-600 hover:to-amber-500 text-slate-950 font-bold text-sm sm:text-base border border-amber-300/80 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"
             aria-label="Book Cab Online"
             title="Book Now"
           >
@@ -50,13 +50,13 @@ const FloatingButtons = () => {
       </aside>
 
       {/* ───────────────────────────────────────────────────────────
-          RIGHT BOTTOM CORNER: Large Stacked Circular Action Buttons (Call, WhatsApp)
+          RIGHT BOTTOM CORNER: Clean Stacked Circular Action Buttons (Call, WhatsApp)
           ─────────────────────────────────────────────────────────── */}
       <aside
         aria-label="Quick contact actions"
-        className="fixed bottom-16 right-4 sm:bottom-20 sm:right-6 lg:bottom-24 z-50 flex flex-col items-end gap-6 sm:gap-7 pointer-events-none"
+        className="fixed bottom-16 right-4 sm:bottom-20 sm:right-6 lg:bottom-24 z-50 flex flex-col items-end gap-3.5 sm:gap-4 pointer-events-none"
       >
-        {/* 1. Call Button (Large Circular + Intense Glowing Pulse) */}
+        {/* 1. Call Button */}
         <div className="group relative flex items-center pointer-events-auto">
           <span
             className="hidden sm:inline-block absolute right-full mr-3.5 px-3 py-1 bg-slate-900/90 text-white text-xs font-semibold rounded-lg shadow-md whitespace-nowrap opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 translate-x-1 group-hover:translate-x-0 transition-all duration-200 pointer-events-none"
@@ -65,7 +65,7 @@ const FloatingButtons = () => {
           </span>
           <a
             href={SITE.phoneHref}
-            className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#0A192F] hover:bg-[#1E3A8A] text-[#FBBF24] flex items-center justify-center border border-slate-700/60 glow-btn-call hover:scale-110 active:scale-95 transition-all duration-200 cursor-pointer shadow-2xl"
+            className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-[#0A192F] hover:bg-[#1E3A8A] text-[#FBBF24] flex items-center justify-center border border-slate-700/60 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"
             aria-label={`Call us at ${SITE.phoneDisplay}`}
             title="Call 24/7"
           >
@@ -73,7 +73,7 @@ const FloatingButtons = () => {
           </a>
         </div>
 
-        {/* 2. WhatsApp Button (Large Circular + Official WhatsApp Logo + Intense Glowing Pulse) */}
+        {/* 2. WhatsApp Button */}
         <div className="group relative flex items-center pointer-events-auto">
           <span
             className="hidden sm:inline-block absolute right-full mr-3.5 px-3 py-1 bg-slate-900/90 text-white text-xs font-semibold rounded-lg shadow-md whitespace-nowrap opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 translate-x-1 group-hover:translate-x-0 transition-all duration-200 pointer-events-none"
@@ -84,11 +84,11 @@ const FloatingButtons = () => {
             href={SITE.whatsappHref}
             target="_blank"
             rel="noreferrer"
-            className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#25D366] hover:bg-[#20BD5A] text-white flex items-center justify-center border border-emerald-400/40 glow-btn-whatsapp hover:scale-110 active:scale-95 transition-all duration-200 cursor-pointer shadow-2xl"
+            className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-[#25D366] hover:bg-[#20BD5A] text-white flex items-center justify-center border border-emerald-400/40 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"
             aria-label="Chat with us on WhatsApp"
             title="WhatsApp"
           >
-            <WhatsAppLogo className="w-8 h-8 sm:w-9 sm:h-9" />
+            <WhatsAppLogo className="w-7 h-7 sm:w-8 sm:h-8" />
           </a>
         </div>
       </aside>
