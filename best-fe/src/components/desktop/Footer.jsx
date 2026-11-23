@@ -22,7 +22,7 @@ const Footer = () => {
               </div>
               <span className="leading-tight">
                 <span className="block font-bold text-2xl sm:text-[1.7rem] text-white">Madurai Best</span>
-                <span className="block text-xs font-bold tracking-[0.2em] text-gold-300">TAXI TRAVELS</span>
+                <span className="block text-xs font-bold tracking-[0.2em] text-gold-300">TRAVELS</span>
               </span>
             </Link>
             <p className="mt-5 text-sm leading-relaxed text-forest-100/80 max-w-sm">

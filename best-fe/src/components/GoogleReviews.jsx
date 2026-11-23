@@ -93,7 +93,7 @@ const GoogleReviews = () => {
             Loved by Travelers Across South India
           </h2>
           <p className="text-slate-600 text-sm sm:text-base mt-2 max-w-xl mx-auto">
-            Real experiences from families, solo travelers, and pilgrims who rode with Madurai Best Taxi Travels.
+            Real experiences from families, solo travelers, and pilgrims who rode with Madurai Best Travels.
           </p>
         </div>
 

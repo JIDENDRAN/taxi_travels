@@ -16,7 +16,7 @@ function Brand() {
       />
       <span className="leading-tight">
         <span className="block font-bold text-[1.3rem] sm:text-[1.45rem] text-forest-700">Madurai Best</span>
-        <span className="block text-[11px] sm:text-xs font-bold tracking-[0.2em] text-gold-500">TAXI TRAVELS</span>
+        <span className="block text-[11px] sm:text-xs font-bold tracking-[0.2em] text-gold-500">TRAVELS</span>
       </span>
     </Link>
   );

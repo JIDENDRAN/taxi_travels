@@ -27,7 +27,7 @@ const About = () => (
       <div className="container-x grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
         <div>
           <p className="eyebrow">Our story</p>
-          <h2 className="h-display text-3xl sm:text-4xl lg:text-5xl text-ink-950 mt-3">Welcome to Madurai Best <em className="text-forest-600">Taxi Travels</em></h2>
+          <h2 className="h-display text-3xl sm:text-4xl lg:text-5xl text-ink-950 mt-3">Welcome to Madurai Best <em className="text-forest-600">Travels</em></h2>
           <div className="mt-6 space-y-4 text-lg text-ink-700 leading-relaxed">
             <p>We are a trusted travel partner dedicated to making your journeys safe, comfortable and memorable. From our base in Palanganatham, Madurai, we run airport transfers, outstation cabs, Tempo Traveller hire and complete tour packages across South India.</p>
             <p>Our mission is simple: help people explore with a travel service they can trust. Our vision is to be the most preferred travel company in South India — earned one trip at a time.</p>

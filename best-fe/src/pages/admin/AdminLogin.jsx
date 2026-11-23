@@ -57,14 +57,14 @@ const AdminLogin = () => {
           <img src={logo} alt="" className="h-12 w-auto object-contain drop-shadow-md bg-white/95 rounded-xl p-1.5" />
           <div className="leading-tight">
             <p className="text-sm font-bold">Madurai Best</p>
-            <p className="text-xs font-semibold text-gold-400">Taxi Travels</p>
+            <p className="text-xs font-semibold text-gold-400">Travels</p>
           </div>
         </div>
 
         <div className="relative max-w-md">
           <p className="eyebrow text-gold-400">Admin console</p>
           <h1 className="mt-4 font-display text-4xl font-semibold leading-tight tracking-tight xl:text-5xl">
-            Madurai Best Taxi Travels
+            Madurai Best Travels
           </h1>
           <p className="mt-4 text-base leading-relaxed text-ink-300">
             Manage bookings, fleet, tour packages and customer enquiries from one secure place.
@@ -84,7 +84,7 @@ const AdminLogin = () => {
             <img src={logo} alt="" className="h-10 w-auto object-contain drop-shadow-sm" />
             <span className="text-sm font-bold leading-tight text-ink-900">
               Madurai Best
-              <span className="block text-xs font-semibold text-gold-600">Taxi Travels</span>
+              <span className="block text-xs font-semibold text-gold-600">Travels</span>
             </span>
           </div>
           <Link
@@ -181,7 +181,7 @@ const AdminLogin = () => {
             </div>
 
             <p className="mt-8 text-center text-xs text-ink-400">
-              &copy; {new Date().getFullYear()} Madurai Best Taxi Travels
+              &copy; {new Date().getFullYear()} Madurai Best Travels
             </p>
           </div>
         </div>

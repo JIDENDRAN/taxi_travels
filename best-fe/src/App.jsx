@@ -25,20 +25,20 @@ const AppContent = () => {
   // Dynamic Route Titles
   useEffect(() => {
     const routeTitles = {
-      '/': 'Madurai Best Taxi Travels | Outstation Cabs, Airport Transfers & South India Tours',
-      '/about': 'About Us | Madurai Best Taxi Travels | Trusted Cab Operator in Palanganatham',
-      '/vehicles': 'Our Fleet - Innova Crysta, Etios & Tempo Travellers | Madurai Best Taxi Travels',
-      '/packages': 'South India Tour Packages | Madurai Best Taxi Travels',
-      '/gallery': 'Travel Memories & Fleet Gallery | Madurai Best Taxi Travels',
-      '/contact': 'Contact Us 24/7 | Madurai Best Taxi Travels | Palanganatham, Madurai',
-      '/privacy-policy': 'Privacy Policy | Madurai Best Taxi Travels',
-      '/terms-and-conditions': 'Terms & Conditions | Madurai Best Taxi Travels',
-      '/madurai-taxi-service': 'Madurai Taxi Service & 24/7 Cab Booking | Madurai Best Taxi Travels',
-      '/madurai-airport-taxi': 'Madurai Airport Taxi & Transfers | Madurai Best Taxi Travels',
-      '/madurai-tour-packages': 'Best Madurai Tour Packages | Madurai Best Taxi Travels',
-      '/madurai-to-rameswaram-taxi': 'Madurai to Rameswaram Taxi & Cabs | Madurai Best Taxi Travels',
-      '/madurai-to-kodaikanal-taxi': 'Madurai to Kodaikanal Taxi Service | Madurai Best Taxi Travels',
-      '/tempo-traveller-rental-madurai': 'Tempo Traveller Rental in Madurai | Madurai Best Taxi Travels'
+      '/': 'Madurai Best Travels | Outstation Cabs, Airport Transfers & South India Tours',
+      '/about': 'About Us | Madurai Best Travels | Trusted Cab Operator in Palanganatham',
+      '/vehicles': 'Our Fleet - Innova Crysta, Etios & Tempo Travellers | Madurai Best Travels',
+      '/packages': 'South India Tour Packages | Madurai Best Travels',
+      '/gallery': 'Travel Memories & Fleet Gallery | Madurai Best Travels',
+      '/contact': 'Contact Us 24/7 | Madurai Best Travels | Palanganatham, Madurai',
+      '/privacy-policy': 'Privacy Policy | Madurai Best Travels',
+      '/terms-and-conditions': 'Terms & Conditions | Madurai Best Travels',
+      '/madurai-taxi-service': 'Madurai Taxi Service & 24/7 Cab Booking | Madurai Best Travels',
+      '/madurai-airport-taxi': 'Madurai Airport Taxi & Transfers | Madurai Best Travels',
+      '/madurai-tour-packages': 'Best Madurai Tour Packages | Madurai Best Travels',
+      '/madurai-to-rameswaram-taxi': 'Madurai to Rameswaram Taxi & Cabs | Madurai Best Travels',
+      '/madurai-to-kodaikanal-taxi': 'Madurai to Kodaikanal Taxi Service | Madurai Best Travels',
+      '/tempo-traveller-rental-madurai': 'Tempo Traveller Rental in Madurai | Madurai Best Travels'
     };
 
     document.title = routeTitles[location.pathname] || routeTitles['/'];

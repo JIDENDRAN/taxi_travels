@@ -22,7 +22,7 @@ import T17 from '../assets/opt/traveller-17.webp';
 import T20 from '../assets/opt/traveller-20.webp';
 
 export const SITE = {
-  name: 'Madurai Best Taxi Travels',
+  name: 'Madurai Best Travels',
   shortName: 'Madurai Best',
   phoneDisplay: '+91 63807 07938',
   phoneHref: 'tel:+916380707938',

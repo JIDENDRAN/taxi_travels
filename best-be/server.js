@@ -97,7 +97,7 @@ async function dispatchAdminWhatsAppAlert(booking) {
     const admin = await db.get('SELECT * FROM admin_settings LIMIT 1');
     const targetPhone = admin ? admin.whatsapp : '6380707938';
     
-    const message = `🚨 *New Booking from Madurai Best Taxi Travels* 🚨\n\n` +
+    const message = `🚨 *New Booking from Madurai Best Travels* 🚨\n\n` +
       `👤 *Customer Name:* ${booking.name}\n` +
       `📞 *Phone Number:* ${booking.phone}\n` +
       `📍 *Start Location:* ${booking.fromLocation}\n` +
@@ -118,7 +118,7 @@ async function dispatchContactWhatsAppAlert(messageData) {
     const admin = await db.get('SELECT * FROM admin_settings LIMIT 1');
     const targetPhone = admin ? admin.whatsapp : '6380707938';
     
-    const message = `✉️ *New Message received from Madurai Best Taxi Travels* ✉️\n\n` +
+    const message = `✉️ *New Message received from Madurai Best Travels* ✉️\n\n` +
       `👤 *Sender Name:* ${messageData.name}\n` +
       `📧 *Email:* ${messageData.email}\n` +
       `📞 *Phone Number:* ${messageData.phone}\n` +

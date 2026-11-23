@@ -503,7 +503,7 @@ const Home = () => {
           <SectionHeading
             eyebrow="Customer Reviews"
             title="Loved by travellers across South India"
-            intro="Real feedback from families, pilgrims, and tourists who travelled with Madurai Best Taxi Travels."
+            intro="Real feedback from families, pilgrims, and tourists who travelled with Madurai Best Travels."
             action={
               <a
                 href={SITE.googleReviewsUrl}
