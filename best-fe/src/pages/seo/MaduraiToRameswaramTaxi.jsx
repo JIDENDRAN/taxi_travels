@@ -48,6 +48,14 @@ const MaduraiToRameswaramTaxi = () => {
     {
       q: 'Are the toll charges included in the fare?',
       a: 'If you are booking a fixed tour package, tolls are included. If you are booking on a per-km rate, toll charges and parking fees will be extra at actuals.'
+    },
+    {
+      q: 'What is the best vehicle for a family trip from Madurai to Rameswaram?',
+      a: 'The Toyota Innova Crysta is the most popular choice for families and senior pilgrims travelling to Rameswaram, offering comfortable captain seats, excellent luggage space for teertham containers, and smooth expressway cruising.'
+    },
+    {
+      q: 'Can I book a cab from Madurai Airport (IXM) directly to Rameswaram?',
+      a: 'Yes, our driver will wait right outside the arrival terminal gate with your nameboard and transport you straight to Rameswaram via the 4-lane NH87 corridor without entering Madurai city traffic.'
     }
   ];
 

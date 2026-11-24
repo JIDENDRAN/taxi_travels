@@ -37,13 +37,28 @@ const MaduraiTaxiService = () => {
           <li><strong>Madurai Airport (IXM):</strong> Direct terminal pickups with zero waiting charges and flight delay tracking.</li>
           <li><strong>Mattuthavani (MGR Integrated Bus Stand):</strong> Fast pickup for passengers arriving by interstate omnibuses and government express buses.</li>
           <li><strong>Arapalayam & Periyar Bus Stands:</strong> Doorstep transit for passengers connecting to Dindigul, Theni, or Kodaikanal buses.</li>
-          <li><strong>All Neighborhoods:</strong> Immediate dispatch in Palanganatham, Anna Nagar, KK Nagar, Goripalayam, Kalavasal, Simmakkal, Thiruparankundram, Thirunagar, Pasumalai, Villapuram, and Teppakulam.</li>
+          <li><strong>Key Residential & Commercial Hubs:</strong> Instant cab dispatch in Anna Nagar, KK Nagar, Goripalayam, Tallakulam, Kalavasal, Arapalayam, Teppakulam, Thirunagar, Avaniyapuram, Villapuram, Simmakkal, Othakadai, Bypass Road, Vandiyur, Pasumalai, Koodal Nagar, and Thirupparankundram.</li>
+        </ul>
+      `
+    },
+    {
+      heading: 'Transparent Madurai Taxi Rates & Pricing Options',
+      content: `
+        <p>We believe in honest, predictable pricing without surge surprises:</p>
+        <ul class="list-disc pl-5 space-y-2 mt-4">
+          <li><strong>Local Hourly Rental:</strong> Half-Day (4 Hours / 40 KM) and Full-Day (8 Hours / 80 KM) rentals for business meetings and shopping.</li>
+          <li><strong>One-Way Drop Taxi:</strong> Direct drops to Chennai, Coimbatore, Bangalore, Trichy, and Rameswaram — pay only one-way tariff.</li>
+          <li><strong>Outstation Round-Trip:</strong> Per-km billing with daily driver allowance, suitable for multi-day family tours.</li>
         </ul>
       `
     }
   ];
 
   const faqs = [
+    {
+      q: 'Which is the best taxi service in Madurai for family and outstation trips?',
+      a: 'Madurai Best Travels is rated among the top and most trusted travels in Madurai with a 5.0 Google rating. We offer verified chauffeurs, clean AC vehicles (Dzire, Innova Crysta, Tempo Traveller), transparent per-km billing, and 24/7 customer support.'
+    },
     {
       q: 'How can I book a call taxi in Madurai with Madurai Best Travels?',
       a: 'You can book instantly by calling our 24/7 booking line at +91 63807 07938, messaging us on WhatsApp, or using our simple online booking form. We confirm vehicle availability within minutes.'
@@ -57,8 +72,8 @@ const MaduraiTaxiService = () => {
       a: 'Our rates start at just ₹14/km for standard sedans like Swift Dzire, and go up to ₹22/km for premium SUVs like Innova Crysta. We also offer fixed-price local hourly packages (4 Hr/40 Km, 8 Hr/80 Km).'
     },
     {
-      q: 'Do you provide 24/7 taxi service?',
-      a: 'Yes! We operate 24 hours a day, 7 days a week. Whether you have an early morning flight, a late-night train arrival, or an emergency hospital commute, you can count on us.'
+      q: 'Do you provide 24/7 taxi service in Anna Nagar, KK Nagar, and other Madurai areas?',
+      a: 'Yes! We operate 24 hours a day across all Madurai localities including Anna Nagar, KK Nagar, Goripalayam, Tallakulam, Kalavasal, Arapalayam, Teppakulam, and Thirunagar.'
     },
     {
       q: 'What is the difference between Call Taxi and Drop Taxi in Madurai?',

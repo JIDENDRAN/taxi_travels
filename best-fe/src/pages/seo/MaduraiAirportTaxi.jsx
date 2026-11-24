@@ -29,10 +29,16 @@ const MaduraiAirportTaxi = () => {
       highlight: 'Doorstep Pickup'
     },
     {
-      title: 'Round Trip Airport Transfer',
-      desc: 'Ideal for day business travelers, doctors, and pilgrims. Includes scheduled return pickup matching your return flight itinerary.',
-      badge: 'Best Value',
-      highlight: 'Same Day / Return'
+      title: 'Airport to Rameswaram / Kodaikanal',
+      desc: 'Direct terminal pickup and seamless outstation transfer to Rameswaram island or Kodaikanal hill resorts without entering city traffic.',
+      badge: 'Popular Route',
+      highlight: 'Direct Outstation'
+    },
+    {
+      title: 'Railway Station to Airport Transfer',
+      desc: 'Direct connection between Madurai Junction Railway Station and Madurai Airport (IXM) matching your connecting travel schedule.',
+      badge: 'Express Transfer',
+      highlight: 'Station to Airport'
     }
   ];
 
@@ -75,6 +81,14 @@ const MaduraiAirportTaxi = () => {
     {
       q: 'Can I book a cab for an early morning or late night flight?',
       a: 'Yes, our airport cab service is available 24/7, 365 days a year. We recommend pre-booking at least 2 hours in advance for guaranteed allocation.'
+    },
+    {
+      q: 'Can I book a direct taxi from Madurai Airport to Rameswaram or Kodaikanal?',
+      a: 'Yes, our driver will receive you right outside the IXM terminal exit and drive you directly to Rameswaram (approx. 3.5 hrs) or Kodaikanal (approx. 3.5 hrs) in an AC sedan, Innova Crysta, or Tempo Traveller.'
+    },
+    {
+      q: 'Do you offer Madurai Railway Station to Airport taxi transfers?',
+      a: 'Yes, we provide direct transit between Madurai Junction Railway Station (PF 1 & PF 8) and Madurai Airport, with guaranteed punctual drop before flight check-in.'
     }
   ];
 

@@ -27,9 +27,10 @@ const MaduraiOneWayTaxi = () => {
       heading: 'Benefits of Booking One Way Cabs with Madurai Best Travels',
       content: `
         <ul class="list-disc pl-5 space-y-2 mt-4">
-          <li><strong>Zero Return Fare:</strong> You are charged strictly for your one-way journey with no hidden return tolls or driver return penalties.</li>
-          <li><strong>Assured Punctual Pickup:</strong> Driver arrives at your Madurai address on time so you can relax without flight or meeting anxiety.</li>
-          <li><strong>Dedicated Clean Fleet:</strong> Swift Dzire, Toyota Etios, Innova Crysta, and Ertiga with clean interiors and chilled AC throughout the highway journey.</li>
+          <li><strong>Zero Return Fare:</strong> You are charged strictly for your one-way distance with no hidden return tolls or empty return penalties — ensuring genuine <em>affordable one way cab rates from Madurai</em>.</li>
+          <li><strong>Assured Punctual Pickup:</strong> Our driver arrives at your Madurai address (home, hotel, or station) on time so you can travel without airport or meeting stress.</li>
+          <li><strong>Dedicated Clean Fleet:</strong> Choose from AC Swift Dzire, Toyota Etios, Innova Crysta, and Ertiga with sanitized interiors, ample luggage boot space, and smooth suspension.</li>
+          <li><strong>24/7 Booking Support:</strong> Need an urgent late-night drop taxi or early morning airport ride? Call or WhatsApp our hotline at +91 63807 07938 anytime.</li>
         </ul>
       `
     }

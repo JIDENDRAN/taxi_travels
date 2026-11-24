@@ -48,6 +48,14 @@ const MaduraiToKodaikanalTaxi = () => {
     {
       q: 'Are AC cabs suitable for the uphill drive?',
       a: 'Yes, our vehicles are well-maintained and powerful enough to climb the hills with the AC on. However, once you enter the cool climate of Kodaikanal, you might prefer rolling down the windows to enjoy the fresh mountain breeze!'
+    },
+    {
+      q: 'Which vehicle is best suited for the Madurai to Kodaikanal ghat road?',
+      a: 'The Toyota Innova Crysta is widely regarded as the best cab for Kodaikanal due to its rear-wheel drive hill climb torque, high ground clearance, and independent suspension that keeps passengers comfortable on hairpin turns.'
+    },
+    {
+      q: 'How much does a taxi cost from Madurai to Kodaikanal?',
+      a: 'We offer fixed one-way drop fares starting at competitive tariffs for AC sedans (Swift Dzire) and dedicated rates for Innova Crysta. Comprehensive multi-day sightseeing packages are also available.'
     }
   ];
 

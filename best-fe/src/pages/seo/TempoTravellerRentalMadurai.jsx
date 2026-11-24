@@ -48,6 +48,10 @@ const TempoTravellerRentalMadurai = () => {
     {
       q: 'Do the Tempo Travellers have AC?',
       a: 'Yes, 100% of our Tempo Travellers and Urbanias are fully air-conditioned with individual AC vents for each seat to ensure maximum comfort.'
+    },
+    {
+      q: 'Which vehicle is recommended for group travel from Madurai (10 to 20 people)?',
+      a: 'For groups of 10 to 14 passengers, our 12 or 14-seater Force Tempo Traveller or luxury Force Urbania is ideal. For groups of 15 to 20 passengers, our 18 or 20-seater Tempo Traveller provides generous legroom, wide central aisle, and separate luggage carrier.'
     }
   ];
 

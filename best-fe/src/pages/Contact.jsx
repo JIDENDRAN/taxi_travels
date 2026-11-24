@@ -70,15 +70,15 @@ const Contact = () => {
   return (
     <>
       <PageHero
-        eyebrow="Contact"
-        title="Talk to our booking desk"
-        intro="Quotes, custom itineraries or a ride in the next hour — call, WhatsApp or send a message. We're open around the clock."
+        eyebrow="Madurai Best Travels — 24/7 Booking Desk"
+        title="Contact Us & Book a Taxi in Madurai"
+        intro="Instant cab quotes, advance taxi booking, airport transfers, and outstation trips across South India. Call, WhatsApp, or request an online fare quote 24 hours a day."
         image={Hero}
         crumbs={['Contact']}
       />
 
       {/* Channel strip */}
-      <section className="border-b border-ink-900">
+      <section className="border-b border-sand-200 bg-white">
         <div className="container-x grid md:grid-cols-3 gap-4 py-8">
           {channels.map((c) => (
             <a key={c.label} href={c.href} {...(c.external ? { target: '_blank', rel: 'noreferrer' } : {})} className="group card card-hover p-5 flex items-center gap-4">
@@ -96,18 +96,28 @@ const Contact = () => {
       <section className="py-16 sm:py-20">
         <div className="container-x grid lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-16 items-start">
           <div className="lg:sticky lg:top-28">
-            <p className="eyebrow">Send a message</p>
-            <h2 className="h-display text-4xl sm:text-5xl text-ink-950 mt-3">Request a quote</h2>
-            <p className="text-lg text-ink-600 mt-5">Share your dates, pickup point and group size — we'll reply with options and a clear fare.</p>
-            <div className="mt-8 border border-sand-200 rounded-[14px] bg-white divide-y divide-sand-200">
-              <div className="p-5 flex gap-4">
+            <p className="eyebrow">Direct Taxi Booking</p>
+            <h2 className="h-display text-3xl sm:text-4xl text-ink-950 mt-2">Get a Fast Fare Quote</h2>
+            <p className="text-ink-600 mt-3 text-sm leading-relaxed">
+              Looking for a reliable cab in Madurai? Whether you need an early morning Madurai Airport taxi, railway station pickup, local temple sightseeing, or outstation cabs to Rameswaram and Kodaikanal, our team is at your service 24/7.
+            </p>
+
+            <div className="mt-6 p-5 rounded-2xl bg-forest-50 border border-forest-200 space-y-2.5 text-xs sm:text-sm text-forest-950">
+              <p><strong>Primary Office:</strong> {SITE.addressLines.join(', ')}</p>
+              <p><strong>24 Hours Call Taxi Number:</strong> <a href={SITE.phoneHref} className="font-bold underline text-forest-800">{SITE.phoneDisplay}</a></p>
+              <p><strong>WhatsApp Support:</strong> <a href={SITE.whatsappHref} target="_blank" rel="noreferrer" className="font-bold underline text-forest-800">+91 63807 07938</a></p>
+              <p><strong>Service Modes:</strong> Same Day Taxi Booking, Advance Reservation, One-Way Drop Cabs, Round-Trip Tour Packages.</p>
+            </div>
+
+            <div className="mt-6 border border-sand-200 rounded-[14px] bg-white divide-y divide-sand-200">
+              <div className="p-4 flex gap-4">
                 <MapPin className="w-5 h-5 mt-0.5 shrink-0 text-forest-700" aria-hidden />
                 <div>
                   <p className="text-xs font-semibold text-ink-500">Office</p>
                   <address className="not-italic font-semibold text-ink-900 leading-relaxed mt-0.5">{SITE.addressLines.map((l) => <span key={l} className="block">{l}</span>)}</address>
                 </div>
               </div>
-              <div className="p-5 flex gap-4">
+              <div className="p-4 flex gap-4">
                 <Clock className="w-5 h-5 mt-0.5 shrink-0 text-forest-700" aria-hidden />
                 <div>
                   <p className="text-xs font-semibold text-ink-500">Hours</p>

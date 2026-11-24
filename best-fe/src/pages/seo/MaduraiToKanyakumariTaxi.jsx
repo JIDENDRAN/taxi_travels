@@ -46,6 +46,14 @@ const MaduraiToKanyakumariTaxi = () => {
     {
       q: 'Can we complete Madurai to Kanyakumari in a single day?',
       a: 'While a same-day trip is possible by starting early around 5:00 AM, we strongly recommend a 2-day / 1-night trip to enjoy both the famous sunset and the spectacular sunrise.'
+    },
+    {
+      q: 'How to book a one-way or round-trip cab from Madurai to Kanyakumari?',
+      a: 'You can book directly via WhatsApp or phone call at +91 63807 07938. We confirm your pickup time from any location in Madurai, assign the chauffeur, and share vehicle details in advance.'
+    },
+    {
+      q: 'What is the taxi fare from Madurai to Kanyakumari?',
+      a: 'We offer economical per-km and fixed package tariffs for Swift Dzire, Toyota Innova Crysta, and Tempo Travellers. All toll plazas on the 4-lane NH44 highway can be included for total billing transparency.'
     }
   ];
 

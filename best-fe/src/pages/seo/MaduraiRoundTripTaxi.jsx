@@ -15,9 +15,10 @@ const MaduraiRoundTripTaxi = () => {
       content: `
         <ul class="list-disc pl-5 space-y-2 mt-4">
           <li><strong>Same Chauffeur Throughout the Journey:</strong> You travel with a polite, experienced, background-verified chauffeur who knows your itinerary and assists with luggage, route advice, and local tips.</li>
-          <li><strong>Transparent Per-KM Billing:</strong> Fair daily minimum kilometre thresholds with no hidden night surcharges or surprise billing at the end of the trip.</li>
+          <li><strong>Transparent Per-KM Billing:</strong> Fair daily minimum kilometre thresholds (250–300 km/day) with no hidden night surcharges or surprise billing at the end of the trip.</li>
           <li><strong>Flexible Itineraries:</strong> Want to spend extra time at a temple, take a detour for scenic viewpoint photos, or stop at a local handicraft shop? Your driver accommodates your pace.</li>
-          <li><strong>Comprehensive Fleet:</strong> Economical sedans (Swift Dzire), executive SUVs (Innova Crysta), and high-capacity Tempo Travellers for joint family groups.</li>
+          <li><strong>Comprehensive Fleet:</strong> Economical sedans (Swift Dzire), executive SUVs (Innova Crysta, 7-seater cabs), and high-capacity Tempo Travellers for joint family groups.</li>
+          <li><strong>Instant WhatsApp & Phone Confirmation:</strong> Reserve your round trip cab effortlessly by calling +91 63807 07938 with custom itinerary support.</li>
         </ul>
       `
     },

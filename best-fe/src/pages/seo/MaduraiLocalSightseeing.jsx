@@ -44,6 +44,14 @@ const MaduraiLocalSightseeing = () => {
     {
       q: 'Are temple dress codes and timings assisted by your drivers?',
       a: 'Yes, our local chauffeurs know the morning and evening darshan timings for Meenakshi Temple, Alagar Kovil, and Thirupparankundram, ensuring you arrive at the right time.'
+    },
+    {
+      q: 'Which is the best taxi for Madurai local sightseeing with family?',
+      a: 'For nuclear families (up to 4 members), an AC Swift Dzire or Etios is very comfortable. For larger families or senior citizens, we recommend the Toyota Innova Crysta for easy boarding, extra legroom, and powerful dual air conditioning.'
+    },
+    {
+      q: 'Can we customize our Madurai city temple tour itinerary?',
+      a: 'Yes, 100% of our local sightseeing packages are customizable. You choose which monuments, temples, and authentic food spots you want to visit and spend as much time as you like.'
     }
   ];
 

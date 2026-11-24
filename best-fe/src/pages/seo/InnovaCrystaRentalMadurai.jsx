@@ -47,6 +47,14 @@ const InnovaCrystaRentalMadurai = () => {
     {
       q: 'What is the rental rate for Innova Crysta in Madurai?',
       a: 'Rates start at competitive per-km tariffs for outstation journeys, with tailored fixed-price packages for Madurai local sightseeing and Madurai Airport transfers.'
+    },
+    {
+      q: 'How to hire an Innova Crysta for outstation from Madurai?',
+      a: 'Simply call us at +91 63807 07938 or request a booking online. Specify your travel dates, passenger count, and route (e.g., Madurai to Rameswaram, Kodaikanal, or Kanyakumari), and we will allocate a sanitized Innova Crysta with a verified chauffeur.'
+    },
+    {
+      q: 'Why is Innova Crysta preferred over sedans for outstation family trips?',
+      a: 'The Innova Crysta offers superior ride height, plush captain seating, independent rear AC controls, ample boot space for luggage, and exceptional road stability on highways and steep hill ghat roads.'
     }
   ];
 

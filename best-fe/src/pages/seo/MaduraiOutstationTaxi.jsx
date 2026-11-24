@@ -13,12 +13,12 @@ const MaduraiOutstationTaxi = () => {
     {
       heading: 'Transparent Pricing & Highway-Trained Chauffeurs',
       content: `
-        <p>Unlike aggregator apps with unpredictable surge pricing, our outstation taxi fares are completely transparent. What we quote before your trip is exactly what you pay.</p>
+        <p>Unlike aggregator apps with unpredictable surge pricing, our <strong>outstation cab booking</strong> and <strong>intercity taxi service in Madurai</strong> are completely transparent. What we quote before your trip is exactly what you pay with zero surprise surcharges.</p>
         <ul class="list-disc pl-5 space-y-2 mt-4">
-          <li><strong>Experienced Highway Drivers:</strong> Our chauffeurs possess extensive expertise navigating national highways, state expressways, and steep hairpin mountain curves in Kodaikanal, Munnar, and Ooty.</li>
-          <li><strong>Zero Hidden Fees:</strong> Driver bata, state permit details, and toll expectations are clarified upfront so there are no surprises during your journey.</li>
-          <li><strong>Doorstep Pickup & Drop:</strong> We pick you up directly from your doorstep in Madurai, Madurai Junction Railway Station, or Madurai Airport (IXM) at any scheduled hour.</li>
-          <li><strong>Customizable Halts:</strong> Enjoy clean restroom stops, authentic highway dining, and photographic halts whenever you wish.</li>
+          <li><strong>Experienced Highway Drivers:</strong> Our chauffeurs possess extensive expertise navigating national highways (NH44, NH38, NH83), state expressways, and steep hairpin mountain curves in Kodaikanal, Munnar, and Ooty.</li>
+          <li><strong>Transparent Outstation Rates:</strong> Driver bata, state permit details, and toll expectations are clarified upfront so there are no surprises during your journey.</li>
+          <li><strong>Doorstep Pickup & Drop Across Madurai:</strong> We pick you up directly from your doorstep in Madurai (Anna Nagar, KK Nagar, Mattuthavani, Goripalayam, Kalavasal, etc.), Madurai Junction Railway Station, or Madurai Airport (IXM) at any scheduled hour.</li>
+          <li><strong>Customizable Halts & Clean Cars:</strong> Enjoy clean restroom stops, authentic highway dining, and photographic halts whenever you wish in sanitized, AC-equipped vehicles.</li>
         </ul>
       `
     },
@@ -40,11 +40,15 @@ const MaduraiOutstationTaxi = () => {
   const faqs = [
     {
       q: 'How are outstation taxi fares calculated from Madurai?',
-      a: 'Outstation trips are billed per kilometre based on the chosen vehicle (Sedan, Innova Crysta, or Tempo Traveller) with standard minimum kilometre averages per calendar day. Tolls and parking can either be included or paid actuals.'
+      a: 'Outstation trips are billed per kilometre based on the chosen vehicle (Sedan starting approx ₹12-14/km, Innova Crysta starting approx ₹18-20/km, or Tempo Traveller) with standard minimum kilometre averages per calendar day (typically 250–300 km/day). Driver bata is clearly specified, and tolls can either be included or paid at actuals.'
     },
     {
       q: 'Do you offer one-way outstation taxi drops?',
       a: 'Yes, we provide one-way drop taxi services from Madurai to Chennai, Bangalore, Coimbatore, Trichy, Rameswaram, and other major cities so you pay only for one direction.'
+    },
+    {
+      q: 'What is the contact number to book an outstation taxi in Madurai?',
+      a: 'You can call or WhatsApp Madurai Best Travels 24/7 at +91 63807 07938 for instant outstation quotes, vehicle availability, and quick reservations.'
     },
     {
       q: 'Can we stop for sightseeing or food along the highway?',

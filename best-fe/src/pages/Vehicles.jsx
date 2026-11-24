@@ -6,9 +6,28 @@ import { VehicleCard } from '../components/cards';
 import { CtaBand, PageHero, Reveal, SectionHeading, Skeleton } from '../components/ui';
 
 const GUIDE = [
-  { icon: Users, size: '1–4 travellers', pick: 'Sedan', text: 'City rides, airport transfers and couples on short trips.' },
-  { icon: Briefcase, size: '5–7 travellers', pick: 'SUV / Innova', text: 'Families with luggage, hill stations and long highway days.' },
-  { icon: Mountain, size: '8+ travellers', pick: 'Tempo Traveller', text: 'Pilgrim groups, weddings and multi-family tours.' },
+  { icon: Users, size: '1–4 travellers', pick: 'Swift Dzire & Etios (Sedan)', text: 'AC sedan rental in Madurai for city rides, airport transfers, solo and couple highway drops.' },
+  { icon: Briefcase, size: '5–7 travellers', pick: 'Toyota Innova Crysta (SUV)', text: '7 seater taxi & SUV rental in Madurai for family tours, mountain ghat climbs, and luggage comfort.' },
+  { icon: Mountain, size: '8–20 travellers', pick: 'Tempo Traveller & Urbania', text: '12, 14, 18, 20-seater luxury group vehicles in Madurai for pilgrim circuits, weddings, and corporate outings.' },
+];
+
+const VEHICLE_FAQS = [
+  {
+    q: 'How do I hire an Innova Crysta in Madurai?',
+    a: 'You can reserve a 7-seater or 8-seater Toyota Innova Crysta online or by calling +91 63807 07938. We provide dedicated Innova Crysta cabs for local sightseeing, Madurai Airport transfers, and outstation trips to Rameswaram, Kodaikanal, and Munnar.'
+  },
+  {
+    q: 'Are all cabs provided with an experienced private driver?',
+    a: 'Yes, all our vehicles are chauffeur-driven by professional, licensed, and background-verified drivers with extensive highway and mountain road experience.'
+  },
+  {
+    q: 'What tempo traveller seating capacities are available in Madurai?',
+    a: 'We offer 12-seater, 14-seater, 18-seater Tempo Travellers, and luxury Force Urbanias equipped with individual push-back seats, powerful dual AC, and spacious luggage boots.'
+  },
+  {
+    q: 'Do you offer marriage and wedding car rentals in Madurai?',
+    a: 'Yes! We provide decorated luxury sedans, premium Innova Crystas, and tempo travellers for weddings, VIP guest pickups, and family marriage events.'
+  }
 ];
 
 const Vehicles = () => {
@@ -59,6 +78,19 @@ const Vehicles = () => {
             </div>
           )}
           <p className="mt-10 flex items-center gap-2 text-sm text-ink-600"><Plane className="w-4 h-4 text-forest-700" aria-hidden /> Madurai Airport (IXM) pickups are available around the clock.</p>
+
+          {/* Vehicle Hire FAQs */}
+          <div className="mt-16 pt-12 border-t border-sand-200 max-w-4xl mx-auto">
+            <h2 className="h-display text-2xl sm:text-3xl text-ink-950 mb-6 text-center">Frequently Asked Questions About Car Rental in Madurai</h2>
+            <div className="divide-y divide-sand-200 border-y border-sand-200">
+              {VEHICLE_FAQS.map((faq, idx) => (
+                <div key={idx} className="py-4">
+                  <h3 className="font-bold text-ink-950 text-base mb-1.5">{faq.q}</h3>
+                  <p className="text-sm text-ink-700 leading-relaxed">{faq.a}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
