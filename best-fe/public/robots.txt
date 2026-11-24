@@ -1,6 +1,7 @@
 # robots.txt for https://www.maduraibesttravels.in/
 User-agent: *
 Allow: /
+Disallow: /admin
 Disallow: /admin/
 Disallow: /api/
 

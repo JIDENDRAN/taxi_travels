@@ -11,7 +11,7 @@ const template = fs.readFileSync(toAbsolute('dist/index.html'), 'utf-8');
 // Import the render function from the server bundle
 import { render } from './dist/server/entry-server.js';
 
-// Define the routes we want to pre-render
+// Define the complete list of indexable routes to pre-render
 const routes = [
   '/',
   '/about',
@@ -21,23 +21,50 @@ const routes = [
   '/contact',
   '/privacy-policy',
   '/terms-and-conditions',
+  '/blog',
+  // SEO Landing Pages & Services
   '/madurai-taxi-service',
   '/madurai-airport-taxi',
   '/madurai-tour-packages',
   '/madurai-to-rameswaram-taxi',
   '/madurai-to-kodaikanal-taxi',
-  '/tempo-traveller-rental-madurai'
+  '/tempo-traveller-rental-madurai',
+  '/madurai-outstation-taxi',
+  '/madurai-local-sightseeing',
+  '/madurai-one-way-taxi',
+  '/madurai-round-trip-taxi',
+  '/innova-crysta-rental-madurai',
+  '/family-tour-packages-madurai',
+  '/madurai-to-kanyakumari-taxi',
+  '/madurai-to-thanjavur-taxi',
+  '/madurai-to-trichy-taxi',
+  '/madurai-to-chennai-taxi',
+  '/madurai-to-tirunelveli-taxi',
+  '/madurai-to-palani-taxi',
+  '/madurai-to-munnar-taxi',
+  '/madurai-to-ooty-taxi',
+  // Travel Blog Articles
+  '/blog/best-places-to-visit-in-madurai',
+  '/blog/madurai-to-rameswaram-travel-guide',
+  '/blog/madurai-to-kodaikanal-taxi-booking-guide',
+  '/blog/best-tourist-places-near-madurai',
+  '/blog/madurai-airport-taxi-booking-guide',
+  '/blog/madurai-local-sightseeing-guide',
+  '/blog/best-time-to-visit-rameswaram',
+  '/blog/madurai-to-kanyakumari-road-trip-guide',
+  '/blog/why-choose-private-taxi-outstation-travel',
+  '/blog/family-travel-guide-from-madurai'
 ];
 
 // Define static SEO metadata for each route
 const routeMetadata = {
   '/': {
-    title: 'Madurai Best Travels | Taxi Service, Airport Pickup & Tour Packages',
-    description: 'Madurai Best Travels offers taxi services, airport pickup and drop, outstation cabs, Tempo Traveller rental, Madurai sightseeing, Rameswaram tour packages, Kodaikanal tours, Ooty tours and South India holiday packages.'
+    title: 'Madurai Best Travels | Best Taxi Service in Madurai',
+    description: 'Looking for reliable taxi service in Madurai? Book Madurai Best Travels for airport transfers, local sightseeing, outstation trips and comfortable cab services.'
   },
   '/about': {
-    title: 'About Us | Madurai Best Travels | South India Taxi',
-    description: 'Learn more about Madurai Best Travels (known also as Madurai Best Travels and Madurai Best Tours). We are your trusted travel partner in South India since 2015, providing premium taxi services, outstation cabs, and custom tours.'
+    title: 'About Us | Madurai Best Travels | Trusted Cab Operator in Palanganatham',
+    description: 'Learn more about Madurai Best Travels, your trusted travel partner in South India since 2015. Offering dependable taxi services, outstation cabs, and custom holiday tours.'
   },
   '/vehicles': {
     title: 'Our Premium Fleet - Cabs & Tempo Travellers | Madurai Best Travels',
@@ -53,15 +80,19 @@ const routeMetadata = {
   },
   '/contact': {
     title: 'Contact Us | Madurai Best Travels | 24/7 Cab Booking',
-    description: 'Get in touch with Madurai Best Travels. Contact us 24/7 for booking cabs, tempo travellers, and custom South India tour packages.'
+    description: 'Get in touch with Madurai Best Travels at Palanganatham, Madurai. Contact us 24/7 for booking cabs, tempo travellers, and custom South India tour packages.'
   },
   '/privacy-policy': {
     title: 'Privacy Policy | Madurai Best Travels',
-    description: 'Read the privacy policy of Madurai Best Travels regarding user data and booking details.'
+    description: 'Read the privacy policy of Madurai Best Travels regarding user data, booking details, and privacy protection.'
   },
   '/terms-and-conditions': {
     title: 'Terms & Conditions | Madurai Best Travels',
     description: 'Review the terms and conditions for booking taxis, cabs, and tour packages with Madurai Best Travels.'
+  },
+  '/blog': {
+    title: 'South India Travel Guides & Road Trip Tips | Madurai Best Travels',
+    description: 'Explore expert travel guides, road trip itineraries, temple darshan advice, and hill station travel tips from Madurai Best Travels.'
   },
   '/madurai-taxi-service': {
     title: 'Madurai Taxi Service & Cab Booking | Madurai Best Travels',
@@ -86,11 +117,108 @@ const routeMetadata = {
   '/tempo-traveller-rental-madurai': {
     title: 'Tempo Traveller Rental in Madurai | Madurai Best Travels',
     description: 'Book spacious 12, 14, and 18-seater Tempo Travellers or premium Force Urbanias in Madurai for comfortable group and family travel with Madurai Best Travels.'
+  },
+  '/madurai-outstation-taxi': {
+    title: 'Madurai Outstation Taxi Service | Madurai Best Travels',
+    description: 'Book safe, comfortable, and affordable outstation cabs from Madurai to all destinations in Tamil Nadu and South India with Madurai Best Travels.'
+  },
+  '/madurai-local-sightseeing': {
+    title: 'Madurai Local Sightseeing Taxi & Cab Booking | Madurai Best Travels',
+    description: 'Explore Meenakshi Temple, Thirumalai Nayakkar Mahal, Alagar Kovil and top heritage spots with our dedicated local sightseeing cabs from Madurai Best Travels.'
+  },
+  '/madurai-one-way-taxi': {
+    title: 'Madurai One Way Taxi & Drop Cabs | Madurai Best Travels',
+    description: 'Save up to 40% on intercity travel with reliable one-way drop taxis from Madurai to Chennai, Bangalore, Coimbatore, Trichy and all South India.'
+  },
+  '/madurai-round-trip-taxi': {
+    title: 'Madurai Round Trip Taxi & Holiday Tour Cabs | Madurai Best Travels',
+    description: 'Book dedicated round-trip outstation cabs and multi-day holiday taxis from Madurai with transparent pricing and experienced chauffeurs.'
+  },
+  '/innova-crysta-rental-madurai': {
+    title: 'Innova Crysta Rental in Madurai | 7 Seater Luxury Taxi | Madurai Best Travels',
+    description: 'Rent luxurious 7-seater & 8-seater Toyota Innova Crysta cabs in Madurai for outstation tours, airport transfers, and family pilgrimages.'
+  },
+  '/family-tour-packages-madurai': {
+    title: 'Family Tour Packages from Madurai | South India Holidays | Madurai Best Travels',
+    description: 'Customized South India family holiday and pilgrimage tour packages with comfortable AC cabs, experienced chauffeurs, and transparent pricing.'
+  },
+  '/madurai-to-kanyakumari-taxi': {
+    title: 'Madurai to Kanyakumari Taxi Service | Madurai Best Travels',
+    description: 'Book reliable one-way and round-trip cabs from Madurai to Kanyakumari. 245 km scenic drive via NH44 with experienced highway drivers from Madurai Best Travels.'
+  },
+  '/madurai-to-thanjavur-taxi': {
+    title: 'Madurai to Thanjavur Taxi Service | Madurai Best Travels',
+    description: 'Book premium cabs from Madurai to Thanjavur. Visit the UNESCO Big Temple and Royal Palace with expert chauffeurs from Madurai Best Travels.'
+  },
+  '/madurai-to-trichy-taxi': {
+    title: 'Madurai to Trichy Taxi Service & Airport Cabs | Madurai Best Travels',
+    description: 'Book fast and reliable cabs from Madurai to Trichy & Trichy Airport (TRZ). 135 km via NH38 in 2 hours with experienced drivers from Madurai Best Travels.'
+  },
+  '/madurai-to-chennai-taxi': {
+    title: 'Madurai to Chennai Taxi Service | Express Drop Cabs | Madurai Best Travels',
+    description: 'Book express one-way and round-trip cabs from Madurai to Chennai. 460 km door-to-door travel with experienced highway chauffeurs.'
+  },
+  '/madurai-to-tirunelveli-taxi': {
+    title: 'Madurai to Tirunelveli Taxi Service | Madurai Best Travels',
+    description: 'Book fast and safe cabs from Madurai to Tirunelveli. 160 km via NH44 in 2.5 hours with professional chauffeurs from Madurai Best Travels.'
+  },
+  '/madurai-to-palani-taxi': {
+    title: 'Madurai to Palani Taxi Service | Pilgrimage Cabs | Madurai Best Travels',
+    description: 'Book dedicated pilgrimage cabs from Madurai to Palani Murugan Temple. 115 km via NH83 with early morning pickups and comfortable waiting.'
+  },
+  '/madurai-to-munnar-taxi': {
+    title: 'Madurai to Munnar Taxi Service | Kerala Hill Cabs | Madurai Best Travels',
+    description: 'Book scenic hill cabs from Madurai to Munnar. 170 km drive through Bodi Ghats with expert mountain drivers and luxury vehicles.'
+  },
+  '/madurai-to-ooty-taxi': {
+    title: 'Madurai to Ooty Taxi Service | Nilgiris Hill Tour Cabs | Madurai Best Travels',
+    description: 'Book premium hill tour cabs from Madurai to Ooty & Coonoor. 290 km scenic drive through Nilgiri Ghats with expert mountain chauffeurs.'
+  },
+  // Blog Articles Metadata
+  '/blog/best-places-to-visit-in-madurai': {
+    title: 'Best Places to Visit in Madurai: The Complete 2026 City Guide | Madurai Best Travels',
+    description: 'Explore the top places to visit in Madurai including Meenakshi Amman Temple, Thirumalai Nayakkar Mahal, Alagar Kovil, and Gandhi Museum with local travel tips.'
+  },
+  '/blog/madurai-to-rameswaram-travel-guide': {
+    title: 'Complete Madurai to Rameswaram Travel Guide: Route, Temples & Tips | Madurai Best Travels',
+    description: 'Complete travel guide for Madurai to Rameswaram by road. Distance, travel time, Pamban Bridge, Ramanathaswamy Temple timings, and Dhanushkodi tips.'
+  },
+  '/blog/madurai-to-kodaikanal-taxi-booking-guide': {
+    title: 'Madurai to Kodaikanal Taxi Booking Guide: Ghat Roads & Hill Tips | Madurai Best Travels',
+    description: 'Complete guide for booking a taxi from Madurai to Kodaikanal. Travel time, ghat road hairpin bends, vehicle choices, and best sightseeing viewpoints.'
+  },
+  '/blog/best-tourist-places-near-madurai': {
+    title: 'Best Tourist Places Near Madurai: Top Weekend Getaways & Day Trips | Madurai Best Travels',
+    description: 'Discover the top tourist destinations within 200 km of Madurai: Rameswaram, Kodaikanal, Thanjavur, Chettinad, Suruli Falls, and Courtallam.'
+  },
+  '/blog/madurai-airport-taxi-booking-guide': {
+    title: 'Madurai Airport Taxi Booking Guide: Flight Transfers & Fixed Rates | Madurai Best Travels',
+    description: 'Everything you need to know about booking an airport taxi at Madurai Airport (IXM). Terminal pickups, fixed rates, flight delay tracking, and vehicle choices.'
+  },
+  '/blog/madurai-local-sightseeing-guide': {
+    title: 'Madurai Local Sightseeing Guide: 1-Day & 2-Day Temple Tour Plan | Madurai Best Travels',
+    description: 'Step-by-step local sightseeing guide for Madurai. Optimized 1-day and 2-day itineraries covering Meenakshi Temple, Thirumalai Nayakkar Mahal, and heritage cuisine.'
+  },
+  '/blog/best-time-to-visit-rameswaram': {
+    title: 'Best Time to Visit Rameswaram: Weather, Seasons & Festival Guide | Madurai Best Travels',
+    description: 'Find out the best time to visit Rameswaram. Monthly weather breakdown, temple festival seasons, sea conditions, and road travel tips from Madurai.'
+  },
+  '/blog/madurai-to-kanyakumari-road-trip-guide': {
+    title: 'Madurai to Kanyakumari Road Trip: Route, Stops & Highlights | Madurai Best Travels',
+    description: 'Detailed road trip itinerary for Madurai to Kanyakumari via NH44. Distance (245 km), travel time, Tirunelveli food halts, and Kanyakumari sightseeing.'
+  },
+  '/blog/why-choose-private-taxi-outstation-travel': {
+    title: 'Why Choose a Private Taxi for Outstation Travel in South India? | Madurai Best Travels',
+    description: 'Discover why booking a private outstation taxi from Madurai is superior to trains and buses for South India family holidays, pilgrimages, and hill station tours.'
+  },
+  '/blog/family-travel-guide-from-madurai': {
+    title: 'Family Travel Guide from Madurai: Top Circuits, Child & Elderly Tips | Madurai Best Travels',
+    description: 'Comprehensive family travel guide from Madurai. Best South India circuits, senior citizen temple tips, child comfort strategies, and vehicle suggestions.'
   }
 };
 
 async function runPrerender() {
-  console.log('Starting static site pre-rendering with SEO metadata injection...');
+  console.log(`Starting static site pre-rendering for ${routes.length} routes with SEO metadata injection...`);
 
   for (const url of routes) {
     console.log(`Pre-rendering route: ${url}`);
@@ -157,7 +285,7 @@ async function runPrerender() {
   console.log('Cleaning up server bundle...');
   fs.rmSync(toAbsolute('dist/server'), { recursive: true, force: true });
 
-  console.log('Pre-rendering completed successfully!');
+  console.log(`Pre-rendering completed successfully for all ${routes.length} routes!`);
 }
 
 runPrerender().catch(console.error);

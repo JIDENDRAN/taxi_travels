@@ -58,7 +58,14 @@ const MaduraiToRameswaramTaxi = () => {
       heroBg={HeroBg}
       sections={sections}
       faqs={faqs}
+      canonicalPath="/madurai-to-rameswaram-taxi"
       bookingPreset={{ fromLocation: 'Madurai', toLocation: 'Rameswaram' }}
+      routeMeta={{
+        distance: 'Approx. 175 km',
+        duration: '3 – 3.5 Hours',
+        bestRoute: 'NH87 via Ramanathapuram',
+        vehicleOptions: 'Swift Dzire, Innova, Tempo'
+      }}
     />
   );
 };

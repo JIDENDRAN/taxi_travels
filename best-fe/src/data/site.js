@@ -44,7 +44,9 @@ export const NAV_LINKS = [
   { name: 'Cabs', path: '/' },
   { name: 'Tour Packages', path: '/packages' },
   { name: 'Airport Taxi', path: '/madurai-airport-taxi' },
+  { name: 'Outstation', path: '/madurai-outstation-taxi' },
   { name: 'Fleet', path: '/vehicles' },
+  { name: 'Travel Guides', path: '/blog' },
   { name: 'Gallery', path: '/gallery' },
   { name: 'About', path: '/about', header: false },
   { name: 'Contact', path: '/contact' },
@@ -71,15 +73,28 @@ export const DESTINATIONS = [
   { name: 'Thanjavur', region: 'Tamil Nadu', note: 'Brihadeeswarar Temple, a UNESCO site', image: Thanjavur, query: 'Thanjavur' },
 ];
 
-// Route landing pages that already exist in the app.
+// Route landing pages in the app.
 // Distances are approximate road distances from Madurai.
 export const POPULAR_ROUTES = [
   { label: 'Madurai Airport transfer', detail: 'IXM pickup & drop, 24/7', path: '/madurai-airport-taxi', destination: 'Madurai Airport (IXM)' },
   { label: 'Madurai → Rameswaram', detail: 'approx. 175 km · 3–3.5 hrs', path: '/madurai-to-rameswaram-taxi', destination: 'Rameswaram' },
   { label: 'Madurai → Kodaikanal', detail: 'approx. 120 km · ghat road', path: '/madurai-to-kodaikanal-taxi', destination: 'Kodaikanal' },
-  { label: 'Tempo Traveller hire', detail: 'Group & family trips', path: '/tempo-traveller-rental-madurai', destination: '' },
-  { label: 'Madurai city taxi', detail: 'Local & outstation cabs', path: '/madurai-taxi-service', destination: '' },
-  { label: 'Madurai tour packages', detail: 'Temple & hill circuits', path: '/madurai-tour-packages', destination: '' },
+  { label: 'Madurai → Kanyakumari', detail: 'approx. 245 km · 4.5 hrs', path: '/madurai-to-kanyakumari-taxi', destination: 'Kanyakumari' },
+  { label: 'Madurai → Thanjavur', detail: 'approx. 190 km · 3.5 hrs', path: '/madurai-to-thanjavur-taxi', destination: 'Thanjavur' },
+  { label: 'Madurai → Trichy', detail: 'approx. 135 km · 2–2.5 hrs', path: '/madurai-to-trichy-taxi', destination: 'Trichy' },
+  { label: 'Madurai → Chennai', detail: 'approx. 460 km · 7–8 hrs', path: '/madurai-to-chennai-taxi', destination: 'Chennai' },
+  { label: 'Madurai → Tirunelveli', detail: 'approx. 160 km · 2.5–3 hrs', path: '/madurai-to-tirunelveli-taxi', destination: 'Tirunelveli' },
+  { label: 'Madurai → Palani', detail: 'approx. 115 km · 2.5 hrs', path: '/madurai-to-palani-taxi', destination: 'Palani' },
+  { label: 'Madurai → Munnar', detail: 'approx. 170 km · 4.5–5 hrs', path: '/madurai-to-munnar-taxi', destination: 'Munnar' },
+  { label: 'Madurai → Ooty', detail: 'approx. 290 km · 6.5–7 hrs', path: '/madurai-to-ooty-taxi', destination: 'Ooty' },
+  { label: 'Madurai Outstation Taxi', detail: 'One-way & round trip', path: '/madurai-outstation-taxi', destination: 'Outstation' },
+  { label: 'Madurai Local Sightseeing', detail: 'Meenakshi Amman & temples', path: '/madurai-local-sightseeing', destination: 'Madurai Local' },
+  { label: 'Madurai One Way Taxi', detail: 'Pay only one side drop', path: '/madurai-one-way-taxi', destination: 'One Way' },
+  { label: 'Madurai Round Trip Taxi', detail: 'Multi-day holiday tours', path: '/madurai-round-trip-taxi', destination: 'Round Trip' },
+  { label: 'Innova Crysta Rental', detail: '7/8 seater luxury SUV', path: '/innova-crysta-rental-madurai', destination: 'Innova Crysta' },
+  { label: 'Tempo Traveller hire', detail: 'Group & family trips', path: '/tempo-traveller-rental-madurai', destination: 'Tempo Traveller' },
+  { label: 'Madurai city taxi', detail: 'Local & outstation cabs', path: '/madurai-taxi-service', destination: 'Madurai' },
+  { label: 'Family Tour Packages', detail: 'Temple & hill circuits', path: '/family-tour-packages-madurai', destination: 'Family Tours' },
 ];
 
 // Real photos shared by customers on their trips.

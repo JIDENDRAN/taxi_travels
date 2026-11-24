@@ -25,7 +25,7 @@ const AppContent = () => {
   // Dynamic Route Titles
   useEffect(() => {
     const routeTitles = {
-      '/': 'Madurai Best Travels | Outstation Cabs, Airport Transfers & South India Tours',
+      '/': 'Madurai Best Travels | Best Taxi Service in Madurai & Outstation Cabs',
       '/about': 'About Us | Madurai Best Travels | Trusted Cab Operator in Palanganatham',
       '/vehicles': 'Our Fleet - Innova Crysta, Etios & Tempo Travellers | Madurai Best Travels',
       '/packages': 'South India Tour Packages | Madurai Best Travels',
@@ -33,15 +33,39 @@ const AppContent = () => {
       '/contact': 'Contact Us 24/7 | Madurai Best Travels | Palanganatham, Madurai',
       '/privacy-policy': 'Privacy Policy | Madurai Best Travels',
       '/terms-and-conditions': 'Terms & Conditions | Madurai Best Travels',
+      '/blog': 'Travel Guides & Tips | Madurai Best Travels',
       '/madurai-taxi-service': 'Madurai Taxi Service & 24/7 Cab Booking | Madurai Best Travels',
       '/madurai-airport-taxi': 'Madurai Airport Taxi & Transfers | Madurai Best Travels',
       '/madurai-tour-packages': 'Best Madurai Tour Packages | Madurai Best Travels',
       '/madurai-to-rameswaram-taxi': 'Madurai to Rameswaram Taxi & Cabs | Madurai Best Travels',
       '/madurai-to-kodaikanal-taxi': 'Madurai to Kodaikanal Taxi Service | Madurai Best Travels',
-      '/tempo-traveller-rental-madurai': 'Tempo Traveller Rental in Madurai | Madurai Best Travels'
+      '/tempo-traveller-rental-madurai': 'Tempo Traveller Rental in Madurai | Madurai Best Travels',
+      '/madurai-outstation-taxi': 'Madurai Outstation Taxi Service | One-Way & Round Trip Cabs',
+      '/madurai-local-sightseeing': 'Madurai Local Sightseeing Taxi | Meenakshi Temple & City Tours',
+      '/madurai-one-way-taxi': 'Madurai One Way Taxi & Drop Cabs | Save on Return Fare',
+      '/madurai-round-trip-taxi': 'Madurai Round Trip Taxi & Holiday Tour Cabs',
+      '/innova-crysta-rental-madurai': 'Innova Crysta Rental in Madurai | 7 Seater Luxury Taxi',
+      '/family-tour-packages-madurai': 'Family Tour Packages from Madurai | South India Holidays',
+      '/madurai-to-kanyakumari-taxi': 'Madurai to Kanyakumari Taxi Service | Express NH44 Cabs',
+      '/madurai-to-thanjavur-taxi': 'Madurai to Thanjavur Taxi Service | Big Temple Cabs',
+      '/madurai-to-trichy-taxi': 'Madurai to Trichy Taxi Service | Airport & Srirangam Cabs',
+      '/madurai-to-chennai-taxi': 'Madurai to Chennai Taxi Service | Express GST Road Cabs',
+      '/madurai-to-tirunelveli-taxi': 'Madurai to Tirunelveli Taxi Service | Express NH44 Cabs',
+      '/madurai-to-palani-taxi': 'Madurai to Palani Taxi Service | Murugan Temple Pilgrimage Cabs',
+      '/madurai-to-munnar-taxi': 'Madurai to Munnar Taxi Service | Kerala Hill Station Cabs',
+      '/madurai-to-ooty-taxi': 'Madurai to Ooty Taxi Service | Nilgiris Hill Tour Cabs'
     };
 
-    document.title = routeTitles[location.pathname] || routeTitles['/'];
+    if (location.pathname.startsWith('/blog/')) {
+      const slug = location.pathname.replace('/blog/', '');
+      const formattedTitle = slug
+        .split('-')
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(' ');
+      document.title = `${formattedTitle} | Madurai Best Travels`;
+    } else {
+      document.title = routeTitles[location.pathname] || routeTitles['/'];
+    }
   }, [location.pathname]);
 
   const isAdminRoute = location.pathname.startsWith('/admin');

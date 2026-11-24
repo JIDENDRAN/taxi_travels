@@ -58,6 +58,14 @@ const TempoTravellerRentalMadurai = () => {
       heroBg={HeroBg}
       sections={sections}
       faqs={faqs}
+      canonicalPath="/tempo-traveller-rental-madurai"
+      bookingPreset={{ vehicle: 'Tempo Traveller', tripType: 'roundtrip' }}
+      routeMeta={{
+        distance: 'All South India',
+        duration: 'Daily / Outstation',
+        bestRoute: 'Ideal for Group Travel',
+        vehicleOptions: '12 / 14 / 18 / 20 Seater'
+      }}
     />
   );
 };

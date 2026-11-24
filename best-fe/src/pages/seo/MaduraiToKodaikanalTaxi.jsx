@@ -58,7 +58,14 @@ const MaduraiToKodaikanalTaxi = () => {
       heroBg={HeroBg}
       sections={sections}
       faqs={faqs}
+      canonicalPath="/madurai-to-kodaikanal-taxi"
       bookingPreset={{ fromLocation: 'Madurai', toLocation: 'Kodaikanal' }}
+      routeMeta={{
+        distance: 'Approx. 120 km',
+        duration: '3 – 3.5 Hours',
+        bestRoute: 'Ghat Road via Batlagundu',
+        vehicleOptions: 'Innova Crysta, Dzire, Tempo'
+      }}
     />
   );
 };

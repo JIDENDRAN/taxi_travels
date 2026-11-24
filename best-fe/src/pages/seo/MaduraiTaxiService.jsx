@@ -52,6 +52,14 @@ const MaduraiTaxiService = () => {
       heroBg={HeroBg}
       sections={sections}
       faqs={faqs}
+      canonicalPath="/madurai-taxi-service"
+      bookingPreset={{ destination: 'Madurai Taxi' }}
+      routeMeta={{
+        distance: 'Local & Outstation',
+        duration: '24/7 Available',
+        bestRoute: 'Madurai & South India',
+        vehicleOptions: 'Sedan, Innova, Tempo'
+      }}
     />
   );
 };

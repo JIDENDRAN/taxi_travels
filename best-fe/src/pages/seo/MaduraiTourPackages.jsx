@@ -58,6 +58,14 @@ const MaduraiTourPackages = () => {
       heroBg={HeroBg}
       sections={sections}
       faqs={faqs}
+      canonicalPath="/madurai-tour-packages"
+      bookingPreset={{ tripType: 'roundtrip', destination: 'Madurai Tour Packages' }}
+      routeMeta={{
+        distance: 'Tamil Nadu & Kerala',
+        duration: '1 to 7 Days',
+        bestRoute: 'Heritage & Hill Stations',
+        vehicleOptions: 'Sedan, Innova Crysta, Tempo'
+      }}
     />
   );
 };

@@ -1,18 +1,11 @@
-import React from 'react';
 import {
   Phone,
-  MessageCircle,
   Clock,
   ShieldCheck,
   Plane,
-  MapPin,
-  Luggage,
   Users,
   ChevronDown,
-  ArrowRight,
-  Sparkles,
-  CheckCircle2,
-  CalendarCheck
+  ArrowRight
 } from 'lucide-react';
 import { SITE } from '../../data/site';
 import { useBooking } from '../../context/BookingContext';
