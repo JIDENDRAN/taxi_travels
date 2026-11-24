@@ -117,3 +117,49 @@ export const SERVICE_PILLARS = [
   { title: 'Clean, AC vehicles', text: 'Sedans, SUVs and Tempo Travellers cleaned before every trip.', icon: 'sparkle' },
   { title: 'Clear quotes', text: 'Your fare is confirmed with you before the trip starts.', icon: 'receipt' },
 ];
+
+// Local neighborhoods and hubs in Madurai with 24/7 doorstep pickup
+export const MADURAI_LOCAL_AREAS = [
+  'Palanganatham',
+  'Madurai Railway Junction',
+  'Madurai Airport (IXM)',
+  'Mattuthavani (MGR Bus Stand)',
+  'Arapalayam Bus Stand',
+  'Periyar Bus Stand',
+  'Anna Nagar',
+  'KK Nagar',
+  'Goripalayam',
+  'Simmakkal',
+  'Kalavasal',
+  'Thiruparankundram',
+  'Thirunagar',
+  'Pasumalai',
+  'Villapuram',
+  'Vandiyur Teppakulam',
+  'Sellur',
+  'Koodal Nagar',
+  'Iyer Bungalow',
+  'Othakadai',
+  'Avaniyapuram',
+  'Kochadai',
+  'Samayanallur',
+  'Nagamalai Pudukkottai'
+];
+
+// High-frequency everyday queries searched by local Madurai residents & travellers
+export const LOCAL_COMMON_SEARCHES = [
+  { label: 'Call Taxi in Madurai', path: '/madurai-taxi-service', desc: 'Instant doorstep pickup 24/7' },
+  { label: 'Drop Taxi Madurai', path: '/madurai-one-way-taxi', desc: 'Pay only one side without return fare' },
+  { label: 'Madurai Railway Station Taxi', path: '/madurai-taxi-service', desc: 'Direct pickup from Madurai Junction' },
+  { label: 'Madurai Airport Cab Booking', path: '/madurai-airport-taxi', desc: 'Flight delay tracking & fixed pricing' },
+  { label: 'Mattuthavani Bus Stand Cab', path: '/madurai-taxi-service', desc: 'MGR bus terminus pickup & drop' },
+  { label: 'Innova Crysta Rental Madurai', path: '/innova-crysta-rental-madurai', desc: '7/8 seater luxury family SUV' },
+  { label: 'Tempo Traveller Hire Madurai', path: '/tempo-traveller-rental-madurai', desc: '12, 14, 18 seater group cabs' },
+  { label: 'Madurai Local Sightseeing (8 Hr / 80 Km)', path: '/madurai-local-sightseeing', desc: 'Meenakshi Temple & Nayak Palace' },
+  { label: 'Madurai to Rameswaram Cab Fare', path: '/madurai-to-rameswaram-taxi', desc: '175 km sea bridge & temple tour' },
+  { label: 'Madurai to Kodaikanal Hill Cab', path: '/madurai-to-kodaikanal-taxi', desc: 'Ghat road specialist drivers' },
+  { label: 'Madurai to Kanyakumari Taxi', path: '/madurai-to-kanyakumari-taxi', desc: '245 km express NH44 road trip' },
+  { label: 'Madurai to Chennai One Way Cab', path: '/madurai-to-chennai-taxi', desc: 'Express GST road doorstep drops' },
+  { label: 'Marriage & Wedding Car Rental', path: '/vehicles', desc: 'Decorated luxury cars for functions' },
+  { label: 'Budget & Low Price Taxi Madurai', path: '/madurai-taxi-service', desc: 'Dzire & Etios at lowest tariffs' }
+];

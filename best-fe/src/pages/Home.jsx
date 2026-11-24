@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import {
   ArrowRight, ArrowUpRight, Car, Plane, Clock, Map, Headphones, ShieldCheck, Sparkles,
   ReceiptText, Star, PhoneCall, Route, CarFront, CheckCircle2, ChevronLeft, ChevronRight,
+  MapPin
 } from 'lucide-react';
 import HeroImg from '../assets/opt/madurai-aerial.webp';
-import { DESTINATIONS, POPULAR_ROUTES, SERVICE_PILLARS, SITE, whatsappLink } from '../data/site';
+import { DESTINATIONS, POPULAR_ROUTES, SERVICE_PILLARS, SITE, whatsappLink, MADURAI_LOCAL_AREAS, LOCAL_COMMON_SEARCHES } from '../data/site';
 import { useBooking } from '../context/BookingContext';
 import { useCars, usePackages } from '../hooks/useCatalog';
 import { fetchGoogleReviews } from '../utils/googleReviewsService';
@@ -540,6 +541,66 @@ const Home = () => {
           <div className="flex flex-col sm:flex-row gap-3 justify-center mt-10">
             <button type="button" onClick={() => openBooking()} className="btn btn-primary">Start booking <ArrowRight className="w-4 h-4" /></button>
             <a href={SITE.phoneHref} className="btn btn-outline"><PhoneCall className="w-4 h-4" /> {SITE.phoneDisplay}</a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── LOCAL MADURAI COVERAGE & POPULAR SEARCHES ────────── */}
+      <section className="py-16 sm:py-20 bg-sand-50 border-t border-sand-200">
+        <div className="container-x">
+          <SectionHeading
+            eyebrow="Local Madurai Coverage"
+            title="Doorstep Cab Pickups Across Madurai & Top Searches"
+            intro="Operating from Palanganatham with instant 24/7 cab dispatches to all Madurai transit hubs, bus terminals, railway stations, and residential localities."
+          />
+
+          {/* Local Area Badges */}
+          <div className="mb-10 p-6 sm:p-8 rounded-3xl bg-white border border-sand-200 shadow-sm">
+            <h3 className="text-sm font-extrabold text-ink-900 uppercase tracking-wider mb-4 flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-forest-700" />
+              Serving All Localities & Neighborhoods in Madurai:
+            </h3>
+            <div className="flex flex-wrap gap-2.5">
+              {MADURAI_LOCAL_AREAS.map((area) => (
+                <button
+                  key={area}
+                  type="button"
+                  onClick={() => openBooking({ fromLocation: area })}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-sand-100 hover:bg-forest-100 text-ink-800 hover:text-forest-800 transition-colors cursor-pointer border border-sand-200/60"
+                  title={`Book cab from ${area}`}
+                >
+                  <MapPin className="w-3 h-3 text-gold-600 shrink-0" />
+                  <span>{area}</span>
+                </button>
+              ))}
+            </div>
+            <p className="mt-4 text-xs text-ink-500 font-medium">
+              * Click any area above to instantly set your pickup location. 24/7 standby drivers available near Madurai Railway Junction, Airport, Mattuthavani &amp; Arapalayam.
+            </p>
+          </div>
+
+          {/* Popular Local Searches Grid */}
+          <div>
+            <h3 className="text-base sm:text-lg font-bold text-ink-950 mb-4">
+              Common Taxi &amp; Travel Queries in Madurai:
+            </h3>
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+              {LOCAL_COMMON_SEARCHES.map((item, idx) => (
+                <Link
+                  key={idx}
+                  to={item.path}
+                  className="group p-4 rounded-2xl bg-white border border-sand-200 hover:border-forest-600 hover:shadow-md transition-all flex flex-col justify-between"
+                >
+                  <div>
+                    <h4 className="font-bold text-ink-900 text-sm group-hover:text-forest-700 transition-colors flex items-center justify-between">
+                      <span>{item.label}</span>
+                      <ArrowRight className="w-3.5 h-3.5 opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                    </h4>
+                    <p className="text-xs text-ink-500 mt-1">{item.desc}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>

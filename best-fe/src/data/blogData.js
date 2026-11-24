@@ -413,3 +413,4 @@ export const BLOG_CATEGORIES = [
   'Travel Tips',
   'Family Tours'
 ];
+

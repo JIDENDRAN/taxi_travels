@@ -27,21 +27,42 @@ const MaduraiTaxiService = () => {
         <p>Madurai is a city steeped in history. With our dedicated local sightseeing packages, you can comfortably visit the Meenakshi Amman Temple, Thirumalai Nayakkar Mahal, Gandhi Museum, and the Alagar Koyil without worrying about navigating traffic or finding parking.</p>
         <p>Planning an outstation trip? We offer highly affordable one-way and round-trip taxi services from Madurai to Rameswaram, Kodaikanal, Ooty, Munnar, and Kanyakumari. Our outstation cabs come with special day-rental packages that are perfect for families and large groups.</p>
       `
+    },
+    {
+      heading: '24/7 Doorstep Pickup Across Madurai Transit Hubs & Neighborhoods',
+      content: `
+        <p>Whether you need a quick <strong>call taxi</strong> in the middle of the night or a planned airport/railway station drop, our standby drivers are positioned throughout Madurai:</p>
+        <ul class="list-disc pl-5 space-y-2 mt-4">
+          <li><strong>Madurai Railway Junction:</strong> Standby cabs available 24/7 at both West Gate (PF 8) and Main Town Hall Road Exit (PF 1) for incoming Vaigai, Pandian, Tejas, and Vande Bharat expresses.</li>
+          <li><strong>Madurai Airport (IXM):</strong> Direct terminal pickups with zero waiting charges and flight delay tracking.</li>
+          <li><strong>Mattuthavani (MGR Integrated Bus Stand):</strong> Fast pickup for passengers arriving by interstate omnibuses and government express buses.</li>
+          <li><strong>Arapalayam & Periyar Bus Stands:</strong> Doorstep transit for passengers connecting to Dindigul, Theni, or Kodaikanal buses.</li>
+          <li><strong>All Neighborhoods:</strong> Immediate dispatch in Palanganatham, Anna Nagar, KK Nagar, Goripalayam, Kalavasal, Simmakkal, Thiruparankundram, Thirunagar, Pasumalai, Villapuram, and Teppakulam.</li>
+        </ul>
+      `
     }
   ];
 
   const faqs = [
     {
+      q: 'How can I book a call taxi in Madurai with Madurai Best Travels?',
+      a: 'You can book instantly by calling our 24/7 booking line at +91 63807 07938, messaging us on WhatsApp, or using our simple online booking form. We confirm vehicle availability within minutes.'
+    },
+    {
+      q: 'Do you offer pickup from Madurai Railway Junction and Mattuthavani Bus Stand?',
+      a: 'Yes! We have standby cabs near Madurai Junction Railway Station and Mattuthavani Bus Terminus 24 hours a day, providing quick pickups as soon as your train or bus arrives.'
+    },
+    {
       q: 'How much does a taxi cost per km in Madurai?',
-      a: 'Our rates start at just ₹14/km for standard sedans like Swift Dzire, and go up to ₹22/km for premium SUVs like Innova Crysta. We also offer fixed-price day rental packages.'
+      a: 'Our rates start at just ₹14/km for standard sedans like Swift Dzire, and go up to ₹22/km for premium SUVs like Innova Crysta. We also offer fixed-price local hourly packages (4 Hr/40 Km, 8 Hr/80 Km).'
     },
     {
       q: 'Do you provide 24/7 taxi service?',
-      a: 'Yes! We operate 24 hours a day, 7 days a week. Whether you have an early morning flight or a late-night train arrival, you can count on us.'
+      a: 'Yes! We operate 24 hours a day, 7 days a week. Whether you have an early morning flight, a late-night train arrival, or an emergency hospital commute, you can count on us.'
     },
     {
-      q: 'Can I book an outstation cab from Madurai?',
-      a: 'Absolutely. We specialize in outstation trips to Rameswaram, Kodaikanal, Munnar, and across South India. You can book one-way drops or multi-day round trips.'
+      q: 'What is the difference between Call Taxi and Drop Taxi in Madurai?',
+      a: 'A Call Taxi provides local point-to-point and hourly city rides within Madurai, while a Drop Taxi (One Way Taxi) takes you to an outstation destination (like Chennai, Bangalore, or Trichy) where you pay only for one direction with zero return charges.'
     }
   ];
 
