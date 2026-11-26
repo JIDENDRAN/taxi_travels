@@ -12,36 +12,47 @@ import G7 from '../assets/opt/gallery-7.webp';
 import G8 from '../assets/opt/gallery-8.webp';
 import Meenakshi from '../assets/opt/meenakshi.webp';
 import Rameswaram from '../assets/opt/rameswaram.webp';
+import RameswaramSunset from '../assets/opt/rameswaram-sunset.webp';
 import Kodaikanal from '../assets/opt/kodaikanal.webp';
 import Munnar from '../assets/opt/munnar.webp';
+import Ooty from '../assets/opt/ooty.webp';
 import Thanjavur from '../assets/opt/thanjavur.webp';
 import Alleppey from '../assets/opt/alleppey.webp';
-import { TRAVELLER_PHOTOS } from '../data/site';
+import Athirapilly from '../assets/opt/athirapilly.webp';
+import Cochin from '../assets/opt/cochin.webp';
+import Trivandrum from '../assets/opt/trivandrum.webp';
+import MaduraiAerial from '../assets/opt/madurai-aerial.webp';
 import { CtaBand, PageHero } from '../components/ui';
 
 const PLACES = [
-  { src: G8, title: 'Meenakshi Amman Temple from above', place: 'Madurai' },
-  { src: G7, title: 'Vandiyur Mariamman Teppakulam', place: 'Madurai' },
-  { src: G2, title: 'Thirumalai Nayakkar Mahal', place: 'Madurai' },
-  { src: G3, title: 'Gandhi Memorial Museum', place: 'Madurai' },
-  { src: G1, title: 'Vivekananda Rock & Thiruvalluvar Statue', place: 'Kanyakumari' },
-  { src: G5, title: 'Dam and reservoir views', place: 'Tamil Nadu' },
-  { src: G6, title: 'Hillside temple and tank', place: 'Tamil Nadu' },
-  { src: G4, title: 'Gardens at golden hour', place: 'Tamil Nadu' },
-  { src: Meenakshi, title: 'Temple gopurams at dusk', place: 'Madurai' },
-  { src: Rameswaram, title: 'Island temple & Pamban Bridge', place: 'Rameswaram' },
-  { src: Kodaikanal, title: 'Misty lake valley', place: 'Kodaikanal' },
-  { src: Munnar, title: 'Tea estates', place: 'Munnar' },
-  { src: Thanjavur, title: 'Brihadeeswarar Temple', place: 'Thanjavur' },
-  { src: Alleppey, title: 'Backwater houseboat', place: 'Alleppey' },
+  { src: G8, title: 'Meenakshi Amman Temple from above', place: 'Madurai', category: 'madurai' },
+  { src: G7, title: 'Vandiyur Mariamman Teppakulam', place: 'Madurai', category: 'madurai' },
+  { src: G2, title: 'Thirumalai Nayakkar Mahal', place: 'Madurai', category: 'madurai' },
+  { src: G3, title: 'Gandhi Memorial Museum', place: 'Madurai', category: 'madurai' },
+  { src: MaduraiAerial, title: 'Madurai Heritage City Skyline', place: 'Madurai', category: 'madurai' },
+  { src: Kodaikanal, title: 'Misty Lake and Pine Valleys', place: 'Kodaikanal', category: 'hills' },
+  { src: Munnar, title: 'Rolling Tea Estates and Mountain Vistas', place: 'Munnar', category: 'hills' },
+  { src: Ooty, title: 'Nilgiri Mountain Ranges and Hills', place: 'Ooty', category: 'hills' },
+  { src: G1, title: 'Vivekananda Rock & Thiruvalluvar Statue', place: 'Kanyakumari', category: 'heritage' },
+  { src: Rameswaram, title: 'Island Temple & Pamban Sea Bridge', place: 'Rameswaram', category: 'heritage' },
+  { src: RameswaramSunset, title: 'Rameswaram Sacred Coastline at Sunset', place: 'Rameswaram', category: 'heritage' },
+  { src: Thanjavur, title: 'Brihadeeswarar Temple (Big Temple)', place: 'Thanjavur', category: 'heritage' },
+  { src: Trivandrum, title: 'Sree Padmanabhaswamy Temple', place: 'Trivandrum', category: 'heritage' },
+  { src: Alleppey, title: 'Traditional Houseboat Cruise', place: 'Alleppey', category: 'kerala' },
+  { src: Athirapilly, title: 'Grand Athirappilly Waterfalls', place: 'Kerala', category: 'kerala' },
+  { src: Cochin, title: 'Historic Chinese Fishing Nets and Coast', place: 'Cochin', category: 'kerala' },
+  { src: G5, title: 'Scenic Dam and Reservoir Views', place: 'Tamil Nadu', category: 'nature' },
+  { src: G6, title: 'Hillside Temple and Sacred Water Tank', place: 'Tamil Nadu', category: 'heritage' },
+  { src: G4, title: 'Lush Botanical Gardens at Golden Hour', place: 'Tamil Nadu', category: 'nature' },
+  { src: Meenakshi, title: 'Meenakshi Temple Gopurams at Dusk', place: 'Madurai', category: 'madurai' },
 ];
 
-const TRAVELLERS = TRAVELLER_PHOTOS.map((p) => ({ src: p.src, title: p.alt, place: 'Our guests' }));
-
 const TABS = [
-  { id: 'all', label: 'All' },
-  { id: 'places', label: 'Places' },
-  { id: 'travellers', label: 'Our travellers' },
+  { id: 'all', label: 'All Places' },
+  { id: 'madurai', label: 'Madurai' },
+  { id: 'hills', label: 'Hill Stations' },
+  { id: 'heritage', label: 'Temples & Heritage' },
+  { id: 'kerala', label: 'Kerala & Nature' },
 ];
 
 const Gallery = () => {
@@ -49,17 +60,15 @@ const Gallery = () => {
   const [index, setIndex] = useState(null);
 
   const items = useMemo(() => {
-    if (tab === 'places') return PLACES;
-    if (tab === 'travellers') return TRAVELLERS;
-    // interleave so guests' photos sit among the scenery
-    const out = [];
-    const max = Math.max(PLACES.length, TRAVELLERS.length);
-    for (let i = 0; i < max; i++) {
-      if (PLACES[i]) out.push(PLACES[i]);
-      if (i % 2 === 1 && TRAVELLERS[(i - 1) / 2]) out.push(TRAVELLERS[(i - 1) / 2]);
-    }
-    return out.concat(TRAVELLERS.slice(Math.ceil(max / 2)));
+    if (tab === 'all') return PLACES;
+    if (tab === 'kerala') return PLACES.filter((p) => p.category === 'kerala' || p.category === 'nature');
+    return PLACES.filter((p) => p.category === tab);
   }, [tab]);
+
+  const handleTabChange = (tabId) => {
+    setTab(tabId);
+    setIndex(null);
+  };
 
   const close = useCallback(() => setIndex(null), []);
   const step = useCallback((d) => setIndex((i) => (i === null ? i : (i + d + items.length) % items.length)), [items.length]);
@@ -86,7 +95,7 @@ const Gallery = () => {
       <PageHero
         eyebrow="Gallery"
         title="Our gallery"
-        intro="Scenes from across Tamil Nadu and Kerala — and photos our guests shared from their trips."
+        intro="Explore scenic destinations, historic temples, and iconic attractions across Tamil Nadu and Kerala."
         image={Hero}
         crumbs={['Gallery']}
       />
@@ -99,7 +108,7 @@ const Gallery = () => {
                 key={t.id}
                 role="tab"
                 aria-selected={tab === t.id}
-                onClick={() => setTab(t.id)}
+                onClick={() => handleTabChange(t.id)}
                 className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold border transition-colors cursor-pointer ${tab === t.id ? 'bg-forest-700 text-white border-forest-700' : 'bg-white text-ink-700 border-sand-200 hover:border-forest-700'}`}
               >
                 {t.label}
@@ -122,7 +131,7 @@ const Gallery = () => {
                   <span className="block text-xs font-semibold text-ink-500">{item.place}</span>
                   <span className="block text-sm font-bold text-ink-950 leading-snug line-clamp-2">{item.title}</span>
                 </span>
-                </button>
+              </button>
             ))}
           </div>
         </div>
